@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:aplikasi_booking_lapangan_online/class/CUser.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/services/authService.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -28,7 +28,7 @@ class _SignUpPageState extends State<SignUpPage> {
         title: Text('Sign Up'),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(48),
         child: Column(
           children: [
             TextField(

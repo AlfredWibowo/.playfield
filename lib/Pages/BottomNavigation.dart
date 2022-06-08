@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:aplikasi_booking_lapangan_online/pages/LoginPage.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
+import 'package:project_ambw/pages/LoginPage.dart';
+import 'package:project_ambw/services/authService.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/ExplorePage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/HomePage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/NotificationPage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/ProfilePage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
+import 'package:project_ambw/pages/ExplorePage.dart';
+import 'package:project_ambw/pages/HomePage.dart';
+import 'package:project_ambw/pages/NotificationPage.dart';
+import 'package:project_ambw/pages/ProfilePage.dart';
+import 'package:project_ambw/pages/TicketPage.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({Key? key}) : super(key: key);

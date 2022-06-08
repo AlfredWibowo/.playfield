@@ -2,8 +2,8 @@
 
 import 'dart:convert';
 
-import 'package:aplikasi_booking_lapangan_online/class/CKota.dart';
-import 'package:aplikasi_booking_lapangan_online/services/localService.dart';
+import 'package:project_ambw/class/CKota.dart';
+import 'package:project_ambw/services/localService.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 

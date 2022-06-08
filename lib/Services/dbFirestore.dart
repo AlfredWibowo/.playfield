@@ -1,4 +1,4 @@
-import 'package:aplikasi_booking_lapangan_online/class/CUser.dart';
+import 'package:project_ambw/class/CUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 CollectionReference tbUser = FirebaseFirestore.instance.collection('tbUser');

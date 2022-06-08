@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:aplikasi_booking_lapangan_online/class/CKota.dart';
+import 'package:project_ambw/class/CKota.dart';
 import 'package:flutter/services.dart';
 
 class LocalService {
