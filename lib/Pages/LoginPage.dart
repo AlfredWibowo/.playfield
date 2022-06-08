@@ -1,31 +1,28 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
-
-import 'package:aplikasi_booking_lapangan_online/class/CUser.dart';
 import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
 import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/BottomNavigation.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/ResetPassword.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/SignUpPage.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class LoginPage extends StatefulWidget {
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
-  bool _isPasswordVisible = false;
-
+class _LoginPageState extends State<LoginPage> {
+  bool _isPasswordVisible = true;
   TextEditingController _tfEmailController = TextEditingController();
   TextEditingController _tfPasswordController = TextEditingController();
-  TextEditingController _tfNoTelpController = TextEditingController();
-  TextEditingController _tfAlamatController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up'),
+        title: Text('Login'),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -54,17 +51,33 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
               obscureText: _isPasswordVisible,
             ),
-            TextField(
-              controller: _tfNoTelpController,
-              decoration: InputDecoration(
-                labelText: 'No Telp',
-              ),
+            SizedBox(
+              height: 20,
             ),
-            TextField(
-              controller: _tfAlamatController,
-              decoration: InputDecoration(
-                labelText: 'Alamat',
-              ),
+            Row(
+              children: [
+                Text(
+                  'Forget Password?',
+                ),
+                SizedBox(
+                  width: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ResetPasswordPage(),
+                        ));
+                  },
+                  child: Text(
+                    'Reset Password',
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                )
+              ],
             ),
             SizedBox(
               height: 30,
@@ -74,17 +87,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 minimumSize: Size.fromHeight(50),
               ),
               onPressed: () async {
-                UserCls data = UserCls(
-                    email: _tfEmailController.text,
-                    nama: _tfPasswordController.text,
-                    alamat: _tfAlamatController.text,
-                    noTelp: _tfNoTelpController.text);
-                    
-                FirestoreDatabase.addDataUser(user: data);
-
                 Future<String> responseMsg;
 
-                responseMsg = AuthService.signUp(
+                responseMsg = AuthService.login(
                     email: _tfEmailController.text,
                     password: _tfPasswordController.text);
 
@@ -92,10 +97,34 @@ class _SignUpPageState extends State<SignUpPage> {
                 buildSnackBar(context, msg);
 
                 if (msg == 'Successfull') {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => BottomNavigationPage()),
+                  );
                 }
-
-                AuthService.logout();
+              },
+              child: Text(
+                'Submit',
+              ),
+            ),
+            SizedBox(
+              height: 15,
+            ),
+            Text("Don't Have Account?"),
+            SizedBox(
+              height: 10,
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(50),
+              ),
+              onPressed: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => SignUpPage(),
+                    ));
               },
               child: Text(
                 'Sign Up',

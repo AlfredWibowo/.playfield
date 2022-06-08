@@ -1,12 +1,13 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
+import 'package:aplikasi_booking_lapangan_online/pages/LoginPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ambw/Pages/ExplorePage.dart';
-import 'package:project_ambw/Pages/HomePage.dart';
-import 'package:project_ambw/Pages/NotificationPage.dart';
-import 'package:project_ambw/Pages/ProfilePage.dart';
-import 'package:project_ambw/Pages/TicketPage.dart';
-import 'package:project_ambw/main.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/ExplorePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/HomePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/NotificationPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/ProfilePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({Key? key}) : super(key: key);
@@ -70,6 +71,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                 ),
                 GestureDetector(
                   onTap: () {
+                    AuthService.logout();
+
                     Navigator.pushReplacement(
                       context, 
                       MaterialPageRoute(builder: (context) => LoginPage(),)

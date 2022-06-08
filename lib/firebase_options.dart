@@ -47,29 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAN1vHO34SCIYjxSdouQuyTWf6kFnzLpGI',
-    appId: '1:791807935214:web:f72379c225eaab4375a9ff',
-    messagingSenderId: '791807935214',
-    projectId: 'projekambw',
-    authDomain: 'projekambw.firebaseapp.com',
-    storageBucket: 'projekambw.appspot.com',
+    apiKey: 'AIzaSyCP8XTBEAL8rLwYCXsTK1jotLaFfvBNPOc',
+    appId: '1:148065823875:web:3bb51f1685c8fd76d87fb6',
+    messagingSenderId: '148065823875',
+    projectId: 'test2ambw',
+    authDomain: 'test2ambw.firebaseapp.com',
+    storageBucket: 'test2ambw.appspot.com',
+    measurementId: 'G-JGVCBBV6JH',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyC3m6MFqHB-2H1CS1iXr1QXwIpuDWf6l1Y',
-    appId: '1:791807935214:android:f90da8447d751cc075a9ff',
-    messagingSenderId: '791807935214',
-    projectId: 'projekambw',
-    storageBucket: 'projekambw.appspot.com',
+    apiKey: 'AIzaSyALsFZMY4qNn0LF445ziygX8QrU_HtDlwo',
+    appId: '1:148065823875:android:04ec19a5f4e4d968d87fb6',
+    messagingSenderId: '148065823875',
+    projectId: 'test2ambw',
+    storageBucket: 'test2ambw.appspot.com',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDdu5_7sA4Q6SIzmbuJxTumTLUWXhg4iCI',
-    appId: '1:791807935214:ios:e078c8a73b2cae5075a9ff',
-    messagingSenderId: '791807935214',
-    projectId: 'projekambw',
-    storageBucket: 'projekambw.appspot.com',
-    iosClientId: '791807935214-3k3k2md1rcjg2qru43cgoa79t1g9bkrj.apps.googleusercontent.com',
-    iosBundleId: 'com.example.projectAmbw',
+    apiKey: 'AIzaSyADMom-I7uKg4IxJwJzM4KX1DWBplzlfIA',
+    appId: '1:148065823875:ios:5570a3e9420634d4d87fb6',
+    messagingSenderId: '148065823875',
+    projectId: 'test2ambw',
+    storageBucket: 'test2ambw.appspot.com',
+    iosClientId: '148065823875-ac3v0fmr83cnc9ule1d647cqokuflg50.apps.googleusercontent.com',
+    iosBundleId: 'com.example.aplikasiBookingLapanganOnline',
   );
 }
