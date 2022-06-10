@@ -3,12 +3,14 @@ class UserCls {
   String nama;
   String alamat;
   String noTelp;
+  // bool isAdmin;
 
   UserCls({
     required this.email,
     required this.nama,
     required this.alamat,
     required this.noTelp,
+    // required this.isAdmin
   });
 
   Map<String, dynamic> toJson() {
@@ -16,7 +18,8 @@ class UserCls {
       "email": email,
       "nama": nama,
       "alamat": alamat,
-      "noTelp": noTelp
+      "noTelp": noTelp,
+      // "isAdmin": isAdmin
     };
   }
 
@@ -25,7 +28,8 @@ class UserCls {
       email: json['email'],
       nama: json['nama'],
       alamat: json['alamat'],
-      noTelp: json['noTelp']
+      noTelp: json['noTelp'],
+      // isAdmin: json['isAdmin']
     );
   }
 }

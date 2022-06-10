@@ -8,6 +8,10 @@ class AuthService {
     return auth.authStateChanges();
   }
 
+  static String getEmail() {
+    return auth.currentUser!.email.toString();
+  }
+
   static Future<String> login({required String email, required String password}) async {
     String message;
     try {

@@ -14,12 +14,14 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  bool _isPasswordVisible = false;
+  bool _isPasswordVisible = true;
 
+  TextEditingController _tfNamaController = TextEditingController();
   TextEditingController _tfEmailController = TextEditingController();
   TextEditingController _tfPasswordController = TextEditingController();
   TextEditingController _tfNoTelpController = TextEditingController();
   TextEditingController _tfAlamatController = TextEditingController();
+
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +33,12 @@ class _SignUpPageState extends State<SignUpPage> {
         padding: EdgeInsets.all(48),
         child: Column(
           children: [
+            TextField(
+              controller: _tfNamaController,
+              decoration: InputDecoration(
+                labelText: 'Nama',
+              ),
+            ),
             TextField(
               controller: _tfEmailController,
               decoration: InputDecoration(
@@ -76,7 +84,7 @@ class _SignUpPageState extends State<SignUpPage> {
               onPressed: () async {
                 UserCls data = UserCls(
                     email: _tfEmailController.text,
-                    nama: _tfPasswordController.text,
+                    nama: _tfNamaController.text,
                     alamat: _tfAlamatController.text,
                     noTelp: _tfNoTelpController.text);
                     

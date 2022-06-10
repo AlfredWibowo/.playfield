@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 import 'package:flutter/material.dart';
+import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/pages/BottomNavigation.dart';

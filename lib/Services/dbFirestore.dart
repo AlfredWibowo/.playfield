@@ -6,7 +6,13 @@ CollectionReference tbTransaksi = FirebaseFirestore.instance.collection('tbTrans
 
 class FirestoreDatabase {
   //user
-  static Stream<QuerySnapshot> getDataUser() {
+  
+  static Stream<DocumentSnapshot> getUser(String email){
+    Stream<DocumentSnapshot<Object?>> snap = tbUser.doc(email).snapshots();
+    return snap;
+  }
+
+  static Stream<QuerySnapshot> getAllUser() {
     return tbUser.snapshots();
   }
   
@@ -33,7 +39,7 @@ class FirestoreDatabase {
 
     await doc
       .delete()
-      .whenComplete(() => print('Data User Berhasil di add'))
+      .whenComplete(() => print('Data User Berhasil di delete'))
       .catchError((e) => print(e));
   }
 

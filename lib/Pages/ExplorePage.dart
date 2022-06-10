@@ -48,7 +48,7 @@ class _ExplorePageState extends State<ExplorePage> {
                   //   }
                   // });
                   
-                  for (int i = 0; i < 30; i++) {
+                  for (int i = 0; i < 10; i++) {
                     if(!kota.contains(isiData[i].nama)) {
                       kota.add(isiData[i].nama);
                     }
