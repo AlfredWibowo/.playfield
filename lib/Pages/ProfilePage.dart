@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:project_ambw/main.dart';
+import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:project_ambw/services/storageService.dart';
+import 'package:file_picker/file_picker.dart';
+import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({Key? key}) : super(key: key);
@@ -15,108 +18,334 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
-  TextEditingController _tfProfileEmail = TextEditingController();
-  TextEditingController _tfProfilePassword = TextEditingController();
-  TextEditingController _tfProfileNomorTelp = TextEditingController();
-  TextEditingController _tfProfileAlamat = TextEditingController();
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Profile'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: backButton(context),
       ),
-      body: StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('tbUser')
-              .doc(AuthService.getEmail())
-              .snapshots(),
-          builder: (context, snapshot) {
-            // print(snapshot.connectionState);
-            if (snapshot.hasError) {
-              return Text('Error');
-            } else if (snapshot.connectionState == ConnectionState.active) {
-              print(snapshot.data!.get("nama"));
-              _tfProfileEmail.text = snapshot.data!.get("email");
-              _tfProfileAlamat.text = snapshot.data!.get("alamat");
-              _tfProfileNomorTelp.text = snapshot.data!.get("noTelp");
-              _tfProfilePassword.text = "*Not yet implemented";
-
-              return Container(
-                width: double.infinity,
-                padding: EdgeInsets.all(24),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Email"),
-                      ],
-                    ),
-                    tfShowDetails(_tfProfileEmail),
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Password"),
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.edit),
-                          iconSize: 24,
-                        )
-                      ],
-                    ),
-                    tfShowDetails(_tfProfilePassword),
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Nomor Telepon"),
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.edit),
-                          iconSize: 24,
-                        )
-                      ],
-                    ),
-                    tfShowDetails(_tfProfileNomorTelp),
-                    Padding(padding: EdgeInsets.only(top: 20)),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text("Alamat"),
-                        IconButton(
-                          onPressed: null,
-                          icon: Icon(Icons.edit),
-                          iconSize: 24,
-                        )
-                      ],
-                    ),
-                    tfShowDetails(_tfProfileAlamat),
-                  ],
-                ),
-              );
-            }
-            return Center(
-              child: CircularProgressIndicator(
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.amber),
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 20),
+        child: ListView(
+          children: [
+            SizedBox(
+              height: 30,
+            ),
+            title('My Profile', false),
+            SizedBox(
+              height: 30,
+            ),
+            Container(
+              height: 110,
+              child: Row(
+                mainAxisSize: MainAxisSize.max,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  ClipRRect(
+                    borderRadius: BorderRadius.circular(8),
+                    child: imageNetwork(imagePath, 100, 110),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            UserSession.session.nama,
+                            style: TextStyle(
+                                fontSize: 20, fontWeight: FontWeight.bold),
+                          ),
+                          textWithIconRow(
+                              Icons.email_outlined, UserSession.session.email),
+                        ],
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Change Profile Picture'.toUpperCase(),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                          SizedBox(height: 5,),
+                          ElevatedButton(
+                            onPressed: () {},
+                            child: Text(
+                              'Change Password'.toUpperCase(),
+                              style: TextStyle(fontSize: 10),
+                            ),
+                          ),
+                        ],
+                      )
+                    ],
+                  ),
+                ],
               ),
-            );
-          }),
-    );
-  }
-
-  Widget tfShowDetails(TextEditingController controller) {
-    return TextField(
-      enabled: false,
-      readOnly: true,
-      controller: controller,
-      style: TextStyle(color: Colors.grey),
-      decoration: InputDecoration(
-        
-        border: OutlineInputBorder(),
+            ),
+            SizedBox(height: 20,),
+            profileCard('Email', UserSession.session.email),
+            profileCard('Nama', UserSession.session.nama),
+            profileCard('Alamat', UserSession.session.alamat),
+            profileCard('No Telepon', UserSession.session.noTelp),
+          ],
+        ),
       ),
     );
+
+    // Widget build(BuildContext context) {
+    //   return Scaffold(
+    //     appBar: AppBar(
+    //       title: Text('Profile'),
+    //     ),
+    //     body: Container(
+    //       padding: EdgeInsets.all(20),
+    //       child: Center(
+    //         child: Column(
+    //           children: [
+    //             CircleAvatar(
+    //               backgroundImage: NetworkImage(imagePath),
+    //               radius: 60,
+    //             ),
+    //             SizedBox(
+    //               height: 20,
+    //             ),
+    //             ElevatedButton(
+    //                 onPressed: () async {
+    //                   // final result = await FilePicker.platform.pickFiles(
+    //                   //   allowMultiple: false,
+    //                   //   type: FileType.any,
+    //                   // );
+
+    //                   // if (result != null && result.files.isNotEmpty) {
+    //                   //   final fileBytes = result.files.first.bytes!;
+    //                   //   final fileName = result.files.first.name;
+
+    //                   //   StorageService.uploadUserProfileImageWeb(fileBytes: fileBytes, fileName: fileName);
+    //                   // }
+    //                 },
+    //                 child: Text('Edit Photo')),
+    //             SizedBox(
+    //               height: 20,
+    //             ),
+    //             Card(
+    //               child: ListTile(
+    //                 title: Text('Email'),
+    //                 subtitle: Text(UserSession.session.email),
+    //                 trailing: Icon(Icons.arrow_forward_ios_outlined),
+    //                 enabled: false,
+    //               ),
+    //             ),
+    //             Card(
+    //               child: ListTile(
+    //                 title: Text('Nama'),
+    //                 subtitle: Text(UserSession.session.nama),
+    //                 trailing: Icon(Icons.arrow_forward_ios_outlined),
+    //                 onTap: () {
+    //                   TextEditingController tfController =
+    //                       TextEditingController();
+    //                   showDialog(
+    //                     context: context,
+    //                     barrierDismissible: true,
+    //                     builder: (context) {
+    //                       return AlertDialog(
+    //                         title: Text('Edit Nama'),
+    //                         content: Column(
+    //                           mainAxisSize: MainAxisSize.min,
+    //                           children: [
+    //                             ListTile(
+    //                               title: Text('Nama'),
+    //                               subtitle: TextField(
+    //                                 controller: tfController,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         actions: [
+    //                           Center(
+    //                             child: ElevatedButton(
+    //                               child: Text('Submit'),
+    //                               onPressed: () {
+    //                                 UserSession.session.nama = tfController.text;
+    //                                 FirestoreDatabase.editDataUser(
+    //                                   user: UserSession.session,
+    //                                 );
+    //                                 buildSnackBar(
+    //                                     context, 'nama berhasil di edit');
+    //                                 Navigator.pop(context);
+    //                               },
+    //                             ),
+    //                           )
+    //                         ],
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //               ),
+    //             ),
+    //             Card(
+    //               child: ListTile(
+    //                 title: Text('Alamat'),
+    //                 subtitle: Text(UserSession.session.alamat),
+    //                 trailing: Icon(Icons.arrow_forward_ios_outlined),
+    //                 onTap: () {
+    //                   TextEditingController tfController =
+    //                       TextEditingController();
+    //                   showDialog(
+    //                     context: context,
+    //                     barrierDismissible: true,
+    //                     builder: (context) {
+    //                       return AlertDialog(
+    //                         title: Text('Edit Alamat'),
+    //                         content: Column(
+    //                           mainAxisSize: MainAxisSize.min,
+    //                           children: [
+    //                             ListTile(
+    //                               title: Text('Alamat'),
+    //                               subtitle: TextField(
+    //                                 controller: tfController,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         actions: [
+    //                           Center(
+    //                             child: ElevatedButton(
+    //                               child: Text('Submit'),
+    //                               onPressed: () {
+    //                                 UserSession.session.alamat =
+    //                                     tfController.text;
+    //                                 FirestoreDatabase.editDataUser(
+    //                                   user: UserSession.session,
+    //                                 );
+    //                                 buildSnackBar(
+    //                                     context, 'alamat berhasil di edit');
+    //                                 Navigator.pop(context);
+    //                               },
+    //                             ),
+    //                           )
+    //                         ],
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //               ),
+    //             ),
+    //             Card(
+    //               child: ListTile(
+    //                 title: Text('No Telp'),
+    //                 subtitle: Text(UserSession.session.noTelp),
+    //                 trailing: Icon(Icons.arrow_forward_ios_outlined),
+    //                 onTap: () {
+    //                   TextEditingController tfController =
+    //                       TextEditingController();
+    //                   showDialog(
+    //                     context: context,
+    //                     barrierDismissible: true,
+    //                     builder: (context) {
+    //                       return AlertDialog(
+    //                         title: Text('Edit No Telp'),
+    //                         content: Column(
+    //                           mainAxisSize: MainAxisSize.min,
+    //                           children: [
+    //                             ListTile(
+    //                               title: Text('No Telp'),
+    //                               subtitle: TextField(
+    //                                 controller: tfController,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         actions: [
+    //                           Center(
+    //                             child: ElevatedButton(
+    //                               child: Text('Submit'),
+    //                               onPressed: () {
+    //                                 UserSession.session.noTelp =
+    //                                     tfController.text;
+    //                                 FirestoreDatabase.editDataUser(
+    //                                   user: UserSession.session,
+    //                                 );
+    //                                 buildSnackBar(
+    //                                     context, 'no telp berhasil di edit');
+    //                                 Navigator.pop(context);
+    //                               },
+    //                             ),
+    //                           )
+    //                         ],
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //               ),
+    //             ),
+    //             ElevatedButton(
+    //                 onPressed: () {
+    //                   TextEditingController tfNewPass = TextEditingController();
+    //                   TextEditingController tfConfPass = TextEditingController();
+    //                   showDialog(
+    //                     context: context,
+    //                     barrierDismissible: true,
+    //                     builder: (context) {
+    //                       return AlertDialog(
+    //                         title: Text('Change Passowrd'),
+    //                         content: Column(
+    //                           mainAxisSize: MainAxisSize.min,
+    //                           children: [
+    //                             ListTile(
+    //                               title: Text('New Password'),
+    //                               subtitle: TextField(
+    //                                 controller: tfNewPass,
+    //                               ),
+    //                             ),
+    //                             ListTile(
+    //                               title: Text('Confirm Password'),
+    //                               subtitle: TextField(
+    //                                 controller: tfConfPass,
+    //                               ),
+    //                             )
+    //                           ],
+    //                         ),
+    //                         actions: [
+    //                           Center(
+    //                             child: ElevatedButton(
+    //                               child: Text('Submit'),
+    //                               onPressed: () async {
+    //                                 String msg;
+
+    //                                 if (tfConfPass.text != tfNewPass.text) {
+    //                                   msg = "check again";
+    //                                 } else {
+    //                                   Future<String> msgFuture =
+    //                                       AuthService.changePassword(
+    //                                           newPassword: tfNewPass.text);
+    //                                   msg = await msgFuture;
+    //                                 }
+
+    //                                 buildSnackBar(
+    //                                     context, msg);
+    //                                 Navigator.pop(context);
+    //                               },
+    //                             ),
+    //                           )
+    //                         ],
+    //                       );
+    //                     },
+    //                   );
+    //                 },
+    //                 child: Text('Change Password')),
+    //           ],
+    //         ),
+    //       ),
+    //     ),
+    //   );
   }
 }

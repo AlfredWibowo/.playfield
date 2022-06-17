@@ -1,16 +1,19 @@
 import 'package:firebase_auth/firebase_auth.dart';
 
-FirebaseAuth auth = FirebaseAuth.instance;
-
 class AuthService {
+
+  static FirebaseAuth auth = FirebaseAuth.instance;
+  
+  //change password
+
+  static String getEmailUser() {
+    return auth.currentUser!.email.toString();
+  }
 
   static Stream<User?> streamAuthStatus() {
     return auth.authStateChanges();
   }
 
-  static String getEmail() {
-    return auth.currentUser!.email.toString();
-  }
 
   static Future<String> login({required String email, required String password}) async {
     String message;
@@ -44,6 +47,19 @@ class AuthService {
     String message;
     try {
       await auth.sendPasswordResetEmail(email: email);
+      message = 'Successfull';
+    } on FirebaseAuthException catch (e) {
+      print(e.code);
+      message = '${e.code}';
+    }
+    return message;
+  }
+
+    static Future<String> changePassword({required String newPassword}) async {
+    String message;
+
+    try {
+      await auth.currentUser!.updatePassword(newPassword);
       message = 'Successfull';
     } on FirebaseAuthException catch (e) {
       print(e.code);

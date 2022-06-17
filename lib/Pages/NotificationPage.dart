@@ -16,6 +16,7 @@ class _NotificationPageState extends State<NotificationPage> {
       appBar: AppBar(
         title: Text('Notification'),
       ),
+      
     );
   }
 }

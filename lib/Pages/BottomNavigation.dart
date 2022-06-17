@@ -1,12 +1,19 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
+import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/FavoritePage.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
+import 'package:project_ambw/pages/NotificationPage.dart';
+import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/services/authService.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/pages/ExplorePage.dart';
 import 'package:project_ambw/pages/HomePage.dart';
-import 'package:project_ambw/pages/NotificationPage.dart';
-import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 
 class BottomNavigationPage extends StatefulWidget {
@@ -28,6 +35,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     TicketPage(),
   ];
 
+  late String emailUser;
+
   void onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
@@ -37,74 +46,118 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        leading: GestureDetector(
-          onTap: () {
-            Navigator.push(
-              context, 
-              MaterialPageRoute(builder: (context) => ProfilePage(),)
-            );
-          },
-          child: Icon(
-            Icons.account_circle,
-          ),
+    return StreamBuilder<DocumentSnapshot>(
+        stream: FirestoreDatabase.getUserByEmail(
+          // AuthService.getEmailUser(),
+          "alfred@gmail.com"
         ),
-        title: Text(_appBarTitle),
-        centerTitle: true,
-        actions: [
-          Container(
-            padding: EdgeInsets.symmetric(horizontal: 8),
-            child: Row(
-              children: [
-                GestureDetector(
-                  onTap: () {
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          } else if (snapshot.hasData || snapshot.data != null) {
+            UserCls newSession = UserCls.fromDocument(snapshot.data!);
+            UserSession.updateSession(newSession: newSession);
+            
+            return Scaffold(
+              appBar: AppBar(
+                toolbarHeight: 100,
+                backgroundColor: Colors.transparent,
+                elevation: 0,
+                leading: IconButton(
+                  onPressed: () {
                     Navigator.push(
-                      context, 
-                      MaterialPageRoute(builder: (context) => NotificationPage(),)
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => ProfilePage(),
+                      ),
                     );
                   },
-                  child: Icon(Icons.notifications),
+                  icon: iconAppBar(Icons.account_circle_outlined),
                 ),
-                SizedBox(
-                  width: 20,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    AuthService.logout();
+                actions: [
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    child: Row(
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => FavoritePage(),
+                              ),
+                            );
+                          },
+                          icon: iconAppBar(Icons.favorite_outline),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => ProfilePage(),
+                              ),
+                            );
+                          },
+                          icon: iconAppBar(Icons.notifications_outlined),
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                        IconButton(
+                          onPressed: () {
+                            AuthService.logout();
 
-                    Navigator.pushReplacement(
-                      context, 
-                      MaterialPageRoute(builder: (context) => LoginPage(),)
-                    );
-                  },
-                  child: Icon(Icons.logout),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-      body: _screens[_currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        onTap: onTappedBar,
-        iconSize: 30,
-        currentIndex: _currentIndex,
-        items: [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.explore),
-            label: 'Explore',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.card_membership),
-            label: 'Ticket',
-          )
-        ],
-      ),
-    );
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => LoginPage(),
+                              ),
+                            );
+                          },
+                          icon: iconAppBar(Icons.logout),
+                        ),
+                      ],
+                    ),
+                  )
+                ],
+              ),
+              body: _screens[_currentIndex],
+              bottomNavigationBar: Container(
+                decoration: BoxDecoration(
+                  color: Colors.teal[600],
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8),
+                    topRight: Radius.circular(8),
+                  ),
+                ),
+                child: BottomNavigationBar(
+                  onTap: onTappedBar,
+                  currentIndex: _currentIndex,
+                  iconSize: 30,
+                  backgroundColor: Colors.transparent,
+                  showSelectedLabels: false,
+                  showUnselectedLabels: false,
+                  selectedItemColor: Colors.black,
+                  unselectedItemColor: Colors.white,
+                  items: [
+                    bottomNavigationBarItem(Icon(Icons.home), 'Home'),
+                    bottomNavigationBarItem(
+                        Icon(Icons.explore_outlined), 'Explore'),
+                    bottomNavigationBarItem(
+                        Icon(Icons.sports_handball), 'Ticket'),
+                  ],
+                ),
+              ),
+            );
+          }
+
+          return Center(
+            child: CircularProgressIndicator(),
+          );
+        });
   }
 }

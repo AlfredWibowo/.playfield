@@ -1,10 +1,9 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
-import 'package:flutter/material.dart';
-import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/authService.dart';
+import 'package:flutter/material.dart';
 import 'package:project_ambw/pages/BottomNavigation.dart';
-import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
@@ -15,7 +14,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  bool _isPasswordVisible = true;
+  bool _isPasswordVisible = false;
   TextEditingController _tfEmailController = TextEditingController();
   TextEditingController _tfPasswordController = TextEditingController();
 
@@ -23,114 +22,110 @@ class _LoginPageState extends State<LoginPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Login'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: backButton(context),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Padding(
+              padding: EdgeInsets.only(bottom: 30),
+              child: Text(
+                'Login',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
             TextField(
               controller: _tfEmailController,
               decoration: InputDecoration(
                 labelText: 'Email',
+                focusedBorder: outlineInputBorder(),
+                enabledBorder: outlineInputBorder(),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             TextField(
               controller: _tfPasswordController,
               decoration: InputDecoration(
                 labelText: 'Password',
                 suffixIcon: IconButton(
-                  icon: Icon(_isPasswordVisible
-                      ? Icons.visibility
-                      : Icons.visibility_off),
+                  icon: passwordToggleIcon(_isPasswordVisible),
                   onPressed: () {
                     setState(() {
                       _isPasswordVisible = !_isPasswordVisible;
                     });
                   },
                 ),
+                focusedBorder: outlineInputBorder(),
+                enabledBorder: outlineInputBorder(),
               ),
-              obscureText: _isPasswordVisible,
+              obscureText: !_isPasswordVisible,
             ),
             SizedBox(
               height: 20,
             ),
-            Row(
-              children: [
-                Text(
-                  'Forget Password?',
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                GestureDetector(
-                  onTap: () {
-                    Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ResetPasswordPage(),
-                        ));
-                  },
-                  child: Text(
-                    'Reset Password',
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                )
-              ],
-            ),
-            SizedBox(
-              height: 30,
-            ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-              ),
               onPressed: () async {
                 Future<String> responseMsg;
 
                 responseMsg = AuthService.login(
-                    email: _tfEmailController.text,
-                    password: _tfPasswordController.text);
+                  email: _tfEmailController.text,
+                  password: _tfPasswordController.text,
+                );
 
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
 
                 if (msg == 'Successfull') {
                   Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => BottomNavigationPage()),
-                  );
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BottomNavigationPage(),
+                      ));
                 }
               },
               child: Text(
-                'Submit',
+                'log in'.toUpperCase(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 15,
-            ),
-            Text("Don't Have Account?"),
-            SizedBox(
-              height: 10,
-            ),
-            ElevatedButton(
               style: ElevatedButton.styleFrom(
                 minimumSize: Size.fromHeight(50),
-              ),
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SignUpPage(),
-                    ));
-              },
-              child: Text(
-                'Sign Up',
+                primary: Colors.black,
+                shape: roundedRectangleBorder(),
               ),
             ),
+            SizedBox(
+              height: 20,
+            ),
+            GestureDetector(
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => SignUpPage()),
+                );
+              },
+              child: Center(
+                child: Text(
+                  'dont have an account ?'.toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),

@@ -1,6 +1,7 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
 import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:flutter/material.dart';
 
@@ -18,34 +19,50 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Reset Password'),
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child: backButton(context),
+        )
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Text(
-              'Masukan Email yang digunakan pada saat registrasi.\n'
-              'Link verifikasi akan dikirimkan ke email tersebut.',
-              style: TextStyle(fontSize: 14),
-              textAlign: TextAlign.center,
+            Padding(
+              padding: EdgeInsets.only(bottom: 30),
+              child: Text(
+                'Reset Password',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-            SizedBox(
-              height: 10,
+            Center(
+              child: Text(
+                'Masukan Email yang digunakan pada saat registrasi.\n'
+                'Link verifikasi akan dikirimkan ke email tersebut.',
+                style: TextStyle(fontSize: 14),
+                textAlign: TextAlign.center,
+              ),
             ),
+            SizedBox(height: 20,),
             TextField(
               controller: _tfEmailController,
               decoration: InputDecoration(
                 labelText: 'Email',
+                focusedBorder: underlineInputBorder(),
+                enabledBorder: underlineInputBorder(),
               ),
             ),
             SizedBox(
-              height: 30,
+              height: 20,
             ),
             ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-              ),
               onPressed: () async {
                 Future<String> responseMsg;
 
@@ -60,7 +77,16 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                 }
               },
               child: Text(
-                'Submit',
+                'send'.toUpperCase(),
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              style: ElevatedButton.styleFrom(
+                minimumSize: Size.fromHeight(50),
+                primary: Colors.black,
+                shape: roundedRectangleBorder(),
               ),
             ),
           ],

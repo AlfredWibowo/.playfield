@@ -1,16 +1,16 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+
 class UserCls {
   String email;
   String nama;
   String alamat;
   String noTelp;
-  // bool isAdmin;
 
   UserCls({
     required this.email,
     required this.nama,
     required this.alamat,
     required this.noTelp,
-    // required this.isAdmin
   });
 
   Map<String, dynamic> toJson() {
@@ -19,7 +19,6 @@ class UserCls {
       "nama": nama,
       "alamat": alamat,
       "noTelp": noTelp,
-      // "isAdmin": isAdmin
     };
   }
 
@@ -29,7 +28,15 @@ class UserCls {
       nama: json['nama'],
       alamat: json['alamat'],
       noTelp: json['noTelp'],
-      // isAdmin: json['isAdmin']
+    );
+  }
+
+  factory UserCls.fromDocument(DocumentSnapshot doc) {
+    return UserCls(
+      email: doc.get('email'),
+      nama: doc.get('nama'),
+      alamat: doc.get('alamat'),
+      noTelp: doc.get('noTelp'),
     );
   }
 }
