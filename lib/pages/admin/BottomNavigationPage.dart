@@ -44,7 +44,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: ConsumerFirestoreDatabase.getDataByEmail(
+      stream: AdminFirestoreDatabase.getDataByEmail(
         AuthService.getEmailUser(),
         //"test1@gmail.com"
       ),
@@ -60,11 +60,14 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
               toolbarHeight: 100,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: appBarIconBtn(
-                  context, Icons.account_circle_outlined, AdminProfilePage()),
+              leading: Padding(
+                padding: const EdgeInsets.only(left:16.0),
+                child: appBarIconBtn(
+                    context, Icons.account_circle_outlined, AdminProfilePage()),
+              ),
               actions: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       appBarIconBtn(context, Icons.notifications_outlined,

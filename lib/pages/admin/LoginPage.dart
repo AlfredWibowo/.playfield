@@ -98,7 +98,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
 
-                if (msg == 'Successfull') {
+                if (msg == 'Successful') {
                   Navigator.pushReplacement(
                     context,
                     MaterialPageRoute(
