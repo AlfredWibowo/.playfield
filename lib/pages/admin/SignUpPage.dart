@@ -115,6 +115,8 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
             ElevatedButton(
               onPressed: () async {
                 Admin data = Admin(
+                  own:[],
+                  activeTicket: [],
                   email: _tfEmailController.text,
                   nama: _tfNamaController.text,
                   alamat: _tfAlamatController.text,
