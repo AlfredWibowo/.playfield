@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/firebase_options.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/BottomNavigation.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
 import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/SignUpPage.dart';
+import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
 import 'package:project_ambw/pages/admin/LoginPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -13,6 +16,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:animated_splash_screen/animated_splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:page_transition/page_transition.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -33,7 +37,7 @@ class SplashScreen extends StatelessWidget {
       home: AnimatedSplashScreen(
         duration: 500,
         splash: Icons.sports_handball,
-        nextScreen: WelcomePage(),
+        nextScreen: MyApp(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.fade,
         backgroundColor: Colors.white,
@@ -53,6 +57,7 @@ class _MyAppState extends State<MyApp> {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    //print(AuthService.getEmailUser());
     return StreamBuilder<User?>(
         stream: AuthService.streamAuthStatus(),
         builder: (context, snapshot) {
@@ -74,7 +79,30 @@ class _MyAppState extends State<MyApp> {
                 buttonTheme: ButtonThemeData(buttonColor: Colors.black),
               ),
               home:
-                  snapshot.data == null ? WelcomePage() : BottomNavigationPage(),
+                  snapshot.data == null
+                      ? WelcomePage()
+                      : StreamBuilder<DocumentSnapshot>(
+                          stream: ConsumerFirestoreDatabase.getDataByEmail(
+                            AuthService.getEmailUser(),
+                            //'admin1@gmail.com',
+                          ),
+                          builder: (context, snapshotConsumer) {
+                            if (snapshotConsumer.hasError) {
+                              return Text('${snapshotConsumer.error}');
+                            } 
+                            else if (snapshotConsumer.hasData || snapshotConsumer.data != null) {
+                              DocumentSnapshot doc = snapshotConsumer.data!;
+                              
+                              if (doc.exists) {
+                                return BottomNavigationPage();
+                              }
+                              else {
+                                return AdminBottomNavigationPage();
+                              }
+                            }
+                            return progressIndicator();
+                          },
+                        ),
             );
           }
           return Center(
@@ -101,7 +129,8 @@ class _WelcomePageState extends State<WelcomePage> {
         actions: [
           Padding(
             padding: const EdgeInsets.only(right: 16),
-            child: appBarIconBtn(context, Icons.admin_panel_settings, AdminLoginPage()),
+            child: appBarIconBtn(
+                context, Icons.admin_panel_settings, AdminLoginPage()),
           )
         ],
       ),

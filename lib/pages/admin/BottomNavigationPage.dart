@@ -46,7 +46,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
     return StreamBuilder<DocumentSnapshot>(
       stream: AdminFirestoreDatabase.getDataByEmail(
         AuthService.getEmailUser(),
-        //"test1@gmail.com"
+        //"admin@gmail.com"
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {

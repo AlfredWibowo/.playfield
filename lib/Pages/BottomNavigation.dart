@@ -51,7 +51,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
     return StreamBuilder<DocumentSnapshot>(
         stream: ConsumerFirestoreDatabase.getDataByEmail(
           AuthService.getEmailUser(),
-          //"alfred@gmail.com"
+          //"consumer1@gmail.com"
         ),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
@@ -139,9 +139,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
             );
           }
 
-          return Center(
-            child: CircularProgressIndicator(),
-          );
+          return progressIndicator();
         });
   }
 }
