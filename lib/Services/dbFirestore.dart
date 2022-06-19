@@ -31,6 +31,30 @@ class ConsumerFirestoreDatabase {
         .catchError((e) => print(e));
   }
 
+  static Future<void> editNama({required String email, required String nama}) async {
+    DocumentReference doc = tbConsumer.doc(email);
+    await doc
+        .update({"nama": nama })
+        .whenComplete(() => print('Data Consumer Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
+  static Future<void> editAlamat({required String email, required String alamat}) async {
+    DocumentReference doc = tbConsumer.doc(email);
+    await doc
+        .update({"alamat": alamat })
+        .whenComplete(() => print('Data Consumer Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
+  static Future<void> editTelp({required String email, required int telp}) async {
+    DocumentReference doc = tbConsumer.doc(email);
+    await doc
+        .update({"noTelp": telp })
+        .whenComplete(() => print('Data Consumer Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
   static Future<void> deleteData({required Consumer consumer}) async {
     DocumentReference doc = tbConsumer.doc(consumer.email);
 

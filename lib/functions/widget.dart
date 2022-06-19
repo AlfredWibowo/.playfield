@@ -1,12 +1,15 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'package:project_ambw/Class/CUserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
 import 'package:project_ambw/pages/NotificationPage.dart';
 import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:flutter/material.dart';
+import 'package:awesome_dialog/awesome_dialog.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 
 IconButton backButton(BuildContext context) {
   return IconButton(
@@ -128,7 +131,7 @@ Card reservationCard(String date, String loc) {
                   color: Colors.white,
                 ),
               ),
-              SizedBox( 
+              SizedBox(
                 height: 4,
               ),
               Text(
@@ -424,31 +427,6 @@ Widget ticketCard(
       ],
     ),
     trailing: iconStatus(stat),
-  );
-}
-
-Card profileCard(String title, String value) {
-  return Card(
-    color: Colors.black,
-    child: ListTile(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white),
-      ),
-      subtitle: Text(
-        value,
-        style: TextStyle(color: Colors.grey),
-      ),
-      trailing: title == "Email"
-          ? Container(
-              width: 0,
-              height: 0,
-            )
-          : Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            ),
-    ),
   );
 }
 

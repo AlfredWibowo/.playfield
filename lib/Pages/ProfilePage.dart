@@ -25,7 +25,7 @@ class _ProfilePageState extends State<ProfilePage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: backButton(context),
         ),
       ),
@@ -46,10 +46,10 @@ class _ProfilePageState extends State<ProfilePage> {
                 mainAxisSize: MainAxisSize.max,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  ClipRRect(
-                    borderRadius: BorderRadius.circular(8),
-                    child: imageNetwork(imagePath, 100, 110),
-                  ),
+                  // ClipRRect(
+                  //   borderRadius: BorderRadius.circular(8),
+                  //   child: imageNetwork(imagePath, 100, 110),
+                  // ),
                   SizedBox(
                     width: 10,
                   ),
@@ -79,7 +79,9 @@ class _ProfilePageState extends State<ProfilePage> {
                               style: TextStyle(fontSize: 10),
                             ),
                           ),
-                          SizedBox(height: 5,),
+                          SizedBox(
+                            height: 5,
+                          ),
                           ElevatedButton(
                             onPressed: () {},
                             child: Text(
@@ -94,11 +96,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 ],
               ),
             ),
-            SizedBox(height: 20,),
-            profileCard('Email', UserSession.session.email),
-            profileCard('Nama', UserSession.session.nama),
-            profileCard('Alamat', UserSession.session.alamat),
-            profileCard('No Telepon', UserSession.session.noTelp),
+            SizedBox(height: 20),
+            profileCard('Email', UserSession.session.email, context),
+            SizedBox(height: 8),
+            profileCard('Nama', UserSession.session.nama, context),
+            SizedBox(height: 8),
+            profileCard('Alamat', UserSession.session.alamat, context),
+            SizedBox(height: 8),
+            profileCard('No Telepon', UserSession.session.noTelp, context),
           ],
         ),
       ),
@@ -178,7 +183,7 @@ class _ProfilePageState extends State<ProfilePage> {
     //                               child: Text('Submit'),
     //                               onPressed: () {
     //                                 UserSession.session.nama = tfController.text;
-    //                                 FirestoreDatabase.editDataUser(
+    //                                 ConsumerFirestoreDatabase.editDataUser(
     //                                   user: UserSession.session,
     //                                 );
     //                                 buildSnackBar(
@@ -350,5 +355,87 @@ class _ProfilePageState extends State<ProfilePage> {
     //       ),
     //     ),
     //   );
+  }
+
+  Card profileCard(String title, String value, BuildContext context) {
+    TextEditingController _tfController = TextEditingController();
+
+    return Card(
+      // color: Colors.black,
+      shape: Border.all(width: 2.0, color: Colors.black),
+      borderOnForeground: true,
+      child: ListTile(
+        title: Text(
+          title,
+          style: TextStyle(color: Colors.black, fontSize: 20),
+        ),
+        subtitle: Text(
+          value,
+          style:
+              TextStyle(color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+        ),
+        trailing: title == "Email"
+            ? Container(
+                width: 0,
+                height: 0,
+              )
+            : IconButton(
+                onPressed: () {
+                  showDialog(
+                    context: context,
+                    barrierDismissible: true,
+                    builder: (context) {
+                      return AlertDialog(
+                        title: Text('Edit ' + title),
+                        content: Column(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            ListTile(
+                              title: Text(title),
+                              subtitle: TextField(
+                                controller: _tfController,
+                              ),
+                            )
+                          ],
+                        ),
+                        actions: [
+                          Center(
+                            child: ElevatedButton(
+                              child: Text('Submit'),
+                              onPressed: () {
+                                if (title == "Nama") {
+                                  UserSession.session.nama = _tfController.text;
+                                  ConsumerFirestoreDatabase.editNama(
+                                      email: AuthService.getEmailUser(),
+                                      nama: UserSession.session.nama);
+                                } else if (title == "Alamat") {
+                                  UserSession.session.alamat =
+                                      _tfController.text;
+                                  ConsumerFirestoreDatabase.editNama(
+                                      email: AuthService.getEmailUser(),
+                                      nama: UserSession.session.nama);
+                                } else if (title == "No Telepon") {
+                                  UserSession.session.noTelp =
+                                      _tfController.text;
+                                  ConsumerFirestoreDatabase.editNama(
+                                      email: AuthService.getEmailUser(),
+                                      nama: UserSession.session.nama);
+                                }
+                                buildSnackBar(
+                                    context, title + ' berhasil di edit');
+                                Navigator.pop(context);
+                              },
+                            ),
+                          )
+                        ],
+                      );
+                    },
+                  ).then((_) => setState(() {}));
+                },
+                icon: Icon(Icons.edit),
+                color: Colors.grey,
+              ),
+      ),
+    );
   }
 }
