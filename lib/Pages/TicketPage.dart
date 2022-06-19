@@ -35,7 +35,6 @@ class _TicketPageState extends State<TicketPage> {
           children: [
             title('Manage your', false),
             title('Reservation', true),
-            title('Here', false),
             SizedBox(
               height: 30,
             ),

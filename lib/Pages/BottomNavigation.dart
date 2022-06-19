@@ -48,35 +48,37 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
         stream: FirestoreDatabase.getUserByEmail(
-          // AuthService.getEmailUser(),
-          "alfred@gmail.com"
-        ),
+            // AuthService.getEmailUser(),
+            "alfred@gmail.com"),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('${snapshot.error}');
           } else if (snapshot.hasData || snapshot.data != null) {
             UserCls newSession = UserCls.fromDocument(snapshot.data!);
             UserSession.updateSession(newSession: newSession);
-            
+
             return Scaffold(
               appBar: AppBar(
                 toolbarHeight: 100,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: IconButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ProfilePage(),
-                      ),
-                    );
-                  },
-                  icon: iconAppBar(Icons.account_circle_outlined),
+                leading: Padding(
+                  padding: const EdgeInsets.only(left: 16),
+                  child: IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => ProfilePage(),
+                        ),
+                      );
+                    },
+                    icon: iconAppBar(Icons.account_circle_outlined),
+                  ),
                 ),
                 actions: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       children: [
                         IconButton(
@@ -128,7 +130,15 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               body: _screens[_currentIndex],
               bottomNavigationBar: Container(
                 decoration: BoxDecoration(
-                  color: Colors.teal[600],
+                  color: Color.fromRGBO(80, 165, 175, 100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, -2), // changes position of shadow
+                    )
+                  ],
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -139,6 +149,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                   currentIndex: _currentIndex,
                   iconSize: 30,
                   backgroundColor: Colors.transparent,
+                  elevation: 0.0,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
                   selectedItemColor: Colors.black,

@@ -28,6 +28,7 @@ class SplashScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      theme: ThemeData(fontFamily: 'Comfortaa'),
       home: AnimatedSplashScreen(
         duration: 500,
         splash: Icons.sports_handball,

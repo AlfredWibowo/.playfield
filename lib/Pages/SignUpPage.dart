@@ -114,11 +114,12 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                UserCls data = UserCls(
+                Consumer data = Consumer(
                     email: _tfEmailController.text,
                     nama: _tfNamaController.text,
                     alamat: _tfAlamatController.text,
-                    noTelp: _tfNoTelpController.text);
+                    noTelp: _tfNoTelpController.text,
+                    isAdmin: false);
 
                 FirestoreDatabase.addDataUser(user: data);
 

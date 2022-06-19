@@ -24,7 +24,7 @@ class _ExplorePageState extends State<ExplorePage> {
   late Future<List<Kota>> _listKota;
 
   String _dropdownValue = 'Surabaya';
-  List<LapanganCls> _listLapangan = [];
+  List<Field> _listLapangan = [];
 
   @override
   void initState() {
@@ -64,7 +64,7 @@ class _ExplorePageState extends State<ExplorePage> {
         child: ListView(
           children: [
             title('Find your', false),
-            title('playfield', true),
+            title('playfield,', true),
             title('Here', false),
             SizedBox(
               height: 30,

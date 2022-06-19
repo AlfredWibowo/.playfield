@@ -16,25 +16,26 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: ListView(
           children: [
             title('Hello,', false),
             title(UserSession.session.nama, true),
             SizedBox(
-              height: 30,
+              height: 32,
             ),
             subTitle('Reservation', false, () {}),
             SizedBox(
               height: 10,
             ),
-            reservationCard('GORD Sudirman', '16/6/2022'),
+            reservationCard('16/6/2022','GOR Sudirman'),
             SizedBox(
-              height: 30,
+              height: 32,
             ),
-            subTitle('Lastest Visit', true, () {}),
+            subTitle('Latest Visit', true, () {}),
             SizedBox(height: 10),
             lastVisitCard(),
+            SizedBox(height: 24),
             lastVisitCard(),
           ],
         ),

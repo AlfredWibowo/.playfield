@@ -74,9 +74,10 @@ Text title(String text, bool bold) {
   return Text(
     text,
     style: TextStyle(
-      fontSize: 24,
+      fontFamily: 'Comfortaa',
+      fontSize: 26,
       color: Colors.black,
-      fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+      fontWeight: bold ? FontWeight.w700 : FontWeight.w300,
     ),
   );
 }
@@ -95,17 +96,19 @@ Card reservationCard(String date, String loc) {
               Text(
                 'Closest Date',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
               ),
-              SizedBox(
+              SizedBox( 
                 height: 4,
               ),
               Text(
                 date,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
+                  fontFamily: 'Roboto',
+                  fontWeight: FontWeight.w300,
                   color: Colors.grey,
                 ),
               ),
@@ -118,9 +121,9 @@ Card reservationCard(String date, String loc) {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
-                loc,
+                "Location",
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
               ),
@@ -128,9 +131,9 @@ Card reservationCard(String date, String loc) {
                 height: 4,
               ),
               Text(
-                'GOR Sudirman',
+                loc,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 14,
                   color: Colors.grey,
                 ),
               ),
@@ -156,7 +159,7 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
         Text(
           subtitle,
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 22,
             color: Colors.black,
             fontWeight: FontWeight.bold,
           ),
@@ -166,7 +169,7 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
           child: Text(
             'See All',
             style: TextStyle(
-              fontSize: 14,
+              fontSize: 16,
               color: Colors.blue,
               fontWeight: FontWeight.bold,
             ),
@@ -178,7 +181,7 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
     return Text(
       subtitle,
       style: TextStyle(
-        fontSize: 20,
+        fontSize: 22,
         color: Colors.black,
         fontWeight: FontWeight.bold,
       ),
@@ -200,8 +203,8 @@ Row textWithIconRow(IconData icon, String text) {
     children: [
       Icon(
         icon,
-        color: Colors.grey,
-        size: 12,
+        color: Colors.white,
+        size: 14,
       ),
       SizedBox(
         width: 5,
@@ -209,8 +212,10 @@ Row textWithIconRow(IconData icon, String text) {
       Text(
         text,
         style: TextStyle(
-          fontSize: 12,
-          color: Colors.grey,
+          fontFamily: 'Roboto',
+          fontSize: 14,
+          fontWeight: FontWeight.w300,
+          color: Colors.white,
         ),
       ),
     ],
@@ -235,7 +240,7 @@ Card lastVisitCard() {
               Text(
                 'GOR Sudirman',
                 style: TextStyle(
-                  fontSize: 14,
+                  fontSize: 16,
                   color: Colors.white,
                 ),
               ),
