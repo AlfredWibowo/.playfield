@@ -1,21 +1,21 @@
-// ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors
 
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/LoginPage.dart';
+import 'package:project_ambw/pages/admin/LoginPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
 
-class SignUpPage extends StatefulWidget {
-  const SignUpPage({Key? key}) : super(key: key);
+class AdminSignUpPage extends StatefulWidget {
+  const AdminSignUpPage({Key? key}) : super(key: key);
 
   @override
-  State<SignUpPage> createState() => _SignUpPageState();
+  State<AdminSignUpPage> createState() => _AdminSignUpPageState();
 }
 
-class _SignUpPageState extends State<SignUpPage> {
+class _AdminSignUpPageState extends State<AdminSignUpPage> {
   bool _isPasswordVisible = false;
 
   TextEditingController _tfNamaController = TextEditingController();
@@ -30,46 +30,48 @@ class _SignUpPageState extends State<SignUpPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
-          child: backButton(context),
-        ),
+        leading: backButton(context),
       ),
       body: Container(
-        padding: EdgeInsets.all(24),
+        padding: EdgeInsets.all(20),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 30),
-              child: Text(
-                'Register',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
+            Text(
+              'Register',
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
+            ),
+            SizedBox(
+              height: 30,
             ),
             TextField(
               controller: _tfNamaController,
-              style: RegisterInputStyle(),
-              decoration: RegisterInputDecoration("Full Name"),
+              decoration: InputDecoration(
+                labelText: 'Full Name',
+                focusedBorder: underlineInputBorder(),
+                enabledBorder: underlineInputBorder(),
+              ),
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               controller: _tfEmailController,
-              style: RegisterInputStyle(),
-              decoration: RegisterInputDecoration("Email"),
+              decoration: InputDecoration(
+                labelText: 'Email',
+                focusedBorder: underlineInputBorder(),
+                enabledBorder: underlineInputBorder(),
+              ),
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               controller: _tfPasswordController,
-              style: RegisterInputStyle(),
               decoration: InputDecoration(
                 labelText: 'Password',
                 suffixIcon: IconButton(
@@ -90,33 +92,37 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             TextField(
               controller: _tfNoTelpController,
-              style: RegisterInputStyle(),
-              decoration: RegisterInputDecoration("Phone Number"),
+              decoration: InputDecoration(
+                labelText: 'Phone Number',
+                focusedBorder: underlineInputBorder(),
+                enabledBorder: underlineInputBorder(),
+              ),
             ),
             SizedBox(
               height: 20,
             ),
             TextField(
               controller: _tfAlamatController,
-              style: RegisterInputStyle(),
-              decoration: RegisterInputDecoration("Address"),
+              decoration: InputDecoration(
+                labelText: 'Address',
+                focusedBorder: underlineInputBorder(),
+                enabledBorder: underlineInputBorder(),
+              ),
             ),
             SizedBox(
               height: 20,
             ),
             ElevatedButton(
               onPressed: () async {
-                Consumer data = Consumer(
-                    ticket: [],
-                    history: [],
-                    email: _tfEmailController.text,
-                    nama: _tfNamaController.text,
-                    alamat: _tfAlamatController.text,
-                    noTelp: _tfNoTelpController.text,
-                    isAdmin: false
-                  );
+                UserCls data = UserCls(
+                  email: _tfEmailController.text,
+                  nama: _tfNamaController.text,
+                  alamat: _tfAlamatController.text,
+                  noTelp: _tfNoTelpController.text,
+                  tipe: 1,
+                );
 
-                FirestoreDatabase.addDataConsumer(user: data);
+                FirestoreDatabase.addDataUser(user: data);
 
                 Future<String> responseMsg;
 
@@ -127,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
 
-                if (msg == 'Successful') {
+                if (msg == 'Successfull') {
                   Navigator.pop(context);
                 }
 
@@ -149,7 +155,7 @@ class _SignUpPageState extends State<SignUpPage> {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => LoginPage()),
+                  MaterialPageRoute(builder: (context) => AdminLoginPage()),
                 );
               },
               child: Center(
@@ -167,23 +173,4 @@ class _SignUpPageState extends State<SignUpPage> {
       ),
     );
   }
-
-  TextStyle RegisterInputStyle() {
-    return TextStyle(
-      fontFamily: 'Roboto',
-      fontSize: 20.0,
-      fontWeight: FontWeight.w300,
-      color: Colors.black
-    );
-  }
-
-  InputDecoration RegisterInputDecoration(String label) {
-    return InputDecoration(
-      contentPadding: EdgeInsets.symmetric(vertical: 10.0),
-      labelText: label,
-      focusedBorder: underlineInputBorder(),
-      enabledBorder: underlineInputBorder(),
-    );
-  }
-  
 }

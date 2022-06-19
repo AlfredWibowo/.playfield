@@ -1,76 +1,82 @@
 import 'package:project_ambw/class/CUser.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class FirestoreDatabase {
-
+class ConsumerFirestoreDatabase {
   //user
-    static CollectionReference tbUser = FirebaseFirestore.instance.collection('tbUser');
+  static CollectionReference tbConsumer =
+      FirebaseFirestore.instance.collection('tbConsumer');
 
-  static Stream<QuerySnapshot> getDataUser() {
-    return tbUser.snapshots();
+  static Stream<QuerySnapshot> getData() {
+    return tbConsumer.snapshots();
   }
 
-  static Stream<DocumentSnapshot> getUserByEmail(String email) {
-    return tbUser.doc(email).snapshots();
+  static Stream<DocumentSnapshot> getDataByEmail(String email) {
+    return tbConsumer.doc(email).snapshots();
   }
 
-  static Future<void> addDataConsumer({required Consumer user}) async {
-    DocumentReference doc = tbUser.doc(user.email);
+  static Future<void> addData({required Consumer consumer}) async {
+    DocumentReference doc = tbConsumer.doc(consumer.email);
     await doc
-        .set(user.toJson())
-        .whenComplete(() => print('Data User Berhasil di add'))
+        .set(consumer.toJson())
+        .whenComplete(() => print('Data Consumer Berhasil di add'))
         .catchError((e) => print(e));
   }
 
-  static Future<void> addDataUser({required UserCls user}) async {
-    DocumentReference doc = tbUser.doc(user.email);
+  static Future<void> editData({required Consumer consumer}) async {
+    DocumentReference doc = tbConsumer.doc(consumer.email);
 
     await doc
-        .set(user.toJson())
-        .whenComplete(() => print('Data User Berhasil di add'))
+        .update(consumer.toJson())
+        .whenComplete(() => print('Data Consumer Berhasil di update'))
         .catchError((e) => print(e));
   }
 
-  static Future<void> editDataUser({required UserCls user}) async {
-    DocumentReference doc = tbUser.doc(user.email);
-
-    await doc
-        .update(user.toJson())
-        .whenComplete(() => print('Data User Berhasil di update'))
-        .catchError((e) => print(e));
-  }
-
-  static Future<void> deleteDataUser({required UserCls user}) async {
-    DocumentReference doc = tbUser.doc(user.email);
+  static Future<void> deleteData({required Consumer consumer}) async {
+    DocumentReference doc = tbConsumer.doc(consumer.email);
 
     await doc
         .delete()
-        .whenComplete(() => print('Data User Berhasil di add'))
+        .whenComplete(() => print('Data Consumer Berhasil di add'))
+        .catchError((e) => print(e));
+  }
+}
+
+class AdminFirestoreDatabase {
+  //user
+  static CollectionReference tbAdmin =
+      FirebaseFirestore.instance.collection('tbAdmin');
+
+  static Stream<QuerySnapshot> getDataUser() {
+    return tbAdmin.snapshots();
+  }
+
+  static Stream<DocumentSnapshot> getUserByEmail(String email) {
+    return tbAdmin.doc(email).snapshots();
+  }
+
+  static Future<void> addData({required Admin admin}) async {
+    DocumentReference doc = tbAdmin.doc(admin.email);
+    await doc
+        .set(admin.toJson())
+        .whenComplete(() => print('Data Admin Berhasil di add'))
         .catchError((e) => print(e));
   }
 
-  //transaksi
-  static CollectionReference tbTransaksi =
-    FirebaseFirestore.instance.collection('tbTransaksi');
+  static Future<void> editData({required Admin admin}) async {
+    DocumentReference doc = tbAdmin.doc(admin.email);
 
-  static Stream<QuerySnapshot> getDataTransaksi() {
-    return tbTransaksi.snapshots();
+    await doc
+        .update(admin.toJson())
+        .whenComplete(() => print('Data Admin Berhasil di update'))
+        .catchError((e) => print(e));
   }
 
-  //lapangan
-  static CollectionReference tbLapangan =
-    FirebaseFirestore.instance.collection('tbLapangan');
+  static Future<void> deleteData({required Admin admin}) async {
+    DocumentReference doc = tbAdmin.doc(admin.email);
 
-  static Stream<QuerySnapshot> getDataLapangan() {
-    return tbLapangan.snapshots();
-  }
-
-  static Stream<QuerySnapshot> getDataLapanganBy(String field, String value) {
-    if (field == 'kota') {
-      return tbLapangan
-        .where('kota', isEqualTo: value)
-        .snapshots();
-    }
-    return tbLapangan.snapshots();
+    await doc
+        .delete()
+        .whenComplete(() => print('Data Admin Berhasil di add'))
+        .catchError((e) => print(e));
   }
 }

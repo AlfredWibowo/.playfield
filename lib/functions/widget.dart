@@ -63,6 +63,21 @@ Icon appBarIcon(IconData icon) {
 }
 
 IconButton appBarIconBtn(BuildContext context, IconData icon, Widget page) {
+  if (icon == Icons.logout) {
+    return IconButton(
+      onPressed: () {
+        AuthService.logout();
+
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => page,
+          ),
+        );
+      },
+      icon: appBarIcon(icon),
+    );
+  }
   return IconButton(
     onPressed: () {
       Navigator.push(
@@ -72,7 +87,7 @@ IconButton appBarIconBtn(BuildContext context, IconData icon, Widget page) {
         ),
       );
     },
-    icon: appBarIcon(icon)
+    icon: appBarIcon(icon),
   );
 }
 
