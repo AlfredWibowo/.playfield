@@ -9,6 +9,7 @@ import 'package:project_ambw/pages/admin/HomePage.dart';
 import 'package:project_ambw/pages/admin/MaintenancePage.dart';
 import 'package:project_ambw/pages/admin/NotificationPage.dart';
 import 'package:project_ambw/pages/admin/ProfilePage.dart';
+import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -43,9 +44,9 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-      stream: FirestoreDatabase.getUserByEmail(
-        //AuthService.getEmailUser(),
-        "test1@gmail.com"
+      stream: ConsumerFirestoreDatabase.getDataByEmail(
+        AuthService.getEmailUser(),
+        //"test1@gmail.com"
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {

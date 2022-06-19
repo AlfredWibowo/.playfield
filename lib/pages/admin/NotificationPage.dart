@@ -10,6 +10,8 @@ class AdminNotificationPage extends StatefulWidget {
 class _AdminNotificationPageState extends State<AdminNotificationPage> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold();
+    return Scaffold(
+      
+    );
   }
 }

@@ -114,15 +114,15 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                UserCls data = UserCls(
+                Admin data = Admin(
                   email: _tfEmailController.text,
                   nama: _tfNamaController.text,
                   alamat: _tfAlamatController.text,
                   noTelp: _tfNoTelpController.text,
-                  tipe: 1,
+                  isAdmin: true,
                 );
 
-                FirestoreDatabase.addDataUser(user: data);
+                AdminFirestoreDatabase.addData(admin: data);
 
                 Future<String> responseMsg;
 

@@ -452,4 +452,8 @@ Card profileCard(String title, String value) {
   );
 }
 
-
+Widget progressIndicator() {
+  return Center(
+    child: CircularProgressIndicator(),
+  );
+}

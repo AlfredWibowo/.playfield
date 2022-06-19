@@ -31,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: backButton(context),
         ),
       ),
@@ -107,16 +107,16 @@ class _SignUpPageState extends State<SignUpPage> {
             ElevatedButton(
               onPressed: () async {
                 Consumer data = Consumer(
-                    ticket: [],
-                    history: [],
-                    email: _tfEmailController.text,
-                    nama: _tfNamaController.text,
-                    alamat: _tfAlamatController.text,
-                    noTelp: _tfNoTelpController.text,
-                    isAdmin: false
-                  );
+                  ticket: [],
+                  history: [],
+                  email: _tfEmailController.text,
+                  nama: _tfNamaController.text,
+                  alamat: _tfAlamatController.text,
+                  noTelp: _tfNoTelpController.text,
+                  isAdmin: false,
+                );
 
-                FirestoreDatabase.addDataConsumer(user: data);
+                ConsumerFirestoreDatabase.addData(consumer: data);
 
                 Future<String> responseMsg;
 
@@ -170,11 +170,10 @@ class _SignUpPageState extends State<SignUpPage> {
 
   TextStyle RegisterInputStyle() {
     return TextStyle(
-      fontFamily: 'Roboto',
-      fontSize: 20.0,
-      fontWeight: FontWeight.w300,
-      color: Colors.black
-    );
+        fontFamily: 'Roboto',
+        fontSize: 20.0,
+        fontWeight: FontWeight.w300,
+        color: Colors.black);
   }
 
   InputDecoration RegisterInputDecoration(String label) {
@@ -185,5 +184,4 @@ class _SignUpPageState extends State<SignUpPage> {
       enabledBorder: underlineInputBorder(),
     );
   }
-  
 }

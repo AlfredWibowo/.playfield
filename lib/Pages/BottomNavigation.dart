@@ -7,6 +7,7 @@ import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/main.dart';
 import 'package:project_ambw/pages/FavoritePage.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
+import 'package:project_ambw/pages/NotificationPage.dart';
 import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
@@ -48,7 +49,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
-        stream: FirestoreDatabase.getUserByEmail(
+        stream: ConsumerFirestoreDatabase.getDataByEmail(
           AuthService.getEmailUser(),
           //"alfred@gmail.com"
         ),
@@ -77,7 +78,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                         SizedBox(
                           width: 20,
                         ),
-                        //appBarIconBtn(context, Icons.notifications_outlined, NotificationPage()),
+                        appBarIconBtn(context, Icons.notifications_outlined, NotificationPage()),
                         SizedBox(
                           width: 20,
                         ),
