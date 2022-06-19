@@ -46,11 +46,11 @@ class AdminFirestoreDatabase {
   static CollectionReference tbAdmin =
       FirebaseFirestore.instance.collection('tbAdmin');
 
-  static Stream<QuerySnapshot> getDataUser() {
+  static Stream<QuerySnapshot> getData() {
     return tbAdmin.snapshots();
   }
 
-  static Stream<DocumentSnapshot> getUserByEmail(String email) {
+  static Stream<DocumentSnapshot> getDataByEmail(String email) {
     return tbAdmin.doc(email).snapshots();
   }
 
