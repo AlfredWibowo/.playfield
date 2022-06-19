@@ -24,7 +24,7 @@ class _ExplorePageState extends State<ExplorePage> {
   late Future<List<Kota>> _listKota;
 
   String _dropdownValue = 'Surabaya';
-  List<LapanganCls> _listLapangan = [];
+  List<Field> _listLapangan = [];
 
   @override
   void initState() {
@@ -60,7 +60,7 @@ class _ExplorePageState extends State<ExplorePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: ListView(
           children: [
             title('Find your', false),

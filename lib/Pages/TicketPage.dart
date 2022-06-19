@@ -30,7 +30,7 @@ class _TicketPageState extends State<TicketPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: ListView(
           children: [
             title('Manage your', false),

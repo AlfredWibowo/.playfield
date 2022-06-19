@@ -64,10 +64,13 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                 toolbarHeight: 100,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: appBarIconBtn(context, Icons.account_circle_outlined, ProfilePage()),
+                leading: Padding(
+                  padding: const EdgeInsets.only(left:16.0),
+                  child: appBarIconBtn(context, Icons.account_circle_outlined, ProfilePage()),
+                ),
                 actions: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8),
+                    padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       children: [
                         appBarIconBtn(context, Icons.favorite_outline, FavoritePage()),
@@ -99,10 +102,18 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               body: _screens[_currentIndex],
               bottomNavigationBar: Container(
                 decoration: BoxDecoration(
-                  color: Colors.teal[600],
+                  color: Color.fromRGBO(80, 165, 175, 100),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, -2), // changes position of shadow
+                    )
+                  ],
                   borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8),
-                    topRight: Radius.circular(8),
+                    topLeft: Radius.circular(6),
+                    topRight: Radius.circular(6),
                   ),
                 ),
                 child: BottomNavigationBar(
@@ -110,6 +121,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                   currentIndex: _currentIndex,
                   iconSize: 30,
                   backgroundColor: Colors.transparent,
+                  elevation: 0.0,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
                   selectedItemColor: Colors.black,
