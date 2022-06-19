@@ -6,6 +6,7 @@ import 'package:project_ambw/pages/BottomNavigation.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
 import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/SignUpPage.dart';
+import 'package:project_ambw/pages/admin/LoginPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -94,6 +95,16 @@ class _WelcomePageState extends State<WelcomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.only(right: 16),
+            child: appBarIconBtn(context, Icons.admin_panel_settings, AdminLoginPage()),
+          )
+        ],
+      ),
       body: Container(
           padding: EdgeInsets.symmetric(vertical: 80, horizontal: 60),
           child: Column(

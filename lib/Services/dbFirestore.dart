@@ -36,13 +36,13 @@ class ConsumerFirestoreDatabase {
 
     await doc
         .delete()
-        .whenComplete(() => print('Data Consumer Berhasil di add'))
+        .whenComplete(() => print('Data Consumer Berhasil di delete'))
         .catchError((e) => print(e));
   }
 }
 
 class AdminFirestoreDatabase {
-  //user
+  //admin
   static CollectionReference tbAdmin =
       FirebaseFirestore.instance.collection('tbAdmin');
 
@@ -76,7 +76,8 @@ class AdminFirestoreDatabase {
 
     await doc
         .delete()
-        .whenComplete(() => print('Data Admin Berhasil di add'))
+        .whenComplete(() => print('Data Admin Berhasil di delete'))
         .catchError((e) => print(e));
   }
 }
+
