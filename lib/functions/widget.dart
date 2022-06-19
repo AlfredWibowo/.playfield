@@ -1,6 +1,5 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-
 import 'package:project_ambw/Class/CUserSession.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
 import 'package:project_ambw/pages/NotificationPage.dart';
@@ -55,11 +54,25 @@ Icon passwordToggleIcon(bool _isPasswordVisible) {
   );
 }
 
-Icon iconAppBar(IconData icon) {
+Icon appBarIcon(IconData icon) {
   return Icon(
     icon,
     color: Colors.black,
     size: 32,
+  );
+}
+
+IconButton appBarIconBtn(BuildContext context, IconData icon, Widget page) {
+  return IconButton(
+    onPressed: () {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => page,
+        ),
+      );
+    },
+    icon: appBarIcon(icon)
   );
 }
 
@@ -412,7 +425,10 @@ Card profileCard(String title, String value) {
         style: TextStyle(color: Colors.grey),
       ),
       trailing: title == "Email"
-          ? Container(width: 0, height: 0,)
+          ? Container(
+              width: 0,
+              height: 0,
+            )
           : Icon(
               Icons.arrow_forward_ios,
               color: Colors.grey,

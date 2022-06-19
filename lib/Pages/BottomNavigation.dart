@@ -4,9 +4,9 @@ import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/main.dart';
 import 'package:project_ambw/pages/FavoritePage.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
-import 'package:project_ambw/pages/NotificationPage.dart';
 import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
@@ -15,6 +15,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ambw/pages/ExplorePage.dart';
 import 'package:project_ambw/pages/HomePage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
+//import 'package:project_ambw/pages/NotificationPage.dart'
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({Key? key}) : super(key: key);
@@ -48,64 +49,32 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
         stream: FirestoreDatabase.getUserByEmail(
-            // AuthService.getEmailUser(),
-            "alfred@gmail.com"),
+          AuthService.getEmailUser(),
+          //"alfred@gmail.com"
+        ),
         builder: (context, snapshot) {
           if (snapshot.hasError) {
             return Text('${snapshot.error}');
           } else if (snapshot.hasData || snapshot.data != null) {
             UserCls newSession = UserCls.fromDocument(snapshot.data!);
             UserSession.updateSession(newSession: newSession);
-
+            
             return Scaffold(
               appBar: AppBar(
                 toolbarHeight: 100,
                 backgroundColor: Colors.transparent,
                 elevation: 0,
-                leading: Padding(
-                  padding: const EdgeInsets.only(left: 16),
-                  child: IconButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => ProfilePage(),
-                        ),
-                      );
-                    },
-                    icon: iconAppBar(Icons.account_circle_outlined),
-                  ),
-                ),
+                leading: appBarIconBtn(context, Icons.account_circle_outlined, ProfilePage()),
                 actions: [
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 24),
+                    padding: EdgeInsets.symmetric(horizontal: 8),
                     child: Row(
                       children: [
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => FavoritePage(),
-                              ),
-                            );
-                          },
-                          icon: iconAppBar(Icons.favorite_outline),
-                        ),
+                        appBarIconBtn(context, Icons.favorite_outline, FavoritePage()),
                         SizedBox(
                           width: 20,
                         ),
-                        IconButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfilePage(),
-                              ),
-                            );
-                          },
-                          icon: iconAppBar(Icons.notifications_outlined),
-                        ),
+                        //appBarIconBtn(context, Icons.notifications_outlined, NotificationPage()),
                         SizedBox(
                           width: 20,
                         ),
@@ -116,11 +85,11 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                             Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => LoginPage(),
+                                builder: (context) => WelcomePage(),
                               ),
                             );
                           },
-                          icon: iconAppBar(Icons.logout),
+                          icon: appBarIcon(Icons.logout),
                         ),
                       ],
                     ),
@@ -130,15 +99,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               body: _screens[_currentIndex],
               bottomNavigationBar: Container(
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(80, 165, 175, 100),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      spreadRadius: 0,
-                      blurRadius: 20,
-                      offset: Offset(0, -2), // changes position of shadow
-                    )
-                  ],
+                  color: Colors.teal[600],
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8),
                     topRight: Radius.circular(8),
@@ -149,7 +110,6 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                   currentIndex: _currentIndex,
                   iconSize: 30,
                   backgroundColor: Colors.transparent,
-                  elevation: 0.0,
                   showSelectedLabels: false,
                   showUnselectedLabels: false,
                   selectedItemColor: Colors.black,

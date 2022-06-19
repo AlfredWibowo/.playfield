@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:project_ambw/functions/widget.dart';
 
 class FavoritePage extends StatefulWidget {
   const FavoritePage({ Key? key }) : super(key: key);
@@ -10,8 +11,12 @@ class FavoritePage extends StatefulWidget {
 class _FavoritePageState extends State<FavoritePage> {
   @override
   Widget build(BuildContext context) {
-    return Container(
-      
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.transparent,
+        elevation: 0,
+        leading: backButton(context),
+      ),
     );
   }
 }

@@ -32,7 +32,7 @@ class SplashScreen extends StatelessWidget {
       home: AnimatedSplashScreen(
         duration: 500,
         splash: Icons.sports_handball,
-        nextScreen: BottomNavigationPage(),
+        nextScreen: MyApp(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.fade,
         backgroundColor: Colors.white,

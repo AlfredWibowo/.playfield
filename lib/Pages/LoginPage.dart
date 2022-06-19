@@ -87,10 +87,11 @@ class _LoginPageState extends State<LoginPage> {
 
                 if (msg == 'Successfull') {
                   Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BottomNavigationPage(),
-                      ));
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BottomNavigationPage(),
+                    ),
+                  );
                 }
               },
               child: Text(
