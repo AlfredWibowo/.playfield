@@ -25,7 +25,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
@@ -42,15 +45,18 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             SizedBox(
               height: 30,
             ),
-            Text(
-              'AUTHORIZED_ACCESS\n'
-              'ONLY',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.black,
-                fontWeight: FontWeight.bold,
+            FittedBox(
+              fit: BoxFit.scaleDown,
+              child: Text(
+                'AUTHORIZED_ACCESS\n'
+                'ONLY',
+                style: TextStyle(
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+                textAlign: TextAlign.center,
               ),
-              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 30,
@@ -133,7 +139,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               },
               child: Center(
                 child: Text(
-                  'create admin account ?'.toUpperCase(),
+                  'create admin account'.toUpperCase(),
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,
