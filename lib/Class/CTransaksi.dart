@@ -3,7 +3,7 @@ import 'package:project_ambw/class/CLapangan.dart';
 class TransaksiCls {
   String id;
   String tanggal;
-  LapanganCls lapangan;
+  Field lapangan;
   String status;
 
   TransaksiCls({

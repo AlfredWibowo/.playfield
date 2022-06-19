@@ -24,7 +24,10 @@ class _LoginPageState extends State<LoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),

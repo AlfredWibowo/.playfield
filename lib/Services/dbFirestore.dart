@@ -14,6 +14,14 @@ class FirestoreDatabase {
     return tbUser.doc(email).snapshots();
   }
 
+  static Future<void> addDataConsumer({required Consumer user}) async {
+    DocumentReference doc = tbUser.doc(user.email);
+    await doc
+        .set(user.toJson())
+        .whenComplete(() => print('Data User Berhasil di add'))
+        .catchError((e) => print(e));
+  }
+
   static Future<void> addDataUser({required UserCls user}) async {
     DocumentReference doc = tbUser.doc(user.email);
 

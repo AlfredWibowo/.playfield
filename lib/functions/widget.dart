@@ -13,7 +13,7 @@ IconButton backButton(BuildContext context) {
     onPressed: () => Navigator.pop(context),
     icon: Icon(
       Icons.arrow_back_ios,
-      color: Colors.grey,
+      color: Colors.black,
     ),
   );
 }
@@ -34,7 +34,7 @@ OutlineInputBorder outlineInputBorder() {
 
 RoundedRectangleBorder roundedRectangleBorder() {
   return RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(8),
+    borderRadius: BorderRadius.circular(6),
     side: BorderSide(color: Colors.black),
   );
 }
@@ -436,3 +436,5 @@ Card profileCard(String title, String value) {
     ),
   );
 }
+
+
