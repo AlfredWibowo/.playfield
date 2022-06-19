@@ -114,12 +114,13 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                Consumer data = Consumer(
-                    email: _tfEmailController.text,
-                    nama: _tfNamaController.text,
-                    alamat: _tfAlamatController.text,
-                    noTelp: _tfNoTelpController.text,
-                    isAdmin: false);
+                UserCls data = UserCls(
+                  email: _tfEmailController.text,
+                  nama: _tfNamaController.text,
+                  alamat: _tfAlamatController.text,
+                  noTelp: _tfNoTelpController.text,
+                  isAdmin: false,
+                );
 
                 FirestoreDatabase.addDataUser(user: data);
 
@@ -132,7 +133,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
 
-                if (msg == 'Successfull') {
+                if (msg == 'Successful') {
                   Navigator.pop(context);
                 }
 

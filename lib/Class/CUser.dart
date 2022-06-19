@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserCls {
@@ -5,12 +7,14 @@ class UserCls {
   String nama;
   String alamat;
   String noTelp;
+  bool isAdmin;
 
   UserCls({
     required this.email,
     required this.nama,
     required this.alamat,
     required this.noTelp,
+    required this.isAdmin,
   });
 
   Map<String, dynamic> toJson() {
@@ -19,6 +23,7 @@ class UserCls {
       "nama": nama,
       "alamat": alamat,
       "noTelp": noTelp,
+      "isAdmin": isAdmin
     };
   }
 
@@ -28,6 +33,7 @@ class UserCls {
       nama: json['nama'],
       alamat: json['alamat'],
       noTelp: json['noTelp'],
+      isAdmin: json['isAdmin'],
     );
   }
 
@@ -37,6 +43,7 @@ class UserCls {
       nama: doc.get('nama'),
       alamat: doc.get('alamat'),
       noTelp: doc.get('noTelp'),
+      isAdmin: doc.get('isAdmin'),
     );
   }
 }
