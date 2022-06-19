@@ -19,8 +19,8 @@ class AuthService {
     String message;
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      print('Succesfull');
-      message = 'Successfull';
+      print('Succesful');
+      message = 'Successful';
     } on FirebaseAuthException catch (e) {
       print(e.code);
       message = '${e}';
@@ -32,7 +32,7 @@ class AuthService {
     String message;
     try {
       await auth.createUserWithEmailAndPassword(email: email, password: password);
-      message = 'Successfull';
+      message = 'Successful';
     } on FirebaseAuthException catch (e) {
       message = '${e.code}';
     }
@@ -47,7 +47,7 @@ class AuthService {
     String message;
     try {
       await auth.sendPasswordResetEmail(email: email);
-      message = 'Successfull';
+      message = 'Successful';
     } on FirebaseAuthException catch (e) {
       print(e.code);
       message = '${e.code}';
@@ -60,7 +60,7 @@ class AuthService {
 
     try {
       await auth.currentUser!.updatePassword(newPassword);
-      message = 'Successfull';
+      message = 'Successful';
     } on FirebaseAuthException catch (e) {
       print(e.code);
       message = '${e.code}';

@@ -24,7 +24,7 @@ class _ExplorePageState extends State<ExplorePage> {
   late Future<List<Kota>> _listKota;
 
   String _dropdownValue = 'Surabaya';
-  List<Field> _listLapangan = [];
+  List<LapanganCls> _listLapangan = [];
 
   @override
   void initState() {
