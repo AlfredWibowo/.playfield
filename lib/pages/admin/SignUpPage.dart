@@ -133,7 +133,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
 
-                if (msg == 'Successfull') {
+                if (msg == 'Successful') {
                   Navigator.pop(context);
                 }
 
