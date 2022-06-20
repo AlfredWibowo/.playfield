@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
+
 import 'package:flutter/material.dart';
-import 'package:awesome_dialog/awesome_dialog.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
 
 IconButton backButton(BuildContext context) {
   return IconButton(
@@ -453,5 +453,211 @@ Card profileCard(String title, String value) {
 Center progressIndicator() {
   return Center(
     child: CircularProgressIndicator(),
+  );
+}
+
+Widget addFieldBtn() {
+  return Expanded(
+    child: ElevatedButton(
+      onPressed: () {},
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Icon(
+            Icons.business,
+          ),
+          SizedBox(
+            height: 5,
+          ),
+          Text('sport\ncentre'.toUpperCase())
+        ],
+      ),
+      style: ElevatedButton.styleFrom(
+        fixedSize: Size.fromHeight(100),
+      ),
+    ),
+  );
+}
+
+Widget addFieldForm(BuildContext context) {
+  return Column(
+    children: [
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Location Name',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'City',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Adress',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Phone Number',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      Row(
+        children: [
+          Text('Operational Time'),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: TextField(
+              controller: TextEditingController(),
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                labelText: '00:00',
+                focusedBorder: outlineInputBorder(),
+                enabledBorder: outlineInputBorder(),
+              ),
+            ),
+          ),
+          SizedBox(
+            width: 10,
+          ),
+          Icon(Icons.remove),
+          SizedBox(
+            width: 10,
+          ),
+          Expanded(
+            child: TextField(
+              controller: TextEditingController(),
+              textAlign: TextAlign.center,
+              keyboardType: TextInputType.datetime,
+              decoration: InputDecoration(
+                labelText: '00:00',
+                focusedBorder: outlineInputBorder(),
+                enabledBorder: outlineInputBorder(),
+              ),
+            ),
+          ),
+        ],
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      Row(
+        children: [
+          Expanded(child: Text('Fields')),
+          IconButton(
+            onPressed: () {
+              dialogAddNewField(context);
+            },
+            icon: Icon(Icons.add),
+          ),
+        ],
+      ),
+    ],
+  );
+}
+
+Widget addSportCenterForm() {
+  return Column(
+    children: [
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Location Name',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Field ID',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Field Type',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Address',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Phone Number',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      ElevatedButton(
+        onPressed: () {},
+        child: Text(
+          'submit'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.fromHeight(50),
+          primary: Colors.black,
+          shape: roundedRectangleBorder(),
+        ),
+      ),
+    ],
   );
 }
