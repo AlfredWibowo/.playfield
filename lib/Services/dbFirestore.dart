@@ -96,6 +96,7 @@ class AdminFirestoreDatabase {
   }
 
   static Future<void> deleteData({required Admin admin}) async {
+
     DocumentReference doc = tbAdmin.doc(admin.email);
 
     await doc
@@ -103,43 +104,29 @@ class AdminFirestoreDatabase {
         .whenComplete(() => print('Data Admin Berhasil di delete'))
         .catchError((e) => print(e));
   }
-}
 
-class LocFirestoreDatabase {
-  static CollectionReference tbGedung =
-      FirebaseFirestore.instance.collection('tbGedung');
-
-  static Stream<QuerySnapshot> getData() {
-    return tbGedung.snapshots();
-  }
-
-  static Stream<DocumentSnapshot> getDataByName(String name) {
-    return tbGedung.doc(name).snapshots();
-  }
-
-  static Future<void> addData({required Gedung inputSC}) async {
-    DocumentReference doc = tbGedung.doc(inputSC.nama);
+  static Future<void> editNama({required String email, required String nama}) async {
+    DocumentReference doc = tbAdmin.doc(email);
     await doc
-        .set(inputSC.toJson())
-        .whenComplete(() => print('Data Gedung Berhasil di add'))
-        .catchError((e) => print(e));
-  }
-
-  static Future<void> editData({required Gedung inputSC}) async {
-    DocumentReference doc = tbGedung.doc(inputSC.nama);
-
-    await doc
-        .update(inputSC.toJson())
+        .update({"nama": nama })
         .whenComplete(() => print('Data Admin Berhasil di update'))
         .catchError((e) => print(e));
   }
 
-  static Future<void> deleteData({required Gedung inputSC}) async {
-    DocumentReference doc = tbGedung.doc(inputSC.nama);
-
+  static Future<void> editAlamat({required String email, required String alamat}) async {
+    DocumentReference doc = tbAdmin.doc(email);
     await doc
-        .delete()
-        .whenComplete(() => print('Data Admin Berhasil di delete'))
+        .update({"alamat": alamat })
+        .whenComplete(() => print('Data Admin Berhasil di update'))
         .catchError((e) => print(e));
   }
+
+  static Future<void> editTelp({required String email, required String telp}) async {
+    DocumentReference doc = tbAdmin.doc(email);
+    await doc
+        .update({"noTelp": telp })
+        .whenComplete(() => print('Data Admin Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
 }

@@ -388,91 +388,112 @@ class _ProfilePageState extends State<ProfilePage> {
                     builder: (BuildContext context) {
                       dialogContext = context;
                       return AlertDialog(
-                        title: Text(('Edit ' + title).toUpperCase() , style: TextStyle(fontFamily: 'Comfortaa'),),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
-                        actionsPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        insetPadding: EdgeInsets.all(24.0),
+                        title: Text(('Edit ' + title).toUpperCase() , style: const TextStyle(fontFamily: 'Comfortaa'),),
+                        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            SizedBox(height: 32),
-                            ListTile(
-                              title: Text(title, style: TextStyle(fontFamily: 'Roboto'),),
-                              subtitle: TextField(
-                                controller: _tfController,
+                            Container(
+                              width: MediaQuery.of(context).size.width,
+                              child: Column(
+                                children: [
+                                  SizedBox(height: 16.0),
+                                  ListTile(
+                                    subtitle: TextField(
+                                      controller: _tfController,
+                                      decoration: InputDecoration(
+                                        labelText: title,
+                                        focusedBorder: outlineInputBorder(),
+                                        enabledBorder: outlineInputBorder()
+                                      ),
+                                    ),
+                                  ),
+                                  SizedBox(height: 16.0),
+                                ],
                               ),
                             ),
-                            SizedBox(height: 16),
+                            
                           ],
                         ),
                         actions: [
-                          Center(
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal:8.0),
                             child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              mainAxisAlignment: MainAxisAlignment.start,
                               children: [
-                                ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    shape: RoundedRectangleBorder(
-                                      borderRadius: BorderRadius.circular(
-                                          4), // <-- Radius
+                                Expanded(
+                                  flex: 3,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(
+                                            4), // <-- Radius
+                                      ),
+                                      elevation: 0.0,
+                                      primary: Colors.black,
+                                      shadowColor: Colors.transparent,
                                     ),
-                                    elevation: 0.0,
-                                    primary: Colors.black,
-                                    shadowColor: Colors.transparent,
+                                    child: const Padding(
+                                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                                      child: Text(
+                                        'SUBMIT',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontFamily: 'Roboto',
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    onPressed: () {
+                                      if (title == "Nama") {
+                                        UserSession.session.nama =
+                                            _tfController.text;
+                                        ConsumerFirestoreDatabase.editNama(
+                                            email: AuthService.getEmailUser(),
+                                            nama: UserSession.session.nama);
+                                      } else if (title == "Alamat") {
+                                        UserSession.session.alamat =
+                                            _tfController.text;
+                                        ConsumerFirestoreDatabase.editAlamat(
+                                            email: AuthService.getEmailUser(),
+                                            alamat: UserSession.session.alamat);
+                                      } else if (title == "No Telepon") {
+                                        UserSession.session.noTelp =
+                                            _tfController.text;
+                                        ConsumerFirestoreDatabase.editTelp(
+                                            email: AuthService.getEmailUser(),
+                                            telp: UserSession.session.noTelp);
+                                      }
+                                      buildSnackBar(
+                                          context, title + ' berhasil di edit');
+                                      Navigator.pop(context);
+                                    },
                                   ),
-                                  child: Padding(
-                                    padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 10.0),
-                                    child: Text(
-                                      'SUBMIT',
+                                ),
+                                 Expanded(
+                                  flex: 2,
+                                  child: ElevatedButton(
+                                    style: ElevatedButton.styleFrom(
+                                      elevation: 0.0,
+                                      primary: Colors.transparent,
+                                      shadowColor: Colors.transparent,
+                                    ),
+                                    onPressed: () {
+                                      Navigator.pop(dialogContext);
+                                    },
+                                    child: const Text(
+                                      'CANCEL',
                                       style: TextStyle(
-                                          fontSize: 14,
                                           fontFamily: 'Roboto',
-                                          color: Colors.white),
+                                          color: Colors.black),
                                     ),
-                                  ),
-                                  onPressed: () {
-                                    if (title == "Nama") {
-                                      UserSession.session.nama =
-                                          _tfController.text;
-                                      ConsumerFirestoreDatabase.editNama(
-                                          email: AuthService.getEmailUser(),
-                                          nama: UserSession.session.nama);
-                                    } else if (title == "Alamat") {
-                                      UserSession.session.alamat =
-                                          _tfController.text;
-                                      ConsumerFirestoreDatabase.editAlamat(
-                                          email: AuthService.getEmailUser(),
-                                          alamat: UserSession.session.alamat);
-                                    } else if (title == "No Telepon") {
-                                      UserSession.session.noTelp =
-                                          _tfController.text;
-                                      ConsumerFirestoreDatabase.editTelp(
-                                          email: AuthService.getEmailUser(),
-                                          telp: UserSession.session.noTelp);
-                                    }
-                                    buildSnackBar(
-                                        context, title + ' berhasil di edit');
-                                    Navigator.pop(context);
-                                  },
-                                ),
-                                 ElevatedButton(
-                                  style: ElevatedButton.styleFrom(
-                                    elevation: 0.0,
-                                    primary: Colors.transparent,
-                                    shadowColor: Colors.transparent,
-                                  ),
-                                  onPressed: () {
-                                    Navigator.pop(dialogContext);
-                                  },
-                                  child: Text(
-                                    'CANCEL',
-                                    style: TextStyle(
-                                        fontFamily: 'Roboto',
-                                        color: Colors.black),
-                                  ),
-                                ),
+                                                                 ),
+                                 ),
                               ],
                             ),
-                          )
+                          ),
+                          SizedBox(height: 16.0,)
                         ],
                       );
                     },
