@@ -539,18 +539,32 @@ Widget addSCForm(BuildContext context, Future<List<Kota>> listKota) {
             kota.sort();
             print("kota: ${kota}");
 
-            return DropdownButton(
-                isExpanded: true,
-                value: _dropdownKota,
-                items: kota.map((value) {
-                  return DropdownMenuItem(
-                    value: value,
-                    child: Text(value),
-                  );
-                }).toList(),
-                onChanged: (String? newValue) {
-                  _dropdownKota = newValue!;
-                });
+            return DecoratedBox(
+              decoration: BoxDecoration(
+                border: Border.all(color: Colors.black, width:2.0),
+                borderRadius: BorderRadius.zero,
+
+              ),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal:12.0, vertical: 14.0),
+                child: DropdownButtonHideUnderline(
+                  child: DropdownButton(
+                      isDense: true,
+                      style: TextStyle(fontFamily: 'Roboto', fontSize: 16) ,
+                      isExpanded: true,
+                      value: _dropdownKota,
+                      items: kota.map((value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(value, style: TextStyle(fontFamily: 'Roboto'),),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        _dropdownKota = newValue!;
+                      }),
+                ),
+              ),
+            );
           }
           return progressIndicator();
         },
@@ -704,8 +718,9 @@ Widget addFieldForm() {
       ),
       TextField(
         controller: _tfPrice,
+        keyboardType: TextInputType.number,
         decoration: InputDecoration(
-          labelText: 'Address',
+          labelText: 'Price',
           focusedBorder: outlineInputBorder(),
           enabledBorder: outlineInputBorder(),
         ),
