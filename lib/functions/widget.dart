@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:js';
+
 import 'package:project_ambw/class/CKota.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/pages/BookingPage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
 
@@ -314,38 +317,80 @@ Card sportCard(String sport, Color color) {
   );
 }
 
-Card exploreCard(String lapangan, String noTelp, String alamat, String kota) {
-  return Card(
-    color: Colors.black,
-    child: Row(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.horizontal(
-              left: Radius.circular(8), right: Radius.zero),
-          child: imageNetwork(imagePath, 126, 126),
-        ),
-        Padding(
-          padding: EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-          child: Column(
-            mainAxisSize: MainAxisSize.max,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                lapangan,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.white,
+Widget exploreCard(BuildContext context, String lapangan, String noTelp,
+    String alamat, String kota) {
+  return GestureDetector(
+    onTap: () {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Image.network(imagePath),
+            content: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Text(
+                    lapangan,
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 28,
+                    ),
+                  ),
                 ),
+                SizedBox(
+                  height: 30,
+                ),
+                ListTile(
+                  leading: Icon(Icons.phone),
+                  title: Text(noTelp),
+                ),
+                ListTile(
+                  leading: Icon(Icons.location_on),
+                  title: Text(alamat),
+                ),
+              ],
+            ),
+            actions: [
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(),));
+                },
+                child: Text('Book'),
               ),
-              SizedBox(
-                height: 20,
-              ),
-              textWithIconRow(Icons.phone, noTelp),
-              textWithIconRow(Icons.location_on, alamat),
-              SizedBox(
-                height: 5,
-              ),
+            ],
+          );
+        },
+      );
+    },
+    child: Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(16),
+      ),
+      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            lapangan,
+            style: TextStyle(
+              fontSize: 18,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          textWithIconRow(Icons.phone, noTelp),
+          textWithIconRow(Icons.location_on, alamat),
+          SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
               Row(
                 children: [
                   sportCard('Badminton', Colors.yellow),
@@ -353,14 +398,34 @@ Card exploreCard(String lapangan, String noTelp, String alamat, String kota) {
                   sportCard('Volley', Colors.green),
                 ],
               ),
-              SizedBox(
-                height: 10,
+              Expanded(
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    Icon(
+                      Icons.location_city,
+                      color: Colors.white,
+                      size: 14,
+                    ),
+                    SizedBox(
+                      width: 5,
+                    ),
+                    Text(
+                      "Surabyaya",
+                      style: TextStyle(
+                        fontFamily: 'Roboto',
+                        fontSize: 14,
+                        fontWeight: FontWeight.w300,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ],
+                ),
               ),
-              textWithIconRow(Icons.location_city, kota.toUpperCase()),
             ],
-          ),
-        ),
-      ],
+          )
+        ],
+      ),
     ),
   );
 }
@@ -407,8 +472,8 @@ Color sportColor(String sport) {
   }
 }
 
-Widget ticketCard(
-    BuildContext context, String lapangan, String noTelp, String alamat, String jenisLap, int stat) {
+Widget ticketCard(BuildContext context, String lapangan, String noTelp,
+    String alamat, String jenisLap, int stat) {
   return ListTile(
     onTap: () {
       dialogTicket(context, lapangan);

@@ -82,13 +82,7 @@ class _ProfilePageState extends State<ProfilePage> {
                           SizedBox(
                             height: 5,
                           ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Change Password'.toUpperCase(),
-                              style: TextStyle(fontSize: 10),
-                            ),
-                          ),
+                          
                         ],
                       )
                     ],

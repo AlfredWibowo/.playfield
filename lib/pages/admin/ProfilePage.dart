@@ -1,3 +1,6 @@
+// ignore_for_file: prefer_const_constructors
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
@@ -74,16 +77,6 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                               style: const TextStyle(fontSize: 10),
                             ),
                           ),
-                          const SizedBox(
-                            height: 5,
-                          ),
-                          ElevatedButton(
-                            onPressed: () {},
-                            child: Text(
-                              'Change Password'.toUpperCase(),
-                              style: const TextStyle(fontSize: 10),
-                            ),
-                          ),
                         ],
                       )
                     ],
@@ -119,8 +112,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
         ),
         subtitle: Text(
           value,
-          style:
-              const TextStyle(color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+          style: const TextStyle(
+              color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
         ),
         trailing: title == "Email"
             ? Container(
@@ -137,9 +130,14 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                       dialogContext = context;
                       return AlertDialog(
                         insetPadding: EdgeInsets.all(24.0),
-                        title: Text(('Edit ' + title).toUpperCase() , style: const TextStyle(fontFamily: 'Comfortaa'),),
-                        contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        title: Text(
+                          ('Edit ' + title).toUpperCase(),
+                          style: const TextStyle(fontFamily: 'Comfortaa'),
+                        ),
+                        contentPadding:
+                            const EdgeInsets.symmetric(horizontal: 8.0),
+                        actionsPadding:
+                            const EdgeInsets.symmetric(horizontal: 8.0),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
@@ -152,22 +150,21 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                     subtitle: TextField(
                                       controller: _tfController,
                                       decoration: InputDecoration(
-                                        labelText: title,
-                                        focusedBorder: outlineInputBorder(),
-                                        enabledBorder: outlineInputBorder()
-                                      ),
+                                          labelText: title,
+                                          focusedBorder: outlineInputBorder(),
+                                          enabledBorder: outlineInputBorder()),
                                     ),
                                   ),
                                   SizedBox(height: 16.0),
                                 ],
                               ),
                             ),
-                            
                           ],
                         ),
                         actions: [
                           Padding(
-                            padding: const EdgeInsets.symmetric(horizontal:8.0),
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 8.0),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.start,
                               children: [
@@ -184,7 +181,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                       shadowColor: Colors.transparent,
                                     ),
                                     child: const Padding(
-                                      padding: EdgeInsets.symmetric(vertical: 10.0),
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 10.0),
                                       child: Text(
                                         'SUBMIT',
                                         style: TextStyle(
@@ -205,7 +203,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                             _tfController.text;
                                         AdminFirestoreDatabase.editAlamat(
                                             email: AuthService.getEmailUser(),
-                                            alamat: AdminSession.session.alamat);
+                                            alamat:
+                                                AdminSession.session.alamat);
                                       } else if (title == "No Telepon") {
                                         AdminSession.session.noTelp =
                                             _tfController.text;
@@ -219,7 +218,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                     },
                                   ),
                                 ),
-                                 Expanded(
+                                Expanded(
                                   flex: 2,
                                   child: ElevatedButton(
                                     style: ElevatedButton.styleFrom(
@@ -236,12 +235,14 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                           fontFamily: 'Roboto',
                                           color: Colors.black),
                                     ),
-                                                                 ),
-                                 ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
-                          SizedBox(height: 16.0,)
+                          SizedBox(
+                            height: 16.0,
+                          )
                         ],
                       );
                     },

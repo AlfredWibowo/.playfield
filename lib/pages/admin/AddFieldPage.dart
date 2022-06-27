@@ -100,9 +100,6 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
           ),
         ),
         SizedBox(
-          height: 5,
-        ),
-        SizedBox(
           height: 20,
         ),
         ElevatedButton(
