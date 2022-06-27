@@ -2,26 +2,18 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
 
 class Field{
-  String? _fieldID;
-  String? _type;
-  int? _priceHour;
-  List<FieldOccupancy> _occupancies = [];
+  String? fieldID;
+  String? type;
+  int? priceHour;
+  List<FieldOccupancy> occupancies = [];
 
-  Field(String FID, String type, int price) {
-    _fieldID = FID;
-    _type = type;
-    _priceHour = price;
-  }
+  Field({required String this.fieldID, required String this.type, required int this.priceHour});
 
   Field.jsonConstructor(String FID, String type, int price, List<FieldOccupancy> occupancies) {
-    _fieldID = FID;
-    _type = type;
-    _priceHour = price;
-    _occupancies = occupancies;
-  }
-
-  void insert(FieldOccupancy input) {
-    _occupancies.add(input);
+    fieldID = FID;
+    type = type;
+    priceHour = price;
+    occupancies = occupancies;
   }
 
   bool checkOccupancies(int hour) {
@@ -31,12 +23,13 @@ class Field{
     return true;
   }
 
+  @override
   Map<String, dynamic> toJson() {
     return {
-      "fieldID": _fieldID,
-      "type": _type,
-      "priceHour": _priceHour,
-      "fieldOccupancy": _occupancies
+      "fieldID": fieldID,
+      "type": type,
+      "priceHour": priceHour,
+      "occupancies": List<dynamic>.from(occupancies.map((x) => x.toJson()))
     };
   }
 
@@ -45,7 +38,7 @@ class Field{
       json['fieldID'],
       json['type'],
       json['priceHour'],
-      json['fieldOccupancy']
+      List<FieldOccupancy>.from(json["posts"].map((x) => FieldOccupancy.fromJson(x)))
     );
   }
 
@@ -60,35 +53,49 @@ class Field{
 }
 
 class FieldOccupancy {
-  String? _gedungID;
-  int? _status; // 0 - active, 1- used, 2 - canceled
-  String? _ticketID; // PRIMARY
-  int? _hour;
-  bool? _isOccupied;
+  int status; // 0 - active, 1- used, 2 - canceled
+  late String ticketID; // PRIMARY
+  int hour;
+  bool isOccupied;
 
-  FieldOccupancy(int hour, bool occupancy, String GID, {int status = 0}){
+  FieldOccupancy({required this.hour,required this.isOccupied, this.status = 0}){
     var uuid = const Uuid();
-    _ticketID = uuid.v4();
-
-    _hour = hour;
-    _isOccupied = isOccupied;
-    _status = status;
-    _gedungID = GID;
+    ticketID = uuid.v4();
   }
+
+  FieldOccupancy.jsonConstructor({required this.hour,required this.isOccupied, required this.status, required this.ticketID});
 
   void use() {
-    _status = 1; // used
+    status = 1; // used
   }
 
-  get isOccupied {
-    return _isOccupied;
-  }    
-
-  get hour {
-    return _hour;
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "status": status,
+      "ticketID": ticketID,
+      "hour": hour,
+      "isOccupied": isOccupied
+    };
   }
 
-  get id {
-    return _ticketID;
+  factory FieldOccupancy.fromDocument(DocumentSnapshot doc) {
+    return FieldOccupancy.jsonConstructor(
+      ticketID:doc.get('ticketID'),
+      status: doc.get('status'),
+      hour: doc.get('hour'),
+      isOccupied: doc.get('isOccupied')
+    );
   }
+
+  factory FieldOccupancy.fromJson(Map<String, dynamic> json) {
+    return FieldOccupancy.jsonConstructor(
+      ticketID:json['ticketID'],
+      status: json['status'],
+      hour: json['hour'],
+      isOccupied: json['isOccupied']
+    );
+  }
+
+
 }

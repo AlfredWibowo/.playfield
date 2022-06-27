@@ -1,10 +1,14 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:project_ambw/class/CLapangan.dart';
+import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
 
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 
 IconButton backButton(BuildContext context) {
   return IconButton(
@@ -186,8 +190,9 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
           subtitle,
           style: TextStyle(
             fontSize: 22,
+            fontFamily: 'Comfortaa',
             color: Colors.black,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w500,
           ),
         ),
         GestureDetector(
@@ -197,7 +202,7 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
             style: TextStyle(
               fontSize: 16,
               color: Colors.blue,
-              fontWeight: FontWeight.bold,
+              fontWeight: FontWeight.w500,
             ),
           ),
         ),
@@ -208,8 +213,9 @@ Widget subTitle(String subtitle, bool seeAll, Function func) {
       subtitle,
       style: TextStyle(
         fontSize: 22,
+        fontFamily: 'Comfortaa',
         color: Colors.black,
-        fontWeight: FontWeight.bold,
+        fontWeight: FontWeight.w500,
       ),
     );
   }
@@ -479,11 +485,18 @@ Widget addFieldBtn() {
   );
 }
 
-Widget addFieldForm(BuildContext context) {
+Widget addSCForm(BuildContext context) {
+  TextEditingController _tfLocName = TextEditingController();
+  TextEditingController _tfCity = TextEditingController();
+  TextEditingController _tfAddress = TextEditingController();
+  TextEditingController _tfPhoneNum = TextEditingController();
+  TextEditingController _tfStartTime = TextEditingController();
+  TextEditingController _tfEndTime = TextEditingController();
+
   return Column(
     children: [
       TextField(
-        controller: TextEditingController(),
+        controller: _tfLocName,
         decoration: InputDecoration(
           labelText: 'Location Name',
           focusedBorder: outlineInputBorder(),
@@ -494,7 +507,7 @@ Widget addFieldForm(BuildContext context) {
         height: 5,
       ),
       TextField(
-        controller: TextEditingController(),
+        controller: _tfCity,
         decoration: InputDecoration(
           labelText: 'City',
           focusedBorder: outlineInputBorder(),
@@ -505,9 +518,9 @@ Widget addFieldForm(BuildContext context) {
         height: 5,
       ),
       TextField(
-        controller: TextEditingController(),
+        controller: _tfAddress,
         decoration: InputDecoration(
-          labelText: 'Adress',
+          labelText: 'Address',
           focusedBorder: outlineInputBorder(),
           enabledBorder: outlineInputBorder(),
         ),
@@ -516,7 +529,7 @@ Widget addFieldForm(BuildContext context) {
         height: 5,
       ),
       TextField(
-        controller: TextEditingController(),
+        controller: _tfPhoneNum,
         decoration: InputDecoration(
           labelText: 'Phone Number',
           focusedBorder: outlineInputBorder(),
@@ -534,7 +547,7 @@ Widget addFieldForm(BuildContext context) {
           ),
           Expanded(
             child: TextField(
-              controller: TextEditingController(),
+              controller: _tfStartTime,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.datetime,
               decoration: InputDecoration(
@@ -553,7 +566,7 @@ Widget addFieldForm(BuildContext context) {
           ),
           Expanded(
             child: TextField(
-              controller: TextEditingController(),
+              controller: _tfEndTime,
               textAlign: TextAlign.center,
               keyboardType: TextInputType.datetime,
               decoration: InputDecoration(
@@ -579,72 +592,12 @@ Widget addFieldForm(BuildContext context) {
           ),
         ],
       ),
-    ],
-  );
-}
-
-Widget addSportCenterForm() {
-  return Column(
-    children: [
-      TextField(
-        controller: TextEditingController(),
-        decoration: InputDecoration(
-          labelText: 'Location Name',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-          suffixIcon: Icon(Icons.arrow_drop_down),
-        ),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        controller: TextEditingController(),
-        decoration: InputDecoration(
-          labelText: 'Field ID',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-        ),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        controller: TextEditingController(),
-        decoration: InputDecoration(
-          labelText: 'Field Type',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-          suffixIcon: Icon(Icons.arrow_drop_down),
-        ),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        controller: TextEditingController(),
-        decoration: InputDecoration(
-          labelText: 'Address',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-        ),
-      ),
-      SizedBox(
-        height: 5,
-      ),
-      TextField(
-        controller: TextEditingController(),
-        decoration: InputDecoration(
-          labelText: 'Phone Number',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-        ),
-      ),
-      SizedBox(
-        height: 20,
-      ),
       ElevatedButton(
-        onPressed: () {},
+        onPressed: () {
+          Admin CurrAdmin = AdminSession.session;
+          CurrAdmin.addGedung(Gedung(nama: _tfLocName.text, kota: _tfCity.text, alamat: _tfAddress.text, noTelp: int.parse(_tfPhoneNum.text.toString()), opTime: TupleTime(startTime: _tfStartTime.text, endTime: _tfEndTime.text)));
+          AdminFirestoreDatabase.editData(admin: CurrAdmin);
+        },
         child: Text(
           'submit'.toUpperCase(),
           style: TextStyle(
@@ -657,6 +610,103 @@ Widget addSportCenterForm() {
           primary: Colors.black,
           shape: roundedRectangleBorder(),
         ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+    ],
+  );
+}
+
+Widget addFieldForm() {
+  TextEditingController _tfLocName = TextEditingController();
+  TextEditingController _tfFieldID = TextEditingController();
+  TextEditingController _tfFieldType = TextEditingController();
+  TextEditingController _tfPrice = TextEditingController();
+  return Column(
+    children: [
+      TextField(
+        controller: _tfLocName,
+        decoration: InputDecoration(
+          labelText: 'Sport Center Name',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: _tfFieldID,
+        decoration: InputDecoration(
+          labelText: 'Field ID',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: _tfFieldType,
+        decoration: InputDecoration(
+          labelText: 'Field Type',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: _tfPrice,
+        decoration: InputDecoration(
+          labelText: 'Address',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),    
+      SizedBox(
+        height: 20,
+      ),
+      ElevatedButton(
+        onPressed: () {
+          
+          // Get Current Admin
+          Admin CurrAdmin = AdminSession.session;
+          // Get Current Gedung
+          int index = CurrAdmin.findGedungIndex(_tfLocName.text);
+          if (index == -1) {
+            // TODO: implement Error
+            // Return Dialog Error Name
+          } else {
+            // Create Field class to input
+            Field inputClass = Field(fieldID: _tfFieldID.text, type: _tfFieldType.text, priceHour: int.parse(_tfPrice.text.toString()));
+            CurrAdmin.owns[index].fields.add(inputClass);
+            AdminFirestoreDatabase.editData(admin: CurrAdmin);
+          }
+
+        },
+        child: Text(
+          'submit'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.fromHeight(50),
+          primary: Colors.black,
+          shape: roundedRectangleBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 20,
       ),
     ],
   );

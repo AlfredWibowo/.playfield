@@ -11,3 +11,15 @@ class UserSession {
     session = UserCls(email: '', nama: '', alamat: '', noTelp: '', isAdmin: false);
   }
 }
+
+class AdminSession {
+  static Admin session = Admin(email: '', nama: '', alamat: '', noTelp: '', isAdmin: true);
+
+  static void updateSession({required Admin newSession}) {
+    session = newSession;
+  }
+
+  static void resetSession() {
+    session = Admin(email: '', nama: '', alamat: '', noTelp: '', isAdmin: true);
+  }
+}

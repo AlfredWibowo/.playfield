@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:flutter/material.dart';
 import 'package:project_ambw/functions/widget.dart';
 
@@ -92,9 +94,11 @@ void dialogAddNewField(BuildContext context) {
               SizedBox(width: 10,),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pop(context);
+                  },
                   child: Text(
-                    'cancle'.toUpperCase(),
+                    'cancel'.toUpperCase(),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

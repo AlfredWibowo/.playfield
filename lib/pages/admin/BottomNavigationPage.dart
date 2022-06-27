@@ -52,9 +52,9 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
         if (snapshot.hasError) {
           return Text('${snapshot.error}');
         } else if (snapshot.hasData || snapshot.data != null) {
-          UserCls newSession = UserCls.fromDocument(snapshot.data!);
-          UserSession.updateSession(newSession: newSession);
-
+          Admin newSession = Admin.fromDocument(snapshot.data!);
+          AdminSession.updateSession(newSession: newSession);
+          
           return Scaffold(
             appBar: AppBar(
               toolbarHeight: 100,

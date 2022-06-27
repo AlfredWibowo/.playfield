@@ -381,50 +381,96 @@ class _ProfilePageState extends State<ProfilePage> {
               )
             : IconButton(
                 onPressed: () {
+                  BuildContext dialogContext;
                   showDialog(
                     context: context,
                     barrierDismissible: true,
-                    builder: (context) {
+                    builder: (BuildContext context) {
+                      dialogContext = context;
                       return AlertDialog(
-                        title: Text('Edit ' + title),
+                        title: Text(('Edit ' + title).toUpperCase() , style: TextStyle(fontFamily: 'Comfortaa'),),
+                        contentPadding: EdgeInsets.symmetric(horizontal: 8.0),
+                        actionsPadding: EdgeInsets.symmetric(horizontal: 8.0),
                         content: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+                            SizedBox(height: 32),
                             ListTile(
-                              title: Text(title),
+                              title: Text(title, style: TextStyle(fontFamily: 'Roboto'),),
                               subtitle: TextField(
                                 controller: _tfController,
                               ),
-                            )
+                            ),
+                            SizedBox(height: 16),
                           ],
                         ),
                         actions: [
                           Center(
-                            child: ElevatedButton(
-                              child: Text('Submit'),
-                              onPressed: () {
-                                if (title == "Nama") {
-                                  UserSession.session.nama = _tfController.text;
-                                  ConsumerFirestoreDatabase.editNama(
-                                      email: AuthService.getEmailUser(),
-                                      nama: UserSession.session.nama);
-                                } else if (title == "Alamat") {
-                                  UserSession.session.alamat =
-                                      _tfController.text;
-                                  ConsumerFirestoreDatabase.editNama(
-                                      email: AuthService.getEmailUser(),
-                                      nama: UserSession.session.nama);
-                                } else if (title == "No Telepon") {
-                                  UserSession.session.noTelp =
-                                      _tfController.text;
-                                  ConsumerFirestoreDatabase.editNama(
-                                      email: AuthService.getEmailUser(),
-                                      nama: UserSession.session.nama);
-                                }
-                                buildSnackBar(
-                                    context, title + ' berhasil di edit');
-                                Navigator.pop(context);
-                              },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                              children: [
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(
+                                          4), // <-- Radius
+                                    ),
+                                    elevation: 0.0,
+                                    primary: Colors.black,
+                                    shadowColor: Colors.transparent,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal:16.0, vertical: 10.0),
+                                    child: Text(
+                                      'SUBMIT',
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontFamily: 'Roboto',
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                  onPressed: () {
+                                    if (title == "Nama") {
+                                      UserSession.session.nama =
+                                          _tfController.text;
+                                      ConsumerFirestoreDatabase.editNama(
+                                          email: AuthService.getEmailUser(),
+                                          nama: UserSession.session.nama);
+                                    } else if (title == "Alamat") {
+                                      UserSession.session.alamat =
+                                          _tfController.text;
+                                      ConsumerFirestoreDatabase.editAlamat(
+                                          email: AuthService.getEmailUser(),
+                                          alamat: UserSession.session.alamat);
+                                    } else if (title == "No Telepon") {
+                                      UserSession.session.noTelp =
+                                          _tfController.text;
+                                      ConsumerFirestoreDatabase.editTelp(
+                                          email: AuthService.getEmailUser(),
+                                          telp: UserSession.session.noTelp);
+                                    }
+                                    buildSnackBar(
+                                        context, title + ' berhasil di edit');
+                                    Navigator.pop(context);
+                                  },
+                                ),
+                                 ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0.0,
+                                    primary: Colors.transparent,
+                                    shadowColor: Colors.transparent,
+                                  ),
+                                  onPressed: () {
+                                    Navigator.pop(dialogContext);
+                                  },
+                                  child: Text(
+                                    'CANCEL',
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        color: Colors.black),
+                                  ),
+                                ),
+                              ],
                             ),
                           )
                         ],

@@ -47,7 +47,7 @@ class ConsumerFirestoreDatabase {
         .catchError((e) => print(e));
   }
 
-  static Future<void> editTelp({required String email, required int telp}) async {
+  static Future<void> editTelp({required String email, required String telp}) async {
     DocumentReference doc = tbConsumer.doc(email);
     await doc
         .update({"noTelp": telp })
@@ -105,3 +105,41 @@ class AdminFirestoreDatabase {
   }
 }
 
+class LocFirestoreDatabase {
+  static CollectionReference tbGedung =
+      FirebaseFirestore.instance.collection('tbGedung');
+
+  static Stream<QuerySnapshot> getData() {
+    return tbGedung.snapshots();
+  }
+
+  static Stream<DocumentSnapshot> getDataByName(String name) {
+    return tbGedung.doc(name).snapshots();
+  }
+
+  static Future<void> addData({required Gedung inputSC}) async {
+    DocumentReference doc = tbGedung.doc(inputSC.nama);
+    await doc
+        .set(inputSC.toJson())
+        .whenComplete(() => print('Data Gedung Berhasil di add'))
+        .catchError((e) => print(e));
+  }
+
+  static Future<void> editData({required Gedung inputSC}) async {
+    DocumentReference doc = tbGedung.doc(inputSC.nama);
+
+    await doc
+        .update(inputSC.toJson())
+        .whenComplete(() => print('Data Admin Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
+  static Future<void> deleteData({required Gedung inputSC}) async {
+    DocumentReference doc = tbGedung.doc(inputSC.nama);
+
+    await doc
+        .delete()
+        .whenComplete(() => print('Data Admin Berhasil di delete'))
+        .catchError((e) => print(e));
+  }
+}

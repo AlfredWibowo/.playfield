@@ -83,7 +83,7 @@ class _MyAppState extends State<MyApp> {
                       ? WelcomePage()
                       : StreamBuilder<DocumentSnapshot>(
                           stream: ConsumerFirestoreDatabase.getDataByEmail(
-                            AuthService.getEmailUser(),
+                            AuthService.getEmailUser(), 
                             //'admin1@gmail.com',
                           ),
                           builder: (context, snapshotConsumer) {

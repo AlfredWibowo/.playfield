@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +20,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
         child: ListView(
           children: [
             title('Hello,', false),
-            title(UserSession.session.nama, true),
+            title(AdminSession.session.nama, true),
             SizedBox(
               height: 30,
             ),
@@ -45,7 +47,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             SizedBox(
               height: 30,
             ),
-            subTitle('Lastest Appliant', true, () {}),
+            subTitle('Latest Appliant', true, () {}),
             SizedBox(height: 10),
             Card(
               color: Colors.black,

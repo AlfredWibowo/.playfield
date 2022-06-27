@@ -30,9 +30,9 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
             setState(() {
               _choice = value;
               if (text == 'Field') {
-                _form = addFieldForm(context);
+                _form = addFieldForm();
               } else {
-                _form = addSportCenterForm();
+                _form = addSCForm(context);
               }
             });
           },
@@ -48,12 +48,13 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
     super.initState();
 
     setState(() {
-      _form = addFieldForm(context);
+      _form = addSCForm(context);
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),

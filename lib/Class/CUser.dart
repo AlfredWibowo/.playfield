@@ -1,6 +1,29 @@
+import 'dart:convert';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:tuple/tuple.dart';
-import 'CLapangan.dart';
+import 'package:project_ambw/class/CLapangan.dart';
+
+
+class TupleTime {
+  String startTime;
+  String endTime;
+
+  TupleTime({required this.startTime, required this.endTime});
+
+  Map<String, dynamic> toJson() {
+    return {
+      "startTime": startTime,
+      "endTime": endTime
+    };
+  }
+
+  factory TupleTime.fromJson(Map<String, dynamic> json) {
+    return TupleTime(
+      startTime: json['starTime'], 
+      endTime: json['endTime']);
+   }
+
+}
 
 class Consumer extends UserCls {
   int saldo = 0;
@@ -15,13 +38,7 @@ class Consumer extends UserCls {
     required String alamat,
     required String noTelp,
     required bool isAdmin,
-  }) : super(
-          email: email,
-          nama: nama,
-          alamat: alamat,
-          noTelp: noTelp,
-          isAdmin: isAdmin,
-        ) {
+  }) : super(email: email,nama: nama,alamat: alamat,noTelp: noTelp,isAdmin: isAdmin) {
     if (ticket!.isNotEmpty) {
       tickets = ticket;
     } else {
@@ -30,7 +47,7 @@ class Consumer extends UserCls {
     if (history!.isNotEmpty) {
       histories = history;
     } else {
-      histories = [];
+      histories= [];
     }
   }
 
@@ -42,8 +59,8 @@ class Consumer extends UserCls {
       "alamat": alamat,
       "noTelp": noTelp,
       "isAdmin": isAdmin,
-      "ticket": tickets,
-      "history": histories,
+      "ticket": jsonEncode(tickets),
+      "history": jsonEncode(histories),
     };
   }
 
@@ -54,8 +71,8 @@ class Consumer extends UserCls {
       alamat: json['alamat'],
       noTelp: json['noTelp'],
       isAdmin: json['isAdmin'],
-      ticket: json['ticket'],
-      history: json['history'],
+      ticket: (jsonDecode(json['ticket']) as List<dynamic>).cast<String>(),
+      history: (jsonDecode(json['history']) as List<dynamic>).cast<String>(),
     );
   }
 
@@ -72,8 +89,8 @@ class Consumer extends UserCls {
 }
 
 class Admin extends UserCls {
-  List<Gedung> _owns = [];
-  List<String> _activeTicket = [];
+  List<Gedung> owns = [];
+  List<String> activeTicket = [];
   Admin(
       {List<Gedung>? own,
       List<String>? activeTicket,
@@ -90,23 +107,36 @@ class Admin extends UserCls {
           isAdmin: true,
         ) {
     if (own!.isNotEmpty) {
-      _owns = own;
+      owns = own;
     } else {
-      _owns = [];
+      owns = [];
     }
 
     if (activeTicket!.isNotEmpty) {
-      _activeTicket = activeTicket;
+      activeTicket = activeTicket;
     } else {
-      _activeTicket = [];
+      activeTicket = [];
     }
   }
 
+  Admin.jsonConstructor({required this.owns, required this.activeTicket, required String email,
+      required String nama,
+      required String alamat,
+      required String noTelp,
+      required bool isAdmin}):super(
+          email: email,
+          nama: nama,
+          alamat: alamat,
+          noTelp: noTelp,
+          isAdmin: true,
+        );
+
   void addTicket(String uuid) {
-    _activeTicket.add(uuid);
+    activeTicket.add(uuid);
   }
 
   bool verifyTicket(String uuid) {
+    // TODO: Verify Ticket
     // loop each _activeTicket
     // if uuid == _ticketID
     //  then true
@@ -114,7 +144,23 @@ class Admin extends UserCls {
   }
 
   void addGedung(Gedung input) {
-    _owns.add(input);
+    int index = findGedungIndex(input.nama);
+    if (index == -1) {
+      owns.add(input);
+    } else {
+      // TODO: Failed insert, Duplicate Name
+      print("Failed To Insert");
+    }
+
+  }
+
+  int findGedungIndex(String nama) {
+    for (int i =0; i< owns.length; i++) {
+      if (owns[i].nama == nama) {
+        return i;
+      }
+    }
+    return -1;
   }
 
   @override
@@ -125,8 +171,8 @@ class Admin extends UserCls {
       "alamat": alamat,
       "noTelp": noTelp,
       "isAdmin": isAdmin,
-      "own": _owns,
-      "activeTicket": _activeTicket
+      "own": List<dynamic>.from(owns.map((x) => x.toJson())),
+      "activeTicket": activeTicket
     };
   }
 
@@ -137,45 +183,78 @@ class Admin extends UserCls {
         alamat: json['alamat'],
         noTelp: json['noTelp'],
         isAdmin: json['isAdmin'],
-        own: json['own'],
-        activeTicket: json['activeTicket']);
+        own: List<Gedung>.from(json["own"].map((x) => Field.fromJson(x))),
+        activeTicket: (jsonDecode(json['activeTicket']) as List<dynamic>).cast<String>()
+    );
   }
 
   factory Admin.fromDocument(DocumentSnapshot doc) {
-    return Admin(
+    List<dynamic> ownInput =  doc.get('own');
+    List<Gedung> castedOI = ownInput.cast<Gedung>();
+    List<dynamic> ticketInput =  doc.get('activeTicket');
+    List<String> castedTI = ticketInput.cast<String>();
+    return Admin.jsonConstructor(
         email: doc.get('email'),
         nama: doc.get('nama'),
         alamat: doc.get('alamat'),
         noTelp: doc.get('noTelp'),
         isAdmin: doc.get('isAdmin'),
-        own: doc.get('own'),
-        activeTicket: doc.get('activeTicket'));
+        owns: castedOI,
+        activeTicket: castedTI
+      );
   }
 }
 
 class Gedung {
-  int? _gedungID;
-  String? _name;
-  String? _city;
-  String? _address;
-  int? _phoneNumber;
-  Tuple2<int, int>? _opTime;
-  List<Field> _fields = [];
+  String nama;
+  String kota;
+  String alamat;
+  int noTelp;
+  TupleTime opTime;
+  List<Field> fields = [];
 
-  Gedung(int GID, String name, String city, String address, int pNumber,
-      Tuple2<int, int> opTime) {
-    _gedungID = GID;
-    _name = name;
-    _city = city;
-    _address = address;
-    _phoneNumber = pNumber;
-    _opTime = opTime;
+  Gedung({required this.nama, required this.kota, required this.alamat, required this.noTelp,
+      required this.opTime});
+
+  Gedung.jsonConstructor({required this.nama, required this.kota, required this.alamat, required this.noTelp,
+      required this.opTime, List<Field>? fields});
+
+  Map<String, dynamic> toJson() {
+    return {
+      "name": nama,
+      "alamat": alamat,
+      "kota": kota,
+      "noTelp": noTelp,
+      "opTime": opTime.toJson(),
+      "fields": List<dynamic>.from(fields.map((x) => x.toJson()))
+    };
   }
 
-  void addField(Field input) {
-    _fields.add(input);
+  factory Gedung.fromJson(Map<String, dynamic> json) {
+    return Gedung.jsonConstructor(
+        nama: json['nama'],
+        kota: json['kota'],
+        alamat: json['alamat'],
+        noTelp: json['noTelp'],
+        opTime: TupleTime.fromJson(json['opTime']),
+        fields: List<Field>.from(json["fields"].map((x) => Field.fromJson(x)))
+    );
   }
+
+  factory Gedung.fromDocument(DocumentSnapshot doc) {
+    return Gedung.jsonConstructor(
+        nama: doc.get('nama'),
+        kota: doc.get('kota'),
+        alamat: doc.get('alamat'),
+        noTelp: doc.get('noTelp'),
+        opTime: doc.get('opTime'),
+        fields: doc.get('field')
+    );
+  }
+
+
 }
+
 
 class UserCls {
   String email;
