@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:project_ambw/class/CKota.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/class/CUserSession.dart';
@@ -407,8 +408,11 @@ Color sportColor(String sport) {
 }
 
 Widget ticketCard(
-    String lapangan, String noTelp, String alamat, String jenisLap, int stat) {
+    BuildContext context, String lapangan, String noTelp, String alamat, String jenisLap, int stat) {
   return ListTile(
+    onTap: () {
+      dialogTicket(context, lapangan);
+    },
     shape: roundedRectangleBorder(),
     contentPadding: EdgeInsets.all(8),
     tileColor: Colors.black,
@@ -486,7 +490,9 @@ Widget addFieldBtn() {
   );
 }
 
-Widget addSCForm(BuildContext context) {
+Widget addSCForm(BuildContext context, Future<List<Kota>> listKota) {
+  String _dropdownKota = "Surabaya";
+  
   TextEditingController _tfLocName = TextEditingController();
   TextEditingController _tfCity = TextEditingController();
   TextEditingController _tfAddress = TextEditingController();
@@ -507,14 +513,49 @@ Widget addSCForm(BuildContext context) {
       SizedBox(
         height: 5,
       ),
-      TextField(
-        controller: _tfCity,
-        decoration: InputDecoration(
-          labelText: 'City',
-          focusedBorder: outlineInputBorder(),
-          enabledBorder: outlineInputBorder(),
-        ),
+      // TextField(
+      //   controller: _tfCity,
+      //   decoration: InputDecoration(
+      //     labelText: 'City',
+      //     focusedBorder: outlineInputBorder(),
+      //     enabledBorder: outlineInputBorder(),
+      //   ),
+      // ),
+
+      FutureBuilder<List<Kota>>(
+        future: listKota,
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text('${snapshot.error}');
+          } else if (snapshot.hasData || snapshot.data != null) {
+            List<Kota> result = snapshot.data!;
+            List<String> kota = [];
+
+            for (int i = 0; i < 30; i++) {
+              if (!kota.contains(result[i].nama)) {
+                kota.add(result[i].nama);
+              }
+            }
+            kota.sort();
+            print("kota: ${kota}");
+
+            return DropdownButton(
+                isExpanded: true,
+                value: _dropdownKota,
+                items: kota.map((value) {
+                  return DropdownMenuItem(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  _dropdownKota = newValue!;
+                });
+          }
+          return progressIndicator();
+        },
       ),
+
       SizedBox(
         height: 5,
       ),

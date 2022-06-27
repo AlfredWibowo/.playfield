@@ -79,6 +79,7 @@ class _TicketPageState extends State<TicketPage> {
                             .toList();
                   
                         return ticketCard(
+                          context,
                           'GOR Sudirman',
                           '087853946662',
                           'Jl. Kertajaya Surabaya',

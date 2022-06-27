@@ -1,7 +1,9 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:project_ambw/class/CKota.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/services/localService.dart';
 
 class AdminAddFieldPage extends StatefulWidget {
   const AdminAddFieldPage({Key? key}) : super(key: key);
@@ -20,6 +22,8 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
 
   late Widget _form;
 
+  late Future<List<Kota>> _listKota;
+
   Widget addFieldRadioBtn(String text) {
     return Row(
       children: [
@@ -32,7 +36,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
               if (text == 'Field') {
                 _form = addFieldForm();
               } else {
-                _form = addSCForm(context);
+                _form = addSCForm(context, _listKota);
               }
             });
           },
@@ -48,7 +52,8 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
     super.initState();
 
     setState(() {
-      _form = addSCForm(context);
+      _listKota = LocalService().getAllKota();
+      _form = addSCForm(context, _listKota);
     });
   }
 
