@@ -37,6 +37,8 @@ dependencies:
   firebase_storage: ^10.2.18
   flutter:
     sdk: flutter
+  qr_code_scanner: ^1.0.0
+  qr_flutter: ^4.0.0
   tuple: ^2.0.0
   uuid: ^3.0.6
 

@@ -50,6 +50,10 @@ class _TicketPageState extends State<TicketPage> {
             ),
             ticketCard(
                 'GOR Sudirman', '087853946662', 'Jl. Kertajaya Surabaya', 'Futsal',2),
+
+            SizedBox(height: 20,),
+
+            ticketQRCode("1231314242142", 216),
           ],
         ),
       ),

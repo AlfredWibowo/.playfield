@@ -661,3 +661,14 @@ Widget addSportCenterForm() {
     ],
   );
 }
+
+Widget ticketQRCode(String uuid, double size) {
+  return Center(
+    child: QrImage(
+      data: uuid,
+      version: QrVersions.auto,
+      size: size,
+      gapless: false,
+    ),
+  );
+}
