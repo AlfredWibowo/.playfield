@@ -9,6 +9,7 @@ import 'package:project_ambw/services/authService.dart';
 
 import 'package:flutter/material.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 IconButton backButton(BuildContext context) {
   return IconButton(
