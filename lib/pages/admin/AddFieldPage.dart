@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/class/CKota.dart';
 import 'package:project_ambw/class/CLapangan.dart';
@@ -28,8 +29,11 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
   late Widget _form;
 
   late Future<List<Kota>> _listKota;
+  List<DropdownMenuItem<String>> dropdownGedungItems = [];
 
   String _dropdownKota = "";
+  String _dropdownGedung = "";
+  String _dropdownFType = "Badminton";
 
   Widget addFieldRadioBtn(String text) {
     return Row(
@@ -55,14 +59,58 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
     TextEditingController _tfPrice = TextEditingController();
     return Column(
       children: [
-        TextField(
-          controller: _tfLocName,
-          decoration: InputDecoration(
-            labelText: 'Sport Center Name',
-            focusedBorder: outlineInputBorder(),
-            enabledBorder: outlineInputBorder(),
-            suffixIcon: Icon(Icons.arrow_drop_down),
-          ),
+        StreamBuilder<DocumentSnapshot>(
+          stream:
+              AdminFirestoreDatabase.getDataByEmail(AdminSession.session.email),
+          builder: (context, snapshot) {
+            if (snapshot.hasError) {
+              return Text('${snapshot.error}');
+            } else if (snapshot.hasData || snapshot.data != null) {
+              AdminSession.session = Admin.fromDocument(snapshot.data!);
+              Admin res = AdminSession.session;
+
+              dropdownGedungItems = [];
+
+              for (int i = 0; i < res.owns.length; i++) {
+                if (i == 0) {
+                  _dropdownGedung = res.owns[i].nama;
+                }
+                var newItem = DropdownMenuItem(
+                  child: Text(res.owns[i].nama,
+                      style: TextStyle(fontFamily: 'Roboto')),
+                  value: res.owns[i].nama,
+                );
+                dropdownGedungItems.add(newItem);
+              }
+              return DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2.0),
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: Padding(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 12.0, vertical: 14.0),
+                    child: DropdownButtonHideUnderline(
+                      child: DropdownButton(
+                          isDense: true,
+                          focusColor: Colors.transparent,
+                          style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                          isExpanded: true,
+                          value: _dropdownGedung,
+                          items: dropdownGedungItems,
+                          onChanged: (String? newValue) {
+                            if (dropdownGedungItems.length > 1) {
+                              setState(() {
+                                _dropdownGedung = newValue!;
+                              });
+                            }
+                            ;
+                          }),
+                    )),
+              );
+            }
+            return progressIndicator();
+          },
         ),
         SizedBox(
           height: 5,
@@ -78,13 +126,36 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
         SizedBox(
           height: 5,
         ),
-        TextField(
-          controller: _tfFieldType,
-          decoration: InputDecoration(
-            labelText: 'Field Type',
-            focusedBorder: outlineInputBorder(),
-            enabledBorder: outlineInputBorder(),
-            suffixIcon: Icon(Icons.arrow_drop_down),
+        DecoratedBox(
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.black, width: 2.0),
+            borderRadius: BorderRadius.zero,
+          ),
+          child: Padding(
+            padding:
+                const EdgeInsets.symmetric(horizontal: 12.0, vertical: 14.0),
+            child: DropdownButtonHideUnderline(
+              child: DropdownButton(
+                  isDense: true,
+                  focusColor: Colors.transparent,
+                  style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                  isExpanded: true,
+                  value: _dropdownFType,
+                  items: fieldType.map((String value) {
+                    return DropdownMenuItem(
+                      value: value,
+                      child: Text(
+                        value,
+                        style: TextStyle(fontFamily: 'Roboto'),
+                      ),
+                    );
+                  }).toList(),
+                  onChanged: (String? newValue) {
+                    setState(() {
+                      _dropdownFType = newValue!;
+                    });
+                  }),
+            ),
           ),
         ),
         SizedBox(
@@ -107,18 +178,22 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
             // Get Current Admin
             Admin CurrAdmin = AdminSession.session;
             // Get Current Gedung
-            int index = CurrAdmin.findGedungIndex(_tfLocName.text);
+            int index = CurrAdmin.findGedungIndex(_dropdownGedung);
             if (index == -1) {
-              // TODO: implement Error
-              // Return Dialog Error Name
+              buildSnackBar(context, "Error. Sport Center Not Found");
             } else {
-              // Create Field class to input
-              Field inputClass = Field(
+              List<String> check = CurrAdmin.owns[index].getAllFieldID();
+              if (check.contains(_tfFieldID.text)) {
+                buildSnackBar(context, "Error. Field ID Duplicate");
+              } else {
+                Field inputClass = Field(
                   fieldID: _tfFieldID.text,
-                  type: _tfFieldType.text,
+                  type: _dropdownFType,
                   priceHour: int.parse(_tfPrice.text.toString()));
               CurrAdmin.owns[index].fields.add(inputClass);
               AdminFirestoreDatabase.editData(admin: CurrAdmin);
+              buildSnackBar(context, "Field Has Been Added");
+              }
             }
           },
           child: Text(
@@ -171,7 +246,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
               List<Kota> result = snapshot.data!;
               List<String> kota = [];
 
-              for (int i = 0; i < 30; i++) {
+              for (int i = 0; i < 20; i++) {
                 if (!kota.contains(result[i].nama)) {
                   kota.add(result[i].nama);
                 }
@@ -189,6 +264,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
                   child: DropdownButtonHideUnderline(
                     child: DropdownButton(
                         isDense: true,
+                        focusColor: Colors.transparent,
                         style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
                         isExpanded: true,
                         value: _dropdownKota,
@@ -231,6 +307,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
         ),
         TextField(
           controller: _tfPhoneNum,
+          keyboardType: TextInputType.phone,
           decoration: InputDecoration(
             labelText: 'Phone Number',
             focusedBorder: outlineInputBorder(),
@@ -300,7 +377,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
                 nama: _tfLocName.text,
                 kota: _tfCity.text,
                 alamat: _tfAddress.text,
-                noTelp: int.parse(_tfPhoneNum.text.toString()),
+                noTelp: _tfPhoneNum.text,
                 opTime: TupleTime(
                     startTime: _tfStartTime.text, endTime: _tfEndTime.text)));
             AdminFirestoreDatabase.editData(admin: CurrAdmin);
@@ -331,9 +408,15 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
     super.initState();
 
     setState(() {
+      // initGedung = AdminSession.session.owns[0].nama;
+      // if (_dropdownGedung.isEmpty) {
+      //   _dropdownGedung = AdminSession.session.owns[0].nama;
+      // }
       _listKota = LocalService().getAllKota();
       _form = addFieldForm();
       _dropdownKota = "Surabaya";
+      _dropdownGedung = AdminSession.session.owns[0].nama;
+      // _dropdownFType = "Badminton";
     });
   }
 

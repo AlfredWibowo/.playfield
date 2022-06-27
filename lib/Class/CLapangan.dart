@@ -1,5 +1,8 @@
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:uuid/uuid.dart';
+
+final List<String> fieldType = ["Badminton", "Futsal", "Basketball"];
 
 class Field{
   String? fieldID;

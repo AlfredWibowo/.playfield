@@ -84,7 +84,15 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
             body: _screens[_currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                color: Colors.brown,
+                color: Color.fromRGBO(223, 181, 156, 100),
+                boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, -2), // changes position of shadow
+                    )
+                ],
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),

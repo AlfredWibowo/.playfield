@@ -154,6 +154,14 @@ class Admin extends UserCls {
 
   }
 
+  List<String> getAllLocationName() {
+    List<String> output = [];
+    for(int i =0; i < owns.length; i++) {
+      output.add(owns[i].nama);
+    }
+    return output;
+  }
+
   int findGedungIndex(String nama) {
     for (int i =0; i< owns.length; i++) {
       if (owns[i].nama == nama) {
@@ -183,14 +191,14 @@ class Admin extends UserCls {
         alamat: json['alamat'],
         noTelp: json['noTelp'],
         isAdmin: json['isAdmin'],
-        own: List<Gedung>.from(json["own"].map((x) => Field.fromJson(x))),
+        own: List<Gedung>.from(json["own"].map((x) => Gedung.fromJson(x))),
         activeTicket: (jsonDecode(json['activeTicket']) as List<dynamic>).cast<String>()
     );
   }
 
   factory Admin.fromDocument(DocumentSnapshot doc) {
     List<dynamic> ownInput =  doc.get('own');
-    List<Gedung> castedOI = ownInput.cast<Gedung>();
+    List<Gedung> castedOI = ownInput.map((e) => Gedung(nama: e["name"], kota: e["kota"], alamat: e["alamat"], noTelp: e["noTelp"], opTime: TupleTime(startTime:e["opTime"]['startTime'],endTime: e['opTime']['endTime'] ))).toList();
     List<dynamic> ticketInput =  doc.get('activeTicket');
     List<String> castedTI = ticketInput.cast<String>();
     return Admin.jsonConstructor(
@@ -209,7 +217,7 @@ class Gedung {
   String nama;
   String kota;
   String alamat;
-  int noTelp;
+  String noTelp;
   TupleTime opTime;
   List<Field> fields = [];
 
@@ -252,6 +260,15 @@ class Gedung {
     );
   }
 
+  
+
+  List<String> getAllFieldID() {
+    List<String> output = [];
+    for(int i =0; i < fields.length; i++) {
+      output.add(fields[i].fieldID!);
+    }
+    return output;
+  }
 
 }
 
