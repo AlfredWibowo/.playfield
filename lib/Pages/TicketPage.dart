@@ -23,7 +23,7 @@ class _TicketPageState extends State<TicketPage> {
   ];
 
   //coba tabbar
-  List status = [0, 1, 2, 2, 2, 1, 0, 1];
+  List status = [0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0,];
 
   @override
   void initState() {
@@ -50,7 +50,8 @@ class _TicketPageState extends State<TicketPage> {
           return Scaffold(
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
-              child: ListView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   title('Manage your', false),
                   title('Reservation', true),
@@ -64,13 +65,10 @@ class _TicketPageState extends State<TicketPage> {
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                    height: status
-                            .where((element) => element == _currentindexTab)
-                            .toList()
-                            .length *
-                        120,
+                  
+                  Expanded(
                     child: ListView.separated(
+                      shrinkWrap: true,
                       itemCount: status
                           .where((element) => element == _currentindexTab)
                           .toList()
@@ -79,7 +77,7 @@ class _TicketPageState extends State<TicketPage> {
                         List filtered = status
                             .where((element) => element == _currentindexTab)
                             .toList();
-
+                  
                         return ticketCard(
                           'GOR Sudirman',
                           '087853946662',
@@ -93,10 +91,7 @@ class _TicketPageState extends State<TicketPage> {
                       },
                     ),
                   ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  ticketQRCode("1231314242142", 216),
+                  //ticketQRCode("1231314242142", 216),
                 ],
               ),
             ),
