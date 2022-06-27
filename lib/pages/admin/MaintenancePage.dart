@@ -16,7 +16,8 @@ class _AdminMaintenancePageState extends State<AdminMaintenancePage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             title('Manage your', false),
             title('Sports center', true),

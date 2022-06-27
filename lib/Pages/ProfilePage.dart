@@ -31,7 +31,8 @@ class _ProfilePageState extends State<ProfilePage> {
       ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             SizedBox(
               height: 30,

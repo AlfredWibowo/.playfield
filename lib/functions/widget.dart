@@ -259,9 +259,12 @@ Row textWithIconRow(IconData icon, String text) {
   );
 }
 
-Card lastVisitCard() {
-  return Card(
-    color: Colors.black,
+Widget latestVisitCard() {
+  return Container(
+    decoration: BoxDecoration(
+      color: Colors.black,
+      borderRadius: BorderRadius.circular(16),
+    ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -277,7 +280,7 @@ Card lastVisitCard() {
               Text(
                 'GOR Sudirman',
                 style: TextStyle(
-                  fontSize: 16,
+                  fontSize: 18,
                   color: Colors.white,
                 ),
               ),

@@ -17,7 +17,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             title('Hello,', false),
             title(AdminSession.session.nama, true),

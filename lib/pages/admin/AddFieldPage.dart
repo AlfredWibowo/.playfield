@@ -342,7 +342,8 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             title('Which one do you', false),
             Row(

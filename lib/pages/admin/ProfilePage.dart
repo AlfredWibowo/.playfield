@@ -29,7 +29,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
       ),
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 24),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(
               height: 30,

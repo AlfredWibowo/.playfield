@@ -17,7 +17,8 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
-        child: ListView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             title('Hello,', false),
             title(UserSession.session.nama, true),
@@ -34,9 +35,7 @@ class _HomePageState extends State<HomePage> {
             ),
             subTitle('Latest Visit', true, () {}),
             SizedBox(height: 10),
-            lastVisitCard(),
-            SizedBox(height: 24),
-            lastVisitCard(),
+            latestVisitCard(),
           ],
         ),
       ),
