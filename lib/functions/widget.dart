@@ -446,32 +446,31 @@ Color sportColor(String sport) {
   }
 }
 
-Widget ticketCard(BuildContext context, String lapangan, String noTelp,
-    String alamat, String jenisLap, int stat) {
+Widget ticketCard(BuildContext context, FieldOccupancy ticket) {
   return ListTile(
     onTap: () {
-      dialogTicket(context, lapangan);
+      dialogTicket(context, ticket.ticketID);
     },
     shape: roundedRectangleBorder(),
     contentPadding: EdgeInsets.all(8),
     tileColor: Colors.black,
     leading: imageNetwork(imagePath, 100, 100),
     title: Text(
-      lapangan,
+      ticket.ticketID,
       style: TextStyle(
         fontSize: 14,
         color: Colors.white,
       ),
     ),
-    subtitle: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        textWithIconRow(Icons.phone, noTelp),
-        textWithIconRow(Icons.location_on, alamat),
-        sportCard(jenisLap, sportColor(jenisLap))
-      ],
-    ),
-    trailing: iconStatus(stat),
+    // subtitle: Column(
+    //   crossAxisAlignment: CrossAxisAlignment.start,
+    //   children: [
+    //     textWithIconRow(Icons.phone, noTelp),
+    //     textWithIconRow(Icons.location_on, alamat),
+    //     sportCard(jenisLap, sportColor(jenisLap))
+    //   ],
+    // ),
+    trailing: iconStatus(ticket.status),
   );
 }
 

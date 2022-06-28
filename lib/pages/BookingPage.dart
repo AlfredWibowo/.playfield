@@ -223,7 +223,11 @@ class _BookingPageState extends State<BookingPage> {
                   if (lofAdmin[i].type == _dropdownFieldType) {
                     adminInput.owns[widget.idxGedung].fields[i].occupancies.add(fieldOccupancy);
                     AdminFirestoreDatabase.editData(admin: adminInput);
+                    
+                    ConsumerSession.session.tickets.add(fieldOccupancy.ticketID);
                   }
+                  
+                  ConsumerFirestoreDatabase.editData(consumer: ConsumerSession.session);
                 }
                 buildSnackBar(context, "Tickets Reserved");
                 Navigator.pop(context);
