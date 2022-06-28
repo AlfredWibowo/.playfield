@@ -1,18 +1,12 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'dart:js';
-
-import 'package:project_ambw/class/CKota.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/pages/BookingPage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
-
 import 'package:flutter/material.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 IconButton backButton(BuildContext context) {
@@ -320,52 +314,28 @@ Card sportCard(String sport, Color color) {
   );
 }
 
-Widget exploreCard(BuildContext context, String lapangan, String noTelp,
-    String alamat, String kota) {
+List<Widget> sportCardList(Gedung gedung) {
+  List<String> listFieldType = [];
+
+  print(gedung.fields);
+
+  //print("list sport: ${listFieldType}");
+
+  List<String> disctinct = listFieldType.toSet().toList();
+  List<Widget> listCard = [];
+
+  disctinct.sort();
+  for (var type in disctinct) {
+    listCard.add(sportCard(type, sportColor(type)));
+  }
+
+  return listCard;
+}
+
+Widget exploreCard(BuildContext context, Gedung gedung) {
   return GestureDetector(
     onTap: () {
-      showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: Image.network(imagePath),
-            content: Column(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Center(
-                  child: Text(
-                    lapangan,
-                    style: TextStyle(
-                      fontWeight: FontWeight.bold,
-                      fontSize: 28,
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                ListTile(
-                  leading: Icon(Icons.phone),
-                  title: Text(noTelp),
-                ),
-                ListTile(
-                  leading: Icon(Icons.location_on),
-                  title: Text(alamat),
-                ),
-              ],
-            ),
-            actions: [
-              ElevatedButton(
-                onPressed: () {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(),));
-                },
-                child: Text('Book'),
-              ),
-            ],
-          );
-        },
-      );
+      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(dataGedung: gedung),));
     },
     child: Container(
       width: double.infinity,
@@ -378,7 +348,7 @@ Widget exploreCard(BuildContext context, String lapangan, String noTelp,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            lapangan,
+            gedung.nama,
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -387,19 +357,16 @@ Widget exploreCard(BuildContext context, String lapangan, String noTelp,
           SizedBox(
             height: 20,
           ),
-          textWithIconRow(Icons.phone, noTelp),
-          textWithIconRow(Icons.location_on, alamat),
+          textWithIconRow(Icons.phone, gedung.noTelp),
+          textWithIconRow(Icons.location_on, gedung.alamat),
+          textWithIconRow(Icons.alarm, "${gedung.opTime.startTime} - ${gedung.opTime.endTime}"),
           SizedBox(
             height: 20,
           ),
           Row(
             children: [
               Row(
-                children: [
-                  sportCard('Badminton', Colors.yellow),
-                  sportCard('Basketball', Colors.red),
-                  sportCard('Volley', Colors.green),
-                ],
+                children: sportCardList(gedung),
               ),
               Expanded(
                 child: Row(
@@ -414,7 +381,7 @@ Widget exploreCard(BuildContext context, String lapangan, String noTelp,
                       width: 5,
                     ),
                     Text(
-                      "Surabyaya",
+                      gedung.kota,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,

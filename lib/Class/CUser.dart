@@ -250,13 +250,15 @@ class Gedung {
   }
 
   factory Gedung.fromDocument(DocumentSnapshot doc) {
+    List<dynamic> fields = doc.get('fields');
+    List<Field> fieldList = fields.map((e)  => Field(fieldID: e['fieldID'], type: e['type'], priceHour: e['priceHour'])).toList();
     return Gedung.jsonConstructor(
         nama: doc.get('nama'),
         kota: doc.get('kota'),
         alamat: doc.get('alamat'),
         noTelp: doc.get('noTelp'),
         opTime: doc.get('opTime'),
-        fields: doc.get('field')
+        fields: fieldList,
     );
   }
 

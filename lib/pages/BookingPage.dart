@@ -1,25 +1,44 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
 import 'package:flutter/material.dart';
+import 'package:project_ambw/class/CTransaksi.dart';
+import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:uuid/uuid.dart';
 
 class BookingPage extends StatefulWidget {
-  const BookingPage({Key? key}) : super(key: key);
+  final Gedung dataGedung;
+
+  const BookingPage({Key? key, required this.dataGedung}) : super(key: key);
 
   @override
   State<BookingPage> createState() => _BookingPageState();
 }
 
 class _BookingPageState extends State<BookingPage> {
+  
+
   TextEditingController _tfStartTime = TextEditingController();
   TextEditingController _tfEndTime = TextEditingController();
 
   String _dropdownFieldType = "Badminton";
   List<String> _listFieldType = ["Badminton", "Futsal", "Basketball"];
 
-  int _dropdownStartTime = 0;
-  int _dropdownEndTime = 0;
-  List<int> _listTime = [for (var i = 0; i < 18; i += 1) i];
+  late int _dropdownStartTime;
+  late int _dropdownEndTime;
+  late List<int> _listTime;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    String start = widget.dataGedung.opTime.startTime;
+    String end = widget.dataGedung.opTime.endTime;
+    _dropdownStartTime = int.parse(start.substring(0, 2));
+    _dropdownEndTime = int.parse(end.substring(0, 2));
+
+    _listTime = [for (var i = _dropdownStartTime; i <= _dropdownEndTime; i += 1) i];
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -160,7 +179,12 @@ class _BookingPageState extends State<BookingPage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                // var book = TransaksiCls(
+                //   id: Uuid().v4(),
+                //   lapangan: 
+                // );
+              },
               child: Text(
                 'submit'.toUpperCase(),
                 style: TextStyle(

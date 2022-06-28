@@ -1,15 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'dart:convert';
-
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CKota.dart';
-import 'package:project_ambw/class/CLapangan.dart';
+import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:project_ambw/services/localService.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class ExplorePage extends StatefulWidget {
@@ -65,8 +62,46 @@ class _ExplorePageState extends State<ExplorePage> {
             SizedBox(
               height: 20,
             ),
-            exploreCard(context, 'GOR Sudirman', '087853946662',
-                'Jl. Kertajaya Surabaya', 'Surabaya'),
+
+            StreamBuilder<QuerySnapshot>(
+              stream: AdminFirestoreDatabase.getData(),
+              builder: ((context, snapshot) {
+                if (snapshot.hasError) {
+                  return Text('${snapshot.error}');
+                }
+                else if (snapshot.hasData || snapshot.data != null) {
+                  
+                  List<Admin> listAdmin = [];
+                  for (var i = 0; i < snapshot.data!.docs.length; i++) {
+                    DocumentSnapshot dsData = snapshot.data!.docs[i];
+                    Admin tmp = Admin.fromDocument(dsData);
+                    listAdmin.add(tmp);
+                  }
+
+                  List<Gedung> listGedung = [];
+                  for (var admin in listAdmin) {
+                    for (var gedung in admin.owns) {
+                      listGedung.add(gedung);
+                    }
+                  }
+
+                  return Expanded(
+                    child: ListView.separated(
+                      itemCount: listGedung.length,
+                      itemBuilder: (context, index) {
+                        return exploreCard(context, listGedung[index]);
+                      },
+                      separatorBuilder: (context, index) {
+                        return Divider();
+                      },
+                    ),
+                  );
+                }
+                return progressIndicator();
+              })
+            )
+            //exploreCard(context, 'GOR Sudirman', '087853946662',
+                //'Jl. Kertajaya Surabaya', 'Surabaya'),
             //exploreCard('GOR lala', '087853946662', 'Jl. Kertajaya Surabaya', 'Bekasi'),
 
             
