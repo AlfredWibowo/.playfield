@@ -16,7 +16,7 @@ class Field{
     fieldID = FID;
     this.type = type;
     priceHour = price;
-    occupancies = occupancies;
+    this.occupancies = occupancies;
   }
 
   bool checkOccupancies(int hour) {

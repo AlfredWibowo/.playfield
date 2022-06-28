@@ -257,7 +257,7 @@ Widget latestVisitCard() {
   return Container(
     decoration: BoxDecoration(
       color: Colors.black,
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(6.0),
     ),
     child: Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -341,7 +341,7 @@ Widget exploreCard(BuildContext context, Gedung gedung) {
       width: double.infinity,
       decoration: BoxDecoration(
         color: Colors.black,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(6.0),
       ),
       padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
       child: Column(

@@ -23,7 +23,26 @@ class _TicketPageState extends State<TicketPage> {
   ];
 
   //coba tabbar
-  List status = [0, 1, 2, 2, 2, 1, 0, 1, 2, 2, 2, 2, 1, 1, 1, 1, 0, 0,];
+  List status = [
+    0,
+    1,
+    2,
+    2,
+    2,
+    1,
+    0,
+    1,
+    2,
+    2,
+    2,
+    2,
+    1,
+    1,
+    1,
+    1,
+    0,
+    0,
+  ];
 
   @override
   void initState() {
@@ -46,26 +65,49 @@ class _TicketPageState extends State<TicketPage> {
               });
             }
           });
-
           return Scaffold(
             body: Container(
               padding: EdgeInsets.symmetric(horizontal: 24),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  title('Manage your', false),
-                  title('Reservation', true),
-                  SizedBox(
-                    height: 30,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            title('Manage your', false),
+                            title('Reservation', true),
+                            SizedBox(
+                              height: 30,
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                            child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                          ),
+                        ))
+                      ],
+                    ),
                   ),
-                  TabBar(
-                    tabs: _ticketTab,
-                    labelColor: Colors.black,
+                  Container(
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                    ),
+                    child: TabBar(
+                      tabs: _ticketTab,
+                      labelColor: Colors.black,
+                    ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  
                   Expanded(
                     child: ListView.separated(
                       shrinkWrap: true,
@@ -77,7 +119,7 @@ class _TicketPageState extends State<TicketPage> {
                         List filtered = status
                             .where((element) => element == _currentindexTab)
                             .toList();
-                  
+
                         return ticketCard(
                           context,
                           'GOR Sudirman',
