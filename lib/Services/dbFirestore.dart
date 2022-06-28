@@ -55,6 +55,14 @@ class ConsumerFirestoreDatabase {
         .catchError((e) => print(e));
   }
 
+  static Future<void> editPP({required String email, required String fileName}) async {
+    DocumentReference doc = tbConsumer.doc(email);
+    await doc
+        .update({"profilePicture": fileName })
+        .whenComplete(() => print('Data Consumer Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
   static Future<void> deleteData({required Consumer consumer}) async {
     DocumentReference doc = tbConsumer.doc(consumer.email);
 
