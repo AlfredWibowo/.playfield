@@ -14,7 +14,7 @@ class Field{
 
   Field.jsonConstructor(String FID, String type, int price, List<FieldOccupancy> occupancies) {
     fieldID = FID;
-    type = type;
+    this.type = type;
     priceHour = price;
     occupancies = occupancies;
   }
