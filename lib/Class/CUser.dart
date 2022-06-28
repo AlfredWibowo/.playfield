@@ -73,8 +73,10 @@ class Consumer extends UserCls {
       noTelp: json['noTelp'],
       isAdmin: json['isAdmin'],
       profilePicture: json['profilePicture'],
-      ticket: (jsonDecode(json['ticket']) as List<dynamic>).cast<String>(),
-      history: (jsonDecode(json['history']) as List<dynamic>).cast<String>(),
+      ticket: [],
+      //(jsonDecode(json['ticket']) as List<dynamic>).cast<String>(),
+      history: [],
+      //(jsonDecode(json['history']) as List<dynamic>).cast<String>(),
     );
   }
 
@@ -86,8 +88,8 @@ class Consumer extends UserCls {
       noTelp: doc.get('noTelp'),
       isAdmin: doc.get('isAdmin'),
       profilePicture: doc.get('profilePicture'),
-      ticket: doc.get('ticket'),
-      history: doc.get("history"),
+      ticket: List<String>.from(doc.get('ticket')),
+      history: List<String>.from(doc.get("history")),
     );
   }
 }

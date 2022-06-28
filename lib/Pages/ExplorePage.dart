@@ -83,7 +83,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     for (var gedung in admin.owns) {
                       listGedung.add(gedung);
                     }
-                  }
+                  };
 
                   return Expanded(
                     child: ListView.separated(
