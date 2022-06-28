@@ -46,11 +46,13 @@ class Field{
   }
 
   factory Field.fromDocument(DocumentSnapshot doc) {
+    List<dynamic> fieldOcc = doc.get('fieldOccupancy');
+    List<FieldOccupancy> castedOCC = fieldOcc.map((e) => FieldOccupancy(hour: e['hour'], isOccupied: e['isOccupied'])).toList();
     return Field.jsonConstructor(
       doc.get('fieldID'),
       doc.get('type'),
       doc.get('priceHour'),
-      doc.get('fieldOccupancy'),
+      castedOCC,
     );
   }
 }
