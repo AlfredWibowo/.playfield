@@ -325,11 +325,10 @@ List<Widget> sportCardList(List<String> fieldType) {
   return listCard;
 }
 
-Widget exploreCard(BuildContext context, Gedung gedung) {
+Widget exploreCard(BuildContext context, int idxGedung, Admin admin) {
   List<String> listFieldType = [];
 
-  print(gedung.fields);
-
+  Gedung gedung = admin.owns[idxGedung];
   for (var field in gedung.fields) {
     listFieldType.add(field.type!);
   }
@@ -340,7 +339,7 @@ Widget exploreCard(BuildContext context, Gedung gedung) {
 
   return GestureDetector(
     onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(dataGedung: gedung, dataListType: disctinct),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(idxGedung: idxGedung, dataListType: disctinct, admin: admin),));
     },
     child: Container(
       width: double.infinity,

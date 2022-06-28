@@ -1,18 +1,22 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CTransaksi.dart';
 import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:uuid/uuid.dart';
 
 class BookingPage extends StatefulWidget {
-  final Gedung dataGedung;
+  final int idxGedung;
   final List<String> dataListType;
+  final Admin admin;
 
   const BookingPage(
-      {Key? key, required this.dataGedung, required this.dataListType})
+      {Key? key, required this.idxGedung, required this.dataListType, required this.admin})
       : super(key: key);
 
   @override
@@ -28,6 +32,7 @@ class _BookingPageState extends State<BookingPage> {
   late int _dropdownStartTime;
   late int _dropdownEndTime;
   late List<int> _listTime;
+  late Gedung _gedung;
 
   @override
   void initState() {
@@ -37,8 +42,9 @@ class _BookingPageState extends State<BookingPage> {
     _listFieldType = widget.dataListType;
     _dropdownFieldType = _listFieldType[0];
 
-    String start = widget.dataGedung.opTime.startTime;
-    String end = widget.dataGedung.opTime.endTime;
+    _gedung = widget.admin.owns[widget.idxGedung];
+    String start = _gedung.opTime.startTime;
+    String end = _gedung.opTime.endTime;
     _dropdownStartTime = int.parse(start.substring(0, 2));
     _dropdownEndTime = int.parse(end.substring(0, 2));
 
@@ -200,10 +206,15 @@ class _BookingPageState extends State<BookingPage> {
               height: 20,
             ),
             ElevatedButton(
-              onPressed: () {
-                FieldOccupancy fieldOccupancy =
-                    FieldOccupancy(hour: _dropdownEndTime, isOccupied: true);
+              onPressed: () async {
+                String date = _tfDate.text;
+                int hour = _dropdownEndTime - _dropdownStartTime;
 
+                FieldOccupancy fieldOccupancy =
+                    FieldOccupancy(hour: hour, isOccupied: true);
+
+                Admin adminInput = widget.admin;
+                Field tmpField;
                 
                 
               },

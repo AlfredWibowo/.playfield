@@ -89,7 +89,7 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: ListView.separated(
                       itemCount: listGedung.length,
                       itemBuilder: (context, index) {
-                        return exploreCard(context, listGedung[index]);
+                        return exploreCard(context, index, listAdmin[index]);
                       },
                       separatorBuilder: (context, index) {
                         return Divider();
@@ -100,10 +100,6 @@ class _ExplorePageState extends State<ExplorePage> {
                 return progressIndicator();
               })
             )
-            //exploreCard(context, 'GOR Sudirman', '087853946662',
-                //'Jl. Kertajaya Surabaya', 'Surabaya'),
-            //exploreCard('GOR lala', '087853946662', 'Jl. Kertajaya Surabaya', 'Bekasi'),
-
             
           ],
         ),
