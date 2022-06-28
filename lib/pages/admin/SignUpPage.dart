@@ -125,6 +125,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                   alamat: _tfAlamatController.text,
                   noTelp: _tfNoTelpController.text,
                   isAdmin: true,
+                  profilePicture: "",
                 );
 
                 AdminFirestoreDatabase.addData(admin: data);

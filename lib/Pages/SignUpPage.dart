@@ -114,6 +114,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   alamat: _tfAlamatController.text,
                   noTelp: _tfNoTelpController.text,
                   isAdmin: false,
+                  profilePicture: "",
                 );
 
                 ConsumerFirestoreDatabase.addData(consumer: data);

@@ -21,7 +21,7 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             title('Hello,', false),
-            title(UserSession.session.nama, true),
+            title(ConsumerSession.session.nama, true),
             SizedBox(
               height: 32,
             ),

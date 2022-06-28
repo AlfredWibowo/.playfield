@@ -57,8 +57,8 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
           if (snapshot.hasError) {
             return Text('${snapshot.error}');
           } else if (snapshot.hasData || snapshot.data != null) {
-            UserCls newSession = UserCls.fromDocument(snapshot.data!);
-            UserSession.updateSession(newSession: newSession);
+            Consumer newSession = Consumer.fromDocument(snapshot.data!);
+            ConsumerSession.updateSession(newSession: newSession);
             
             return Scaffold(
               appBar: AppBar(

@@ -3,7 +3,6 @@ import 'dart:convert';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 
-
 class TupleTime {
   String startTime;
   String endTime;
@@ -11,18 +10,12 @@ class TupleTime {
   TupleTime({required this.startTime, required this.endTime});
 
   Map<String, dynamic> toJson() {
-    return {
-      "startTime": startTime,
-      "endTime": endTime
-    };
+    return {"startTime": startTime, "endTime": endTime};
   }
 
   factory TupleTime.fromJson(Map<String, dynamic> json) {
-    return TupleTime(
-      startTime: json['starTime'], 
-      endTime: json['endTime']);
-   }
-
+    return TupleTime(startTime: json['starTime'], endTime: json['endTime']);
+  }
 }
 
 class Consumer extends UserCls {
@@ -38,7 +31,15 @@ class Consumer extends UserCls {
     required String alamat,
     required String noTelp,
     required bool isAdmin,
-  }) : super(email: email,nama: nama,alamat: alamat,noTelp: noTelp,isAdmin: isAdmin) {
+    required String profilePicture,
+  }) : super(
+          email: email,
+          nama: nama,
+          alamat: alamat,
+          noTelp: noTelp,
+          isAdmin: isAdmin,
+          profilePicture: profilePicture,
+        ) {
     if (ticket!.isNotEmpty) {
       tickets = ticket;
     } else {
@@ -47,7 +48,7 @@ class Consumer extends UserCls {
     if (history!.isNotEmpty) {
       histories = history;
     } else {
-      histories= [];
+      histories = [];
     }
   }
 
@@ -71,6 +72,7 @@ class Consumer extends UserCls {
       alamat: json['alamat'],
       noTelp: json['noTelp'],
       isAdmin: json['isAdmin'],
+      profilePicture: json['profilePicture'],
       ticket: (jsonDecode(json['ticket']) as List<dynamic>).cast<String>(),
       history: (jsonDecode(json['history']) as List<dynamic>).cast<String>(),
     );
@@ -78,33 +80,37 @@ class Consumer extends UserCls {
 
   factory Consumer.fromDocument(DocumentSnapshot doc) {
     return Consumer(
-        email: doc.get('email'),
-        nama: doc.get('nama'),
-        alamat: doc.get('alamat'),
-        noTelp: doc.get('noTelp'),
-        isAdmin: doc.get('isAdmin'),
-        ticket: doc.get('ticket'),
-        history: doc.get("history"));
+      email: doc.get('email'),
+      nama: doc.get('nama'),
+      alamat: doc.get('alamat'),
+      noTelp: doc.get('noTelp'),
+      isAdmin: doc.get('isAdmin'),
+      profilePicture: doc.get('profilePicture'),
+      ticket: doc.get('ticket'),
+      history: doc.get("history"),
+    );
   }
 }
 
 class Admin extends UserCls {
   List<Gedung> owns = [];
   List<String> activeTicket = [];
-  Admin(
-      {List<Gedung>? own,
-      List<String>? activeTicket,
-      required String email,
-      required String nama,
-      required String alamat,
-      required String noTelp,
-      required bool isAdmin})
-      : super(
+  Admin({
+    List<Gedung>? own,
+    List<String>? activeTicket,
+    required String email,
+    required String nama,
+    required String alamat,
+    required String noTelp,
+    required bool isAdmin,
+    required String profilePicture,
+  }) : super(
           email: email,
           nama: nama,
           alamat: alamat,
           noTelp: noTelp,
           isAdmin: true,
+          profilePicture: profilePicture,
         ) {
     if (own!.isNotEmpty) {
       owns = own;
@@ -119,17 +125,22 @@ class Admin extends UserCls {
     }
   }
 
-  Admin.jsonConstructor({required this.owns, required this.activeTicket, required String email,
-      required String nama,
-      required String alamat,
-      required String noTelp,
-      required bool isAdmin}):super(
-          email: email,
-          nama: nama,
-          alamat: alamat,
-          noTelp: noTelp,
-          isAdmin: true,
-        );
+  Admin.jsonConstructor({
+    required this.owns,
+    required this.activeTicket,
+    required String email,
+    required String nama,
+    required String alamat,
+    required String noTelp,
+    required bool isAdmin,
+    required String profilePicture,
+  }) : super(
+            email: email,
+            nama: nama,
+            alamat: alamat,
+            noTelp: noTelp,
+            isAdmin: true,
+            profilePicture: profilePicture);
 
   void addTicket(String uuid) {
     activeTicket.add(uuid);
@@ -151,19 +162,18 @@ class Admin extends UserCls {
       // TODO: Failed insert, Duplicate Name
       print("Failed To Insert");
     }
-
   }
 
   List<String> getAllLocationName() {
     List<String> output = [];
-    for(int i =0; i < owns.length; i++) {
+    for (int i = 0; i < owns.length; i++) {
       output.add(owns[i].nama);
     }
     return output;
   }
 
   int findGedungIndex(String nama) {
-    for (int i =0; i< owns.length; i++) {
+    for (int i = 0; i < owns.length; i++) {
       if (owns[i].nama == nama) {
         return i;
       }
@@ -191,15 +201,25 @@ class Admin extends UserCls {
         alamat: json['alamat'],
         noTelp: json['noTelp'],
         isAdmin: json['isAdmin'],
+        profilePicture: json['profilePicture'],
         own: List<Gedung>.from(json["own"].map((x) => Gedung.fromJson(x))),
-        activeTicket: (jsonDecode(json['activeTicket']) as List<dynamic>).cast<String>()
-    );
+        activeTicket:
+            (jsonDecode(json['activeTicket']) as List<dynamic>).cast<String>());
   }
 
   factory Admin.fromDocument(DocumentSnapshot doc) {
-    List<dynamic> ownInput =  doc.get('own');
-    List<Gedung> castedOI = ownInput.map((e) => Gedung(nama: e["name"], kota: e["kota"], alamat: e["alamat"], noTelp: e["noTelp"], opTime: TupleTime(startTime:e["opTime"]['startTime'],endTime: e['opTime']['endTime'] ))).toList();
-    List<dynamic> ticketInput =  doc.get('activeTicket');
+    List<dynamic> ownInput = doc.get('own');
+    List<Gedung> castedOI = ownInput
+        .map((e) => Gedung(
+            nama: e["name"],
+            kota: e["kota"],
+            alamat: e["alamat"],
+            noTelp: e["noTelp"],
+            opTime: TupleTime(
+                startTime: e["opTime"]['startTime'],
+                endTime: e['opTime']['endTime'])))
+        .toList();
+    List<dynamic> ticketInput = doc.get('activeTicket');
     List<String> castedTI = ticketInput.cast<String>();
     return Admin.jsonConstructor(
         email: doc.get('email'),
@@ -207,9 +227,9 @@ class Admin extends UserCls {
         alamat: doc.get('alamat'),
         noTelp: doc.get('noTelp'),
         isAdmin: doc.get('isAdmin'),
+        profilePicture: doc.get('profilePicture'),
         owns: castedOI,
-        activeTicket: castedTI
-      );
+        activeTicket: castedTI);
   }
 }
 
@@ -221,11 +241,20 @@ class Gedung {
   TupleTime opTime;
   List<Field> fields = [];
 
-  Gedung({required this.nama, required this.kota, required this.alamat, required this.noTelp,
+  Gedung(
+      {required this.nama,
+      required this.kota,
+      required this.alamat,
+      required this.noTelp,
       required this.opTime});
 
-  Gedung.jsonConstructor({required this.nama, required this.kota, required this.alamat, required this.noTelp,
-      required this.opTime, List<Field>? fields});
+  Gedung.jsonConstructor(
+      {required this.nama,
+      required this.kota,
+      required this.alamat,
+      required this.noTelp,
+      required this.opTime,
+      List<Field>? fields});
 
   Map<String, dynamic> toJson() {
     return {
@@ -245,35 +274,33 @@ class Gedung {
         alamat: json['alamat'],
         noTelp: json['noTelp'],
         opTime: TupleTime.fromJson(json['opTime']),
-        fields: List<Field>.from(json["fields"].map((x) => Field.fromJson(x)))
-    );
+        fields: List<Field>.from(json["fields"].map((x) => Field.fromJson(x))));
   }
 
   factory Gedung.fromDocument(DocumentSnapshot doc) {
     List<dynamic> fields = doc.get('fields');
-    List<Field> fieldList = fields.map((e)  => Field(fieldID: e['fieldID'], type: e['type'], priceHour: e['priceHour'])).toList();
+    List<Field> fieldList = fields
+        .map((e) => Field(
+            fieldID: e['fieldID'], type: e['type'], priceHour: e['priceHour']))
+        .toList();
     return Gedung.jsonConstructor(
-        nama: doc.get('nama'),
-        kota: doc.get('kota'),
-        alamat: doc.get('alamat'),
-        noTelp: doc.get('noTelp'),
-        opTime: doc.get('opTime'),
-        fields: fieldList,
+      nama: doc.get('nama'),
+      kota: doc.get('kota'),
+      alamat: doc.get('alamat'),
+      noTelp: doc.get('noTelp'),
+      opTime: doc.get('opTime'),
+      fields: fieldList,
     );
   }
 
-  
-
   List<String> getAllFieldID() {
     List<String> output = [];
-    for(int i =0; i < fields.length; i++) {
+    for (int i = 0; i < fields.length; i++) {
       output.add(fields[i].fieldID!);
     }
     return output;
   }
-
 }
-
 
 class UserCls {
   String email;
@@ -281,13 +308,15 @@ class UserCls {
   String alamat;
   String noTelp;
   bool isAdmin;
+  String profilePicture;
 
   UserCls(
       {required this.email,
       required this.nama,
       required this.alamat,
       required this.noTelp,
-      required this.isAdmin});
+      required this.isAdmin,
+      required this.profilePicture});
 
   Map<String, dynamic> toJson() {
     return {
@@ -295,25 +324,30 @@ class UserCls {
       "nama": nama,
       "alamat": alamat,
       "noTelp": noTelp,
-      "isAdmin": isAdmin
+      "isAdmin": isAdmin,
+      "profilePicture": profilePicture,
     };
   }
 
   factory UserCls.fromJson(Map<String, dynamic> json) {
     return UserCls(
-        email: json['email'],
-        nama: json['nama'],
-        alamat: json['alamat'],
-        noTelp: json['noTelp'],
-        isAdmin: json['isAdmin']);
+      email: json['email'],
+      nama: json['nama'],
+      alamat: json['alamat'],
+      noTelp: json['noTelp'],
+      isAdmin: json['isAdmin'],
+      profilePicture: json['profilePicture'],
+    );
   }
 
   factory UserCls.fromDocument(DocumentSnapshot doc) {
     return UserCls(
-        email: doc.get('email'),
-        nama: doc.get('nama'),
-        alamat: doc.get('alamat'),
-        noTelp: doc.get('noTelp'),
-        isAdmin: doc.get('isAdmin'));
+      email: doc.get('email'),
+      nama: doc.get('nama'),
+      alamat: doc.get('alamat'),
+      noTelp: doc.get('noTelp'),
+      isAdmin: doc.get('isAdmin'),
+      profilePicture: doc.get('profilePicture'),
+    );
   }
 }

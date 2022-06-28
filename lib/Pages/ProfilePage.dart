@@ -3,7 +3,6 @@
 import 'package:project_ambw/class/CUserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:project_ambw/services/storageService.dart';
@@ -50,8 +49,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: FutureBuilder<String>(
-                      // future: StorageService.getDownloadUrl(imageName: UserSession.session.profilePicture),
-                      future: StorageService.getDownloadUrl(imageName: ""),
+                      future: StorageService.getDownloadUrl(imageName: ConsumerSession.session.profilePicture),
                       builder: (context, snapshot) {
                         if (snapshot.hasError) {
                           return Text('${snapshot.error}');
@@ -76,12 +74,12 @@ class _ProfilePageState extends State<ProfilePage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            UserSession.session.nama,
+                            ConsumerSession.session.nama,
                             style: TextStyle(
                                 fontSize: 20, fontWeight: FontWeight.bold),
                           ),
                           textWithIconRow(
-                              Icons.email_outlined, UserSession.session.email),
+                              Icons.email_outlined, ConsumerSession.session.email),
                         ],
                       ),
                       Column(
@@ -113,11 +111,11 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                 if (msg == "Successful") {
                                   ConsumerFirestoreDatabase.editPP(
-                                    email: UserSession.session.email,
+                                    email: ConsumerSession.session.email,
                                     fileName: fileName,
                                   );
 
-                                  // UserSession.session.profilePicture = fileName;
+                                  ConsumerSession.session.profilePicture = fileName;
 
                                   buildSnackBar(
                                       context, "Change PP Successfull");
@@ -142,13 +140,13 @@ class _ProfilePageState extends State<ProfilePage> {
               ),
             ),
             SizedBox(height: 20),
-            profileCard('Email', UserSession.session.email, context),
+            profileCard('Email', ConsumerSession.session.email, context),
             SizedBox(height: 8),
-            profileCard('Nama', UserSession.session.nama, context),
+            profileCard('Nama', ConsumerSession.session.nama, context),
             SizedBox(height: 8),
-            profileCard('Alamat', UserSession.session.alamat, context),
+            profileCard('Alamat', ConsumerSession.session.alamat, context),
             SizedBox(height: 8),
-            profileCard('No Telepon', UserSession.session.noTelp, context),
+            profileCard('No Telepon', ConsumerSession.session.noTelp, context),
           ],
         ),
       ),
@@ -250,23 +248,23 @@ class _ProfilePageState extends State<ProfilePage> {
                                     ),
                                     onPressed: () {
                                       if (title == "Nama") {
-                                        UserSession.session.nama =
+                                        ConsumerSession.session.nama =
                                             _tfController.text;
                                         ConsumerFirestoreDatabase.editNama(
                                             email: AuthService.getEmailUser(),
-                                            nama: UserSession.session.nama);
+                                            nama: ConsumerSession.session.nama);
                                       } else if (title == "Alamat") {
-                                        UserSession.session.alamat =
+                                        ConsumerSession.session.alamat =
                                             _tfController.text;
                                         ConsumerFirestoreDatabase.editAlamat(
                                             email: AuthService.getEmailUser(),
-                                            alamat: UserSession.session.alamat);
+                                            alamat: ConsumerSession.session.alamat);
                                       } else if (title == "No Telepon") {
-                                        UserSession.session.noTelp =
+                                        ConsumerSession.session.noTelp =
                                             _tfController.text;
                                         ConsumerFirestoreDatabase.editTelp(
                                             email: AuthService.getEmailUser(),
-                                            telp: UserSession.session.noTelp);
+                                            telp: ConsumerSession.session.noTelp);
                                       }
                                       buildSnackBar(
                                           context, title + ' berhasil di edit');
