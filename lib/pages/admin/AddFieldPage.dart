@@ -72,9 +72,6 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
               dropdownGedungItems = [];
 
               for (int i = 0; i < res.owns.length; i++) {
-                if (i == 0) {
-                  _dropdownGedung = res.owns[i].nama;
-                }
                 var newItem = DropdownMenuItem(
                   child: Text(res.owns[i].nama,
                       style: TextStyle(fontFamily: 'Roboto')),
@@ -375,7 +372,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
             Admin CurrAdmin = AdminSession.session;
             CurrAdmin.addGedung(Gedung(
                 nama: _tfLocName.text,
-                kota: _tfCity.text,
+                kota: _dropdownKota,
                 alamat: _tfAddress.text,
                 noTelp: _tfPhoneNum.text,
                 opTime: TupleTime(
@@ -409,13 +406,12 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
 
     setState(() {
       // initGedung = AdminSession.session.owns[0].nama;
-      // if (_dropdownGedung.isEmpty) {
-      //   _dropdownGedung = AdminSession.session.owns[0].nama;
-      // }
+      if (_dropdownGedung.isEmpty) {
+        _dropdownGedung = AdminSession.session.owns[0].nama;
+      }
       _listKota = LocalService().getAllKota();
       _form = addFieldForm();
       _dropdownKota = "Surabaya";
-      _dropdownGedung = AdminSession.session.owns[0].nama;
       // _dropdownFType = "Badminton";
     });
   }
@@ -424,9 +420,9 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
+        height: double.infinity,
         padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        child: ListView(
           children: [
             title('Which one do you', false),
             Row(

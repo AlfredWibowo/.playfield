@@ -60,8 +60,8 @@ class Consumer extends UserCls {
       "alamat": alamat,
       "noTelp": noTelp,
       "isAdmin": isAdmin,
-      "ticket": jsonEncode(tickets),
-      "history": jsonEncode(histories),
+      "ticket": List<String>.from(tickets),
+      "history": List<String>.from(histories),
     };
   }
 
@@ -279,6 +279,7 @@ class Gedung {
       required this.noTelp,
       required this.opTime,
       required List<Field> this.fields});
+
 
   Map<String, dynamic> toJson() {
     return {
