@@ -17,9 +17,9 @@ class _TicketPageState extends State<TicketPage> {
   int _currentindexTab = 0;
 
   final List<Tab> _ticketTab = [
-    Tab(text: 'Cancel'),
     Tab(text: 'Active'),
-    Tab(text: 'History')
+    Tab(text: 'Used'),
+    Tab(text: 'Canceled'),
   ];
 
   //coba tabbar
@@ -142,73 +142,5 @@ class _TicketPageState extends State<TicketPage> {
         },
       ),
     );
-
-    // @override
-    // Widget build(BuildContext context) {
-    //   return DefaultTabController(
-    //       length: _ticketTab.length,
-    //       child: Builder(builder: (BuildContext context) {
-    //         TabController _tabController = DefaultTabController.of(context)!;
-
-    //         _tabController.addListener(() {
-    //           if (!_tabController.indexIsChanging) {
-    //             setState(() {
-    //               _currentindexTab = _tabController.index.toInt();
-    //             });
-    //           }
-    //         });
-
-    //         return Scaffold(
-    //           body: Container(
-    //             padding: EdgeInsets.all(0),
-    //             child: Column(
-    //               children: [
-    //                 TabBar(
-    //                   tabs: _ticketTab,
-    //                   labelColor: Colors.blue,
-    //                 ),
-    //                 SizedBox(
-    //                   height: 30,
-    //                 ),
-    //                 Expanded(
-    //                   child: ListView(
-    //                     children: [
-    //                       ListTile(
-    //                         onTap: () {},
-    //                         leading: ClipRRect(
-    //                           borderRadius: BorderRadius.circular(5),
-    //                           child: Image.network(
-    //                             imagePath,
-    //                             fit: BoxFit.cover,
-    //                           ),
-    //                         ),
-    //                         title: Text(
-    //                           'GOR Bulutangkis Soedirman',
-    //                         ),
-    //                         subtitle: Column(
-    //                           crossAxisAlignment: CrossAxisAlignment.start,
-    //                           children: [
-    //                             Text(
-    //                               '0857-3317-0825',
-    //                             ),
-    //                             Text(
-    //                               'Jl. Dr. Ir. H. Soekarno No.8, Manyar Sabrangan, Kec. Mulyorejo, Kota SBY, Jawa Timur 60116',
-    //                             ),
-    //                           ],
-    //                         ),
-    //                         trailing: Icon(
-    //                           Icons.pause_circle,
-    //                           color: Colors.amber,
-    //                           size: 36,
-    //                         ),
-    //                       ),
-    //                     ],
-    //                   ),
-    //                 ),
-    //               ],
-    //             ),
-    //           ),
-    //         );
-    //       }));
   }
 }

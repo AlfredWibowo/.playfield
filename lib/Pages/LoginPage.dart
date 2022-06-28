@@ -1,4 +1,5 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/authService.dart';
@@ -77,23 +78,37 @@ class _LoginPageState extends State<LoginPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                Future<String> responseMsg;
+                String email = _tfEmailController.text;
+                String password = _tfPasswordController.text;
 
-                responseMsg = AuthService.login(
-                  email: _tfEmailController.text,
-                  password: _tfPasswordController.text,
-                );
+                //cek email exist in consumer
+                final docSnap = await FirebaseFirestore.instance
+                    .collection("tbConsumer")
+                    .doc(email)
+                    .get();
 
-                String msg = await responseMsg;
-                buildSnackBar(context, msg);
+                if (docSnap.exists) {
+                  Future<String> responseMsg;
 
-                if (msg == 'Successful') {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => BottomNavigationPage(),
-                    ),
+                  responseMsg = AuthService.login(
+                    email: email,
+                    password: password,
                   );
+
+                  String msg = await responseMsg;
+                  buildSnackBar(context, msg);
+
+                  if (msg == 'Successful') {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => BottomNavigationPage(),
+                      ),
+                    );
+                  }
+                }
+                else {
+                  buildSnackBar(context, "Register Consumer Account First");
                 }
               },
               child: Text(

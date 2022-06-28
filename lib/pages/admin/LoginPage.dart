@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
@@ -93,23 +94,37 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             ),
             ElevatedButton(
               onPressed: () async {
-                Future<String> responseMsg;
+                String email = _tfEmailController.text;
+                String password = _tfPasswordController.text;
 
-                responseMsg = AuthService.login(
-                  email: _tfEmailController.text,
-                  password: _tfPasswordController.text,
-                );
+                //cek email exist in Admin
+                final docSnap = await FirebaseFirestore.instance
+                    .collection("tbAdmin")
+                    .doc(email)
+                    .get();
 
-                String msg = await responseMsg;
-                buildSnackBar(context, msg);
+                if (docSnap.exists) {
+                  Future<String> responseMsg;
 
-                if (msg == 'Successful') {
-                  Navigator.pushReplacement(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => AdminBottomNavigationPage(),
-                    ),
+                  responseMsg = AuthService.login(
+                    email: email,
+                    password: password,
                   );
+
+                  String msg = await responseMsg;
+                  buildSnackBar(context, msg);
+
+                  if (msg == 'Successful') {
+                    Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AdminBottomNavigationPage(),
+                      ),
+                    );
+                  }
+                }
+                else {
+                  buildSnackBar(context, "Register Admin Account First");
                 }
               },
               child: Text(

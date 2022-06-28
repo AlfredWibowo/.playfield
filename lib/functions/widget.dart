@@ -314,18 +314,11 @@ Card sportCard(String sport, Color color) {
   );
 }
 
-List<Widget> sportCardList(Gedung gedung) {
-  List<String> listFieldType = [];
-
-  print(gedung.fields);
-
-  //print("list sport: ${listFieldType}");
-
-  List<String> disctinct = listFieldType.toSet().toList();
+List<Widget> sportCardList(List<String> fieldType) {
+  
   List<Widget> listCard = [];
 
-  disctinct.sort();
-  for (var type in disctinct) {
+  for (var type in fieldType) {
     listCard.add(sportCard(type, sportColor(type)));
   }
 
@@ -333,9 +326,21 @@ List<Widget> sportCardList(Gedung gedung) {
 }
 
 Widget exploreCard(BuildContext context, Gedung gedung) {
+  List<String> listFieldType = [];
+
+  print(gedung.fields);
+
+  for (var field in gedung.fields) {
+    listFieldType.add(field.type!);
+  }
+
+  List<String> disctinct = listFieldType.toSet().toList();
+
+  disctinct.sort();
+
   return GestureDetector(
     onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(dataGedung: gedung),));
+      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(dataGedung: gedung, dataListType: disctinct),));
     },
     child: Container(
       width: double.infinity,
@@ -366,7 +371,7 @@ Widget exploreCard(BuildContext context, Gedung gedung) {
           Row(
             children: [
               Row(
-                children: sportCardList(gedung),
+                children: sportCardList(disctinct),
               ),
               Expanded(
                 child: Row(
@@ -401,29 +406,29 @@ Widget exploreCard(BuildContext context, Gedung gedung) {
 }
 
 Icon iconStatus(int stat) {
-  Icon cancle = Icon(
+  Icon canceled = Icon(
     Icons.cancel,
     color: Colors.red,
   );
 
-  Icon pending = Icon(
-    Icons.pause_circle,
-    color: Colors.amber,
+  Icon used = Icon(
+    Icons.flag_circle_rounded,
+    color: Colors.grey,
   );
   Icon active = Icon(
-    Icons.play_circle,
+    Icons.check_circle,
     color: Colors.green,
   );
 
   switch (stat) {
     case 0:
-      return cancle;
+      return active;
       break;
     case 1:
-      return pending;
+      return used;
       break;
     default:
-      return active;
+      return canceled;
       break;
   }
 }
