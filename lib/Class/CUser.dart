@@ -60,7 +60,7 @@ class Consumer extends UserCls {
       "alamat": alamat,
       "noTelp": noTelp,
       "isAdmin": isAdmin,
-      "ticket": List<String>.from(tickets),
+      "tickets": List<dynamic>.from(tickets.map((x) => x)),
       "history": List<String>.from(histories),
     };
   }
@@ -73,9 +73,8 @@ class Consumer extends UserCls {
       noTelp: json['noTelp'],
       isAdmin: json['isAdmin'],
       profilePicture: json['profilePicture'],
-      ticket: [],
-      //(jsonDecode(json['ticket']) as List<dynamic>).cast<String>(),
-      history: [],
+      ticket:List<String>.from(json["ticket"].map((x) => x)),
+      history: List<String>.from(json["history"].map((x) => x)),
       //(jsonDecode(json['history']) as List<dynamic>).cast<String>(),
     );
   }
