@@ -103,7 +103,7 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
               body: _screens[_currentIndex],
               bottomNavigationBar: Container(
                 decoration: BoxDecoration(
-                  color: Color.fromRGBO(80, 165, 175, 100),
+                  color: Color.fromARGB(255, 80, 165, 175),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.25),

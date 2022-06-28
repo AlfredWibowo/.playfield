@@ -88,7 +88,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   child: Icon(Icons.check),
                                   style: ElevatedButton.styleFrom(
                                     //minimumSize: Size.fromHeight(20),
-                                    primary: Colors.green,
+                                    elevation: 0.0,
+                                    shadowColor: Colors.transparent,
+                                    primary: Color.fromARGB(255, 116, 227, 19),
                                     shape: roundedRectangleBorder(),
                                   ),
                                 ),
@@ -100,7 +102,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   child: Icon(Icons.close),
                                   style: ElevatedButton.styleFrom(
                                     //minimumSize: Size.fromHeight(20),
-                                    primary: Colors.red,
+                                    elevation: 0.0,
+                                    shadowColor: Colors.transparent,
+                                    primary: Color.fromARGB(255, 251, 11, 11),
                                     shape: roundedRectangleBorder(),
                                   ),
                                 ),
