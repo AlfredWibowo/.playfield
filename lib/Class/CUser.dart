@@ -209,12 +209,34 @@ class Admin extends UserCls {
 
   factory Admin.fromDocument(DocumentSnapshot doc) {
     List<dynamic> ownInput = doc.get('own');
+    List<List<Field>> test = ownInput
+        .map((e) => List<Field>.from(e["fields"].map((f) =>
+            Field.jsonConstructor(
+                f['fieldID'],
+                f['type'],
+                f['priceHour'],
+                List<FieldOccupancy>.from(f['occupancies']
+                        .map((y) => FieldOccupancy.fromJson(y))
+                        .toList()
+                    // FieldOccupancy.jsonConstructor(hour: y['hour'], isOccupied: y['isOccupied'], status: y['status'], ticketID: y['ticketID'])).toList()
+                    )))))
+        .toList();
+    List<Field> getF = test[0];
     List<Gedung> castedOI = ownInput
-        .map((e) => Gedung(
+        .map((e) => Gedung.jsonConstructor(
             nama: e["name"],
             kota: e["kota"],
             alamat: e["alamat"],
             noTelp: e["noTelp"],
+            fields: List<Field>.from(e["fields"].map((f) =>
+                Field.jsonConstructor(
+                    f['fieldID'],
+                    f['type'],
+                    f['priceHour'],
+                    List<FieldOccupancy>.from(f['occupancies']
+                        .map((y) => FieldOccupancy.fromJson(y))
+                        .toList())))),
+            // Field(fieldID: f['fieldID'], priceHour: f['priceHour'], type: f['type']))),
             opTime: TupleTime(
                 startTime: e["opTime"]['startTime'],
                 endTime: e['opTime']['endTime'])))
@@ -254,7 +276,7 @@ class Gedung {
       required this.alamat,
       required this.noTelp,
       required this.opTime,
-      List<Field>? fields});
+      required List<Field> this.fields});
 
   Map<String, dynamic> toJson() {
     return {

@@ -41,7 +41,7 @@ class Field{
       json['fieldID'],
       json['type'],
       json['priceHour'],
-      List<FieldOccupancy>.from(json["posts"].map((x) => FieldOccupancy.fromJson(x)))
+      json["occupancies"] == null ? [] : List<FieldOccupancy>.from(json["occupancies"].map((x) => FieldOccupancy.fromJson(x)))
     );
   }
 
