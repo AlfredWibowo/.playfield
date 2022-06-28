@@ -144,9 +144,10 @@ class _WelcomePageState extends State<WelcomePage> {
                 child: Text(
                   '.playfield',
                   style: TextStyle(
+                    fontFamily: 'Comfortaa',
                     fontSize: 30,
                     color: Colors.black,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
               ),

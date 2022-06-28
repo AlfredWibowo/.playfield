@@ -85,138 +85,138 @@ class _SCDetailPageState extends State<SCDetailPage> {
           style: const TextStyle(
               color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
         ),
-        trailing: 
-            IconButton(
-                onPressed: () {
-                  BuildContext dialogContext;
-                  showDialog(
-                    context: context,
-                    barrierDismissible: true,
-                    builder: (BuildContext context) {
-                      dialogContext = context;
-                      return AlertDialog(
-                        insetPadding: EdgeInsets.all(24.0),
-                        title: Text(
-                          ('Edit ' + title).toUpperCase(),
-                          style: const TextStyle(fontFamily: 'Comfortaa'),
-                        ),
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
-                        actionsPadding:
-                            const EdgeInsets.symmetric(horizontal: 8.0),
-                        content: Column(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            Container(
-                              width: MediaQuery.of(context).size.width,
-                              child: Column(
-                                children: [
-                                  SizedBox(height: 16.0),
-                                  ListTile(
-                                    subtitle: TextField(
-                                      controller: _tfController,
-                                      decoration: InputDecoration(
-                                          labelText: title,
-                                          focusedBorder: outlineInputBorder(),
-                                          enabledBorder: outlineInputBorder()),
-                                    ),
-                                  ),
-                                  SizedBox(height: 16.0),
-                                ],
-                              ),
-                            ),
-                          ],
-                        ),
-                        actions: [
-                          Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 8.0),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Expanded(
-                                  flex: 3,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(
-                                            4), // <-- Radius
-                                      ),
-                                      elevation: 0.0,
-                                      primary: Colors.black,
-                                      shadowColor: Colors.transparent,
-                                    ),
-                                    child: const Padding(
-                                      padding:
-                                          EdgeInsets.symmetric(vertical: 10.0),
-                                      child: Text(
-                                        'SUBMIT',
-                                        style: TextStyle(
-                                            fontSize: 14,
-                                            fontFamily: 'Roboto',
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    onPressed: () {
-                                      if (title == "Nama") {
-                                        AdminSession.session.nama =
-                                            _tfController.text;
-                                        AdminFirestoreDatabase.editNama(
-                                            email: AuthService.getEmailUser(),
-                                            nama: AdminSession.session.nama);
-                                      } else if (title == "Alamat") {
-                                        AdminSession.session.alamat =
-                                            _tfController.text;
-                                        AdminFirestoreDatabase.editAlamat(
-                                            email: AuthService.getEmailUser(),
-                                            alamat:
-                                                AdminSession.session.alamat);
-                                      } else if (title == "No Telepon") {
-                                        AdminSession.session.noTelp =
-                                            _tfController.text;
-                                        AdminFirestoreDatabase.editTelp(
-                                            email: AuthService.getEmailUser(),
-                                            telp: AdminSession.session.noTelp);
-                                      }
-                                      buildSnackBar(
-                                          context, title + ' berhasil di edit');
-                                      Navigator.pop(context);
-                                    },
-                                  ),
-                                ),
-                                Expanded(
-                                  flex: 2,
-                                  child: ElevatedButton(
-                                    style: ElevatedButton.styleFrom(
-                                      elevation: 0.0,
-                                      primary: Colors.transparent,
-                                      shadowColor: Colors.transparent,
-                                    ),
-                                    onPressed: () {
-                                      Navigator.pop(dialogContext);
-                                    },
-                                    child: const Text(
-                                      'CANCEL',
-                                      style: TextStyle(
-                                          fontFamily: 'Roboto',
-                                          color: Colors.black),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                          SizedBox(
-                            height: 16.0,
-                          )
-                        ],
-                      );
-                    },
-                  ).then((_) => setState(() {}));
-                },
-                icon: const Icon(Icons.edit),
-                color: Colors.grey,
-              ),
+        trailing: Container(),
+            // IconButton(
+            //     onPressed: () {
+            //       BuildContext dialogContext;
+            //       showDialog(
+            //         context: context,
+            //         barrierDismissible: true,
+            //         builder: (BuildContext context) {
+            //           dialogContext = context;
+            //           return AlertDialog(
+            //             insetPadding: EdgeInsets.all(24.0),
+            //             title: Text(
+            //               ('Edit ' + title).toUpperCase(),
+            //               style: const TextStyle(fontFamily: 'Comfortaa'),
+            //             ),
+            //             contentPadding:
+            //                 const EdgeInsets.symmetric(horizontal: 8.0),
+            //             actionsPadding:
+            //                 const EdgeInsets.symmetric(horizontal: 8.0),
+            //             content: Column(
+            //               mainAxisSize: MainAxisSize.min,
+            //               children: [
+            //                 Container(
+            //                   width: MediaQuery.of(context).size.width,
+            //                   child: Column(
+            //                     children: [
+            //                       SizedBox(height: 16.0),
+            //                       ListTile(
+            //                         subtitle: TextField(
+            //                           controller: _tfController,
+            //                           decoration: InputDecoration(
+            //                               labelText: title,
+            //                               focusedBorder: outlineInputBorder(),
+            //                               enabledBorder: outlineInputBorder()),
+            //                         ),
+            //                       ),
+            //                       SizedBox(height: 16.0),
+            //                     ],
+            //                   ),
+            //                 ),
+            //               ],
+            //             ),
+            //             actions: [
+            //               Padding(
+            //                 padding:
+            //                     const EdgeInsets.symmetric(horizontal: 8.0),
+            //                 child: Row(
+            //                   mainAxisAlignment: MainAxisAlignment.start,
+            //                   children: [
+            //                     Expanded(
+            //                       flex: 3,
+            //                       child: ElevatedButton(
+            //                         style: ElevatedButton.styleFrom(
+            //                           shape: RoundedRectangleBorder(
+            //                             borderRadius: BorderRadius.circular(
+            //                                 4), // <-- Radius
+            //                           ),
+            //                           elevation: 0.0,
+            //                           primary: Colors.black,
+            //                           shadowColor: Colors.transparent,
+            //                         ),
+            //                         child: const Padding(
+            //                           padding:
+            //                               EdgeInsets.symmetric(vertical: 10.0),
+            //                           child: Text(
+            //                             'SUBMIT',
+            //                             style: TextStyle(
+            //                                 fontSize: 14,
+            //                                 fontFamily: 'Roboto',
+            //                                 color: Colors.white),
+            //                           ),
+            //                         ),
+            //                         onPressed: () {
+            //                           if (title == "Nama") {
+            //                             AdminSession.session.nama =
+            //                                 _tfController.text;
+            //                             AdminFirestoreDatabase.editNama(
+            //                                 email: AuthService.getEmailUser(),
+            //                                 nama: AdminSession.session.nama);
+            //                           } else if (title == "Alamat") {
+            //                             AdminSession.session.alamat =
+            //                                 _tfController.text;
+            //                             AdminFirestoreDatabase.editAlamat(
+            //                                 email: AuthService.getEmailUser(),
+            //                                 alamat:
+            //                                     AdminSession.session.alamat);
+            //                           } else if (title == "No Telepon") {
+            //                             AdminSession.session.noTelp =
+            //                                 _tfController.text;
+            //                             AdminFirestoreDatabase.editTelp(
+            //                                 email: AuthService.getEmailUser(),
+            //                                 telp: AdminSession.session.noTelp);
+            //                           }
+            //                           buildSnackBar(
+            //                               context, title + ' berhasil di edit');
+            //                           Navigator.pop(context);
+            //                         },
+            //                       ),
+            //                     ),
+            //                     Expanded(
+            //                       flex: 2,
+            //                       child: ElevatedButton(
+            //                         style: ElevatedButton.styleFrom(
+            //                           elevation: 0.0,
+            //                           primary: Colors.transparent,
+            //                           shadowColor: Colors.transparent,
+            //                         ),
+            //                         onPressed: () {
+            //                           Navigator.pop(dialogContext);
+            //                         },
+            //                         child: const Text(
+            //                           'CANCEL',
+            //                           style: TextStyle(
+            //                               fontFamily: 'Roboto',
+            //                               color: Colors.black),
+            //                         ),
+            //                       ),
+            //                     ),
+            //                   ],
+            //                 ),
+            //               ),
+            //               SizedBox(
+            //                 height: 16.0,
+            //               )
+            //             ],
+            //           );
+            //         },
+            //       ).then((_) => setState(() {}));
+            //     },
+            //     icon: const Icon(Icons.edit),
+            //     color: Colors.grey,
+            //   ),
       ),
     );
   }

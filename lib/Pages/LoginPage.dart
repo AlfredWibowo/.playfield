@@ -32,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 30),
