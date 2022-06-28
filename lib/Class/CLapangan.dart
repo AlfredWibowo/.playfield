@@ -60,7 +60,7 @@ class Field{
 class FieldOccupancy {
   int status; // 0 - active, 1- used, 2 - canceled
   late String ticketID; // PRIMARY
-  int hour;
+  String hour;
   bool isOccupied;
 
   FieldOccupancy({required this.hour,required this.isOccupied, this.status = 0}){

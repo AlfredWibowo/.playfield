@@ -6,6 +6,7 @@ import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CTransaksi.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:uuid/uuid.dart';
@@ -208,15 +209,24 @@ class _BookingPageState extends State<BookingPage> {
             ElevatedButton(
               onPressed: () async {
                 String date = _tfDate.text;
-                int hour = _dropdownEndTime - _dropdownStartTime;
+                String hour = "$_dropdownStartTime-$_dropdownEndTime";
 
+                // Add Ticket
                 FieldOccupancy fieldOccupancy =
-                    FieldOccupancy(hour: hour, isOccupied: true);
+                    FieldOccupancy(hour: hour, isOccupied: true); 
+
 
                 Admin adminInput = widget.admin;
-                Field tmpField;
-                
-                
+                List<Field> lofAdmin = adminInput.owns[widget.idxGedung].fields;
+                for(int i = 0; i < lofAdmin.length; i++) {
+                  // Check if type equal
+                  if (lofAdmin[i].type == _dropdownFieldType) {
+                    adminInput.owns[widget.idxGedung].fields[i].occupancies.add(fieldOccupancy);
+                    AdminFirestoreDatabase.editData(admin: adminInput);
+                  }
+                }
+                buildSnackBar(context, "Tickets Reserved");
+                Navigator.pop(context);
               },
               child: Text(
                 'submit'.toUpperCase(),
