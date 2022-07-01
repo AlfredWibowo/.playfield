@@ -1,16 +1,16 @@
-class Kota {
+class City {
   String nama;
   String latitude;
   String longitude;
 
-  Kota({
+  City({
     required this.nama,
     required this.latitude,
     required this.longitude
   });
 
-  factory Kota.fromJson(Map<String, dynamic> json) {
-    return Kota(
+  factory City.fromJson(Map<String, dynamic> json) {
+    return City(
       nama: json['city'], 
       latitude: json['lat'], 
       longitude: json['lng']
