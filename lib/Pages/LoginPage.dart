@@ -1,8 +1,8 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/authService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/pages/BottomNavigation.dart';
 import 'package:project_ambw/pages/SignUpPage.dart';
@@ -16,8 +16,9 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   bool _isPasswordVisible = false;
-  TextEditingController _tfEmailController = TextEditingController();
-  TextEditingController _tfPasswordController = TextEditingController();
+
+  final TextEditingController _tfEmailController = TextEditingController();
+  final TextEditingController _tfPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +27,14 @@ class _LoginPageState extends State<LoginPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: backButton(context),
         ),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Padding(
               padding: EdgeInsets.only(bottom: 30),
@@ -83,7 +85,7 @@ class _LoginPageState extends State<LoginPage> {
 
                 //cek email exist in consumer
                 final docSnap = await FirebaseFirestore.instance
-                    .collection("tbConsumer")
+                    .collection("Consumer")
                     .doc(email)
                     .get();
 

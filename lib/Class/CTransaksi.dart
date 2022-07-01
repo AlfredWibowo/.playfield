@@ -1,15 +1,25 @@
 import 'package:project_ambw/class/CLapangan.dart';
+import 'package:uuid/uuid.dart';
 
 class TransaksiCls {
-  String id;
+  late String id;
   String tanggal;
   Field lapangan;
-  String status;
 
   TransaksiCls({
-    required this.id,
     required this.tanggal,
     required this.lapangan,
-    required this.status
-  });
+  }) {
+    var uuid = const Uuid();
+    id = uuid.v4();
+  }
+
+  @override
+  Map<String, dynamic> toJson() {
+    return {
+      "ID": id,
+      "tanggal": tanggal,
+      "isOccupied": lapangan
+    };
+  }
 }

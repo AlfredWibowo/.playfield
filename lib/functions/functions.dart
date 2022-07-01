@@ -1,11 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/material.dart';
 import 'package:project_ambw/functions/widget.dart';
-import 'package:qr_flutter/qr_flutter.dart';
+import 'package:flutter/material.dart';
 
+//snackbar
 void buildSnackBar(BuildContext context, String msg) {
-  ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text(msg)));
+  final snackBar = SnackBar(
+    content: Text(msg),
+  );
+  ScaffoldMessenger.of(context).showSnackBar(snackBar);
 }
 
 void dialogAddNewField(BuildContext context) {
@@ -90,67 +93,12 @@ void dialogAddNewField(BuildContext context) {
                   ),
                 ),
               ),
-              SizedBox(
-                width: 10,
-              ),
+              SizedBox(width: 10,),
               Expanded(
                 child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
+                  onPressed: () {},
                   child: Text(
-                    'cancel'.toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(50),
-                    primary: Colors.white,
-                    shape: roundedRectangleBorder(),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    },
-  );
-}
-
-void dialogTicket(BuildContext context, String uuid) {
-  showDialog(
-    context: context,
-    builder: (context) {
-      return AlertDialog(
-        title: title('ticket qr code'.toUpperCase(), true),
-        content: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 100,
-              height: 100,
-              child: QrImage(
-                data: uuid,
-                version: QrVersions.auto,
-                size: 30,
-                gapless: false,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Row(
-            children: [
-              Expanded(
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.pop(context);
-                  },
-                  child: Text(
-                    'cancel'.toUpperCase(),
+                    'cancle'.toUpperCase(),
                     style: TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.bold,

@@ -1,15 +1,14 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/class/User.dart';
+import 'package:project_ambw/class/UserSesssion.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/main.dart';
-import 'package:project_ambw/pages/admin/AddFieldPage.dart';
+import 'package:project_ambw/pages/admin/ManageSportCentrePage.dart';
 import 'package:project_ambw/pages/admin/HomePage.dart';
 import 'package:project_ambw/pages/admin/MaintenancePage.dart';
 import 'package:project_ambw/pages/admin/NotificationPage.dart';
 import 'package:project_ambw/pages/admin/ProfilePage.dart';
-import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -23,30 +22,28 @@ class AdminBottomNavigationPage extends StatefulWidget {
 }
 
 class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
-  int _currentIndex = 0;
+  int _currentIndex = 1;
 
-  List<String> title = ['Home', 'Add Field', 'Maintenance'];
-  String _appBarTitle = "Home";
+  final List<String> title = ['Home', 'Manage Field', 'Maintenance'];
 
   final List<Widget> _screens = [
     AdminHomePage(),
-    AdminAddFieldPage(),
+    ManageSportCentrePage(),
     AdminMaintenancePage(),
   ];
 
   void onTappedBar(int index) {
     setState(() {
       _currentIndex = index;
-      _appBarTitle = title[index];
     });
   }
-
+  
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: AdminFirestoreDatabase.getDataByEmail(
-        AuthService.getEmailUser(),
-        //"admin@gmail.com"
+        //AuthService.getEmailUser(),
+        "admin1@gmail.com"
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {
@@ -54,20 +51,17 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
         } else if (snapshot.hasData || snapshot.data != null) {
           Admin newSession = Admin.fromDocument(snapshot.data!);
           AdminSession.updateSession(newSession: newSession);
-          
+
           return Scaffold(
             appBar: AppBar(
               toolbarHeight: 100,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: Padding(
-                padding: const EdgeInsets.only(left:16.0),
-                child: appBarIconBtn(
-                    context, Icons.account_circle_outlined, AdminProfilePage()),
-              ),
+              leading: appBarIconBtn(
+                  context, Icons.account_circle_outlined, AdminProfilePage()),
               actions: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  padding: EdgeInsets.symmetric(horizontal: 8),
                   child: Row(
                     children: [
                       appBarIconBtn(context, Icons.notifications_outlined,
@@ -84,15 +78,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
             body: _screens[_currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 223, 181, 156),
-                boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withOpacity(0.25),
-                      spreadRadius: 0,
-                      blurRadius: 20,
-                      offset: Offset(0, -2), // changes position of shadow
-                    )
-                ],
+                color: Colors.brown,
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),

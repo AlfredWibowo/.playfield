@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ambw/class/CKota.dart';
+import 'package:project_ambw/class/City.dart';
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/class/CUserSession.dart';
@@ -28,7 +28,7 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
 
   late Widget _form;
 
-  late Future<List<Kota>> _listKota;
+  late Future<List<City>> _listKota;
   List<DropdownMenuItem<String>> dropdownGedungItems = [];
 
   String _dropdownKota = "";
@@ -234,13 +234,13 @@ class _AdminAddFieldPageState extends State<AdminAddFieldPage> {
         SizedBox(
           height: 5,
         ),
-        FutureBuilder<List<Kota>>(
+        FutureBuilder<List<City>>(
           future: _listKota,
           builder: (context, snapshot) {
             if (snapshot.hasError) {
               return Text('${snapshot.error}');
             } else if (snapshot.hasData || snapshot.data != null) {
-              List<Kota> result = snapshot.data!;
+              List<City> result = snapshot.data!;
               List<String> kota = [];
 
               for (int i = 0; i < 20; i++) {

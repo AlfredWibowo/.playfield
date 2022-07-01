@@ -2,7 +2,7 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/class/CLapangan.dart';
-import 'package:project_ambw/class/CKota.dart';
+import 'package:project_ambw/class/City.dart';
 import 'package:project_ambw/class/CUser.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
@@ -18,7 +18,7 @@ class ExplorePage extends StatefulWidget {
 
 class _ExplorePageState extends State<ExplorePage> {
   LocalService localService = LocalService();
-  late Future<List<Kota>> _listKota;
+  late Future<List<City>> _listKota;
 
   String _dropdownValue = 'Surabaya';
   List<Field> _listLapangan = [];
@@ -89,7 +89,9 @@ class _ExplorePageState extends State<ExplorePage> {
                     child: ListView.separated(
                       itemCount: listGedung.length,
                       itemBuilder: (context, index) {
-                        return exploreCard(context, index, listAdmin[index]);
+                        return Container(); // Replace if fixed
+                        // TODO : RETURN exploreCard parameter, replaced this container if fixed
+                        // return exploreCard(context, index, listAdmin[index]);
                       },
                       separatorBuilder: (context, index) {
                         return Divider();

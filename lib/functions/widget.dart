@@ -2,6 +2,8 @@
 
 import 'package:project_ambw/class/CLapangan.dart';
 import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/pages/BookingPage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
@@ -315,7 +317,6 @@ Card sportCard(String sport, Color color) {
 }
 
 List<Widget> sportCardList(List<String> fieldType) {
-  
   List<Widget> listCard = [];
 
   for (var type in fieldType) {
@@ -325,21 +326,16 @@ List<Widget> sportCardList(List<String> fieldType) {
   return listCard;
 }
 
-Widget exploreCard(BuildContext context, int idxGedung, Admin admin) {
-  List<String> listFieldType = [];
-
-  Gedung gedung = admin.owns[idxGedung];
-  for (var field in gedung.fields) {
-    listFieldType.add(field.type!);
-  }
-
-  List<String> disctinct = listFieldType.toSet().toList();
-
-  disctinct.sort();
+Widget exploreCard(BuildContext context, SportCentre inputSportsCentre, SportField inputSportsField) {
 
   return GestureDetector(
     onTap: () {
-      Navigator.push(context, MaterialPageRoute(builder: (context) => BookingPage(idxGedung: idxGedung, dataListType: disctinct, admin: admin),));
+      Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => BookingPage(
+                dataSC: inputSportsCentre, dataSF: inputSportsField),
+          ));
     },
     child: Container(
       width: double.infinity,
@@ -352,7 +348,7 @@ Widget exploreCard(BuildContext context, int idxGedung, Admin admin) {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            gedung.nama,
+            inputSportsCentre.name,
             style: TextStyle(
               fontSize: 18,
               color: Colors.white,
@@ -361,16 +357,16 @@ Widget exploreCard(BuildContext context, int idxGedung, Admin admin) {
           SizedBox(
             height: 20,
           ),
-          textWithIconRow(Icons.phone, gedung.noTelp),
-          textWithIconRow(Icons.location_on, gedung.alamat),
-          textWithIconRow(Icons.alarm, "${gedung.opTime.startTime} - ${gedung.opTime.endTime}"),
+          textWithIconRow(Icons.phone, inputSportsCentre.phoneNumber),
+          textWithIconRow(Icons.location_on, inputSportsCentre.address),
+          textWithIconRow(Icons.alarm, inputSportsField.opTime),
           SizedBox(
             height: 20,
           ),
           Row(
             children: [
               Row(
-                children: sportCardList(disctinct),
+                // children: sportCardList(disctinct),
               ),
               Expanded(
                 child: Row(
@@ -385,7 +381,7 @@ Widget exploreCard(BuildContext context, int idxGedung, Admin admin) {
                       width: 5,
                     ),
                     Text(
-                      gedung.kota,
+                      inputSportsCentre.city,
                       style: TextStyle(
                         fontFamily: 'Roboto',
                         fontSize: 14,
@@ -446,10 +442,12 @@ Color sportColor(String sport) {
   }
 }
 
+/// TODO : FIX
+/// Unused - Missing dialog Ticket
 Widget ticketCard(BuildContext context, FieldOccupancy ticket) {
   return ListTile(
     onTap: () {
-      dialogTicket(context, ticket.ticketID);
+      // dialogTicket(context, ticket.ticketID);
     },
     shape: roundedRectangleBorder(),
     contentPadding: EdgeInsets.all(8),
@@ -535,6 +533,99 @@ Widget ticketQRCode(String uuid, double size) {
       version: QrVersions.auto,
       size: size,
       gapless: false,
+    ),
+  );
+}
+
+Widget addSportCenterForm() {
+  return Column(
+    children: [
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Location Name',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Field ID',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Field Type',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+          suffixIcon: Icon(Icons.arrow_drop_down),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Address',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 5,
+      ),
+      TextField(
+        controller: TextEditingController(),
+        decoration: InputDecoration(
+          labelText: 'Phone Number',
+          focusedBorder: outlineInputBorder(),
+          enabledBorder: outlineInputBorder(),
+        ),
+      ),
+      SizedBox(
+        height: 20,
+      ),
+      ElevatedButton(
+        onPressed: () {},
+        child: Text(
+          'submit'.toUpperCase(),
+          style: TextStyle(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        style: ElevatedButton.styleFrom(
+          minimumSize: Size.fromHeight(50),
+          primary: Colors.black,
+          shape: roundedRectangleBorder(),
+        ),
+      ),
+    ],
+  );
+}
+
+Widget emptyText() {
+  return Container(
+    height: 300,
+    child: Center(
+      child: Text(
+        'Empty',
+        style: TextStyle(
+          fontSize: 30,
+        ),
+      ),
     ),
   );
 }

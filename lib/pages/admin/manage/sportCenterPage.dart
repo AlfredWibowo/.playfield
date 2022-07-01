@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/UserSesssion.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/BottomNavigation.dart';
@@ -16,9 +17,12 @@ class SCDetailPage extends StatefulWidget {
 }
 
 class _SCDetailPageState extends State<SCDetailPage> {
-  List<Gedung> currGList = AdminSession.session.owns;
+  List<String> owns = AdminSession.session.sportCentreId;
+  List<Gedung> currGList = [];
+
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.transparent,
@@ -28,59 +32,83 @@ class _SCDetailPageState extends State<SCDetailPage> {
             child: backButton(context),
           ),
           actions: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    children:[
-                      appBarIconBtn(context, Icons.delete, deleteSCPage(index: widget.index)),
-                    ],
-                  ),
-                )
-              ],
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  appBarIconBtn(
+                      context, Icons.delete, deleteSCPage(index: widget.index)),
+                ],
+              ),
+            )
+          ],
         ),
-        body: Container(
-          height: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 24),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const SizedBox(height: 32),
-              title('Manage Sport Center', false),
-              title(currGList[widget.index].nama, true),
-              const SizedBox(height: 32),
-              scCard('Address', currGList[widget.index].alamat, context),
-              const SizedBox(height: 8),
-              scCardEditable(
-                  'Phone Number', currGList[widget.index].noTelp, context),
-              const SizedBox(height: 8),
-              scCard('City', currGList[widget.index].kota, context),
-              const SizedBox(height: 24),
-              subTitle("Fields", false, (){}),
-              const SizedBox(height: 16),
-              Expanded(
-                child: ListView.builder(
-                    itemCount: currGList[widget.index].fields.length,
-                    itemBuilder: ((context, index) {
-                      return ListTile(
-                        contentPadding: EdgeInsets.all(16.0),
-                        tileColor: Colors.black,
-                        title: Text(
-                            currGList[widget.index].fields[index].fieldID!, style: TextStyle(fontFamily: 'Comfortaa', fontSize: 14.0, color: Colors.white),),
-                        subtitle: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(currGList[widget.index].fields[index].type!, style: TextStyle(fontFamily: 'Roboto', fontSize: 10.0, color: Colors.white),),
-                            textWithIconRow(Icons.monetization_on, "Rp. " + currGList[widget.index]
-                                .fields[index]
-                                .priceHour!
-                                .toString()),
-                          ],
-                        ),
-                      );
-                    })),
-              )
-            ],
-          ),
+       
+        body: StreamBuilder<Object>(
+          stream: SportCentreFirestoreDatabase.getDataById(owns[i]),
+          builder: (context, snapshot) {
+            
+            
+            
+            return Container(
+              height: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const SizedBox(height: 32),
+                  title('Manage Sport Center', false),
+                  title(currGList[widget.index].nama, true),
+                  const SizedBox(height: 32),
+                  scCard('Address', currGList[widget.index].alamat, context),
+                  const SizedBox(height: 8),
+                  scCardEditable(
+                      'Phone Number', currGList[widget.index].noTelp, context),
+                  const SizedBox(height: 8),
+                  scCard('City', currGList[widget.index].kota, context),
+                  const SizedBox(height: 24),
+                  subTitle("Fields", false, () {}),
+                  const SizedBox(height: 16),
+                  Expanded(
+                    child: ListView.builder(
+                        itemCount: currGList[widget.index].fields.length,
+                        itemBuilder: ((context, index) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.all(16.0),
+                            tileColor: Colors.black,
+                            title: Text(
+                              currGList[widget.index].fields[index].fieldID!,
+                              style: TextStyle(
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 14.0,
+                                  color: Colors.white),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  currGList[widget.index].fields[index].type!,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 10.0,
+                                      color: Colors.white),
+                                ),
+                                textWithIconRow(
+                                    Icons.monetization_on,
+                                    "Rp. " +
+                                        currGList[widget.index]
+                                            .fields[index]
+                                            .priceHour!
+                                            .toString()),
+                              ],
+                            ),
+                          );
+                        })),
+                  )
+                ],
+              ),
+            );
+            }
         ));
   }
 
@@ -192,6 +220,7 @@ class _SCDetailPageState extends State<SCDetailPage> {
                               onPressed: () {
                                 currGList[widget.index].noTelp =
                                     _tfController.text;
+
                                 AdminSession.session.owns = currGList;
                                 AdminFirestoreDatabase.editData(
                                     admin: AdminSession.session);

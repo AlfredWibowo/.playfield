@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
@@ -18,11 +18,11 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   bool _isPasswordVisible = false;
 
-  TextEditingController _tfNamaController = TextEditingController();
-  TextEditingController _tfEmailController = TextEditingController();
-  TextEditingController _tfPasswordController = TextEditingController();
-  TextEditingController _tfNoTelpController = TextEditingController();
-  TextEditingController _tfAlamatController = TextEditingController();
+  final TextEditingController _tfNameController = TextEditingController();
+  final TextEditingController _tfEmailController = TextEditingController();
+  final TextEditingController _tfPasswordController = TextEditingController();
+  final TextEditingController _tfPhoneNumberController = TextEditingController();
+  final TextEditingController _tfAddressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +52,7 @@ class _SignUpPageState extends State<SignUpPage> {
               ),
             ),
             TextField(
-              controller: _tfNamaController,
+              controller: _tfNameController,
               style: RegisterInputStyle(),
               decoration: RegisterInputDecoration("Full Name"),
             ),
@@ -89,7 +89,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 20,
             ),
             TextField(
-              controller: _tfNoTelpController,
+              controller: _tfPhoneNumberController,
               style: RegisterInputStyle(),
               decoration: RegisterInputDecoration("Phone Number"),
             ),
@@ -97,7 +97,7 @@ class _SignUpPageState extends State<SignUpPage> {
               height: 20,
             ),
             TextField(
-              controller: _tfAlamatController,
+              controller: _tfAddressController,
               style: RegisterInputStyle(),
               decoration: RegisterInputDecoration("Address"),
             ),
@@ -106,14 +106,20 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             ElevatedButton(
               onPressed: () async {
+                String email = _tfEmailController.text;
+                String password = _tfPasswordController.text;
+                String name = _tfNameController.text;
+                String address = _tfAddressController.text;
+                String phoneNumber = _tfPhoneNumberController.text;
+
                 Consumer data = Consumer(
-                  ticket: [],
-                  history: [],
-                  email: _tfEmailController.text,
-                  nama: _tfNamaController.text,
-                  alamat: _tfAlamatController.text,
-                  noTelp: _tfNoTelpController.text,
-                  isAdmin: false,
+                  balance: 0,
+                  orderId: [],
+                  email: email,
+                  password: password,
+                  name: name,
+                  address: address,
+                  phoneNumber: phoneNumber,
                   profilePicture: "",
                 );
 

@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
 import 'package:project_ambw/pages/admin/SignUpPage.dart';
 import 'package:project_ambw/services/authService.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminLoginPage extends StatefulWidget {
@@ -26,14 +26,12 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
-          child: backButton(context),
-        ),
+        leading: backButton(context),
       ),
       body: Container(
         padding: EdgeInsets.all(20),
         child: Column(
+          //crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Center(
               child: Icon(
@@ -45,18 +43,15 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
             SizedBox(
               height: 30,
             ),
-            FittedBox(
-              fit: BoxFit.scaleDown,
-              child: Text(
-                'AUTHORIZED_ACCESS\n'
-                'ONLY',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
-                ),
-                textAlign: TextAlign.center,
+            Text(
+              'AUTHORIZED_ACCESS\n'
+              'ONLY',
+              style: TextStyle(
+                fontSize: 30,
+                color: Colors.black,
+                fontWeight: FontWeight.bold,
               ),
+              textAlign: TextAlign.center,
             ),
             SizedBox(
               height: 30,
@@ -97,9 +92,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                 String email = _tfEmailController.text;
                 String password = _tfPasswordController.text;
 
-                //cek email exist in Admin
+                //cek email exist in admin
                 final docSnap = await FirebaseFirestore.instance
-                    .collection("tbAdmin")
+                    .collection("Admin")
                     .doc(email)
                     .get();
 
@@ -153,7 +148,7 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               },
               child: Center(
                 child: Text(
-                  'create admin account'.toUpperCase(),
+                  'create admin account ?'.toUpperCase(),
                   style: TextStyle(
                     color: Colors.black,
                     fontWeight: FontWeight.normal,

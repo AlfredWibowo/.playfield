@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/class/CUser.dart';
+import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/admin/LoginPage.dart';
@@ -18,11 +18,12 @@ class AdminSignUpPage extends StatefulWidget {
 class _AdminSignUpPageState extends State<AdminSignUpPage> {
   bool _isPasswordVisible = false;
 
-  TextEditingController _tfNamaController = TextEditingController();
-  TextEditingController _tfEmailController = TextEditingController();
-  TextEditingController _tfPasswordController = TextEditingController();
-  TextEditingController _tfNoTelpController = TextEditingController();
-  TextEditingController _tfAlamatController = TextEditingController();
+  final TextEditingController _tfNameController = TextEditingController();
+  final TextEditingController _tfEmailController = TextEditingController();
+  final TextEditingController _tfPasswordController = TextEditingController();
+  final TextEditingController _tfPhoneNumberController =
+      TextEditingController();
+  final TextEditingController _tfAddressController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +32,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: backButton(context),
         ),
       ),
@@ -52,7 +53,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
               height: 30,
             ),
             TextField(
-              controller: _tfNamaController,
+              controller: _tfNameController,
               decoration: InputDecoration(
                 labelText: 'Full Name',
                 focusedBorder: underlineInputBorder(),
@@ -94,7 +95,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
               height: 20,
             ),
             TextField(
-              controller: _tfNoTelpController,
+              controller: _tfPhoneNumberController,
               decoration: InputDecoration(
                 labelText: 'Phone Number',
                 focusedBorder: underlineInputBorder(),
@@ -105,7 +106,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
               height: 20,
             ),
             TextField(
-              controller: _tfAlamatController,
+              controller: _tfAddressController,
               decoration: InputDecoration(
                 labelText: 'Address',
                 focusedBorder: underlineInputBorder(),
@@ -117,14 +118,20 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
             ),
             ElevatedButton(
               onPressed: () async {
+                String email = _tfEmailController.text;
+                String password = _tfPasswordController.text;
+                String name = _tfNameController.text;
+                String address = _tfAddressController.text;
+                String phoneNumber = _tfPhoneNumberController.text;
+
                 Admin data = Admin(
-                  own:[],
-                  activeTicket: [],
-                  email: _tfEmailController.text,
-                  nama: _tfNamaController.text,
-                  alamat: _tfAlamatController.text,
-                  noTelp: _tfNoTelpController.text,
-                  isAdmin: true,
+                  orderId: [],
+                  sportCentreId: [],
+                  email: email,
+                  password: password,
+                  name: name,
+                  address: address,
+                  phoneNumber: phoneNumber,
                   profilePicture: "",
                 );
 
@@ -133,8 +140,9 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                 Future<String> responseMsg;
 
                 responseMsg = AuthService.signUp(
-                    email: _tfEmailController.text,
-                    password: _tfPasswordController.text);
+                  email: _tfEmailController.text,
+                  password: _tfPasswordController.text,
+                );
 
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
