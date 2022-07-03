@@ -152,7 +152,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddSportFieldPage(),
+                builder: (context) => AddSportFieldPage(dataSC: widget.dataSC,),
               ));
         },
         //elevation: 0.0,

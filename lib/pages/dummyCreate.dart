@@ -53,6 +53,7 @@ class _DummyCreatePageState extends State<DummyCreatePage> {
                     opTime: "10:00-18:00",
                     fieldType: "Futsal",
                     price: 80000,
+                    fieldPicture: "",
                   );
 
                   SportFieldFirestoreDatabase.addData(sf: sf);
@@ -91,7 +92,8 @@ class _DummyCreatePageState extends State<DummyCreatePage> {
                         name: "B1",
                         opTime: "00:00-23:59",
                         fieldType: "Badminton",
-                        price: 50000),
+                        price: 50000,
+                        fieldPicture: ""),
                   );
                   OrderFirestoreDatabase.addData(order: order);
                 },
