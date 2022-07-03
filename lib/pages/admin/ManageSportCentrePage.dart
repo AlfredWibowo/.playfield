@@ -274,7 +274,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                 builder: (context) => AddSportCentrePage(),
               ));
         },
-        label: Text('Add New'),
+        label: Text('Add New'.toUpperCase(),style: TextStyle(fontFamily: 'Roboto',),),
         icon: Icon(Icons.add),
         backgroundColor: Colors.black,
       ),

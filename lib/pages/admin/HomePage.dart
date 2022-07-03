@@ -141,7 +141,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
             SizedBox(
               height: 30,
             ),
-            subTitle('Lastest Appliant'),
+            subTitle('Latest Appliant'),
             SizedBox(
               height: 10,
             ),

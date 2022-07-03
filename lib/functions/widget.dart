@@ -114,8 +114,9 @@ Widget subTitle(String subtitle) {
     subtitle,
     style: TextStyle(
       fontSize: 20,
+      fontFamily: 'Comfortaa',
       color: Colors.black,
-      fontWeight: FontWeight.bold,
+      fontWeight: FontWeight.w500,
     ),
   );
 }

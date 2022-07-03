@@ -340,7 +340,7 @@ class _HomePageState extends State<HomePage> {
                                               MainAxisAlignment.spaceBetween,
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
-                                            subTitle('Lastest Visit'),
+                                            subTitle('Latest Visit'),
                                             GestureDetector(
                                               onTap: () {},
                                               child: Text(
