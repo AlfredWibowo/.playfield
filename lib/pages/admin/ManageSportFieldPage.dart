@@ -2,10 +2,14 @@
 
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/UserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/pages/admin/AddSportFieldPage.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/pages/admin/deletePage.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 
 class ManageSportFieldPage extends StatefulWidget {
   final SportCentre dataSC;
@@ -80,10 +84,24 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: backButton(context),
-      ),
+          toolbarHeight: 100,
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: backButton(context),
+          ),
+          actions: [
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 24),
+                  child: Row(
+                    children:[
+                      appBarIconBtn(context, Icons.delete, deleteSCPage(deleteCentre: widget.dataSC)),
+                    ],
+                  ),
+                )
+              ],
+        ),
       body: Container(
         padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
@@ -96,20 +114,22 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    title('Sport Field', false),
+                    title('Manage Sport Centre', false),
                     title(widget.dataSC.name, true),
                   ],
-                ),
-                SizedBox(width: 10,),
-                ElevatedButton(
-                  onPressed: () {},
-                  child: Text('Edit SC'),
-                ),
+                )                
               ],
             ),
-            SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 32),
+            scCard('Address', widget.dataSC.address, context),
+            const SizedBox(height: 8),
+            scCardEditable(
+                'Phone Number', widget.dataSC.phoneNumber, context),
+            const SizedBox(height: 8),
+            scCard('City', widget.dataSC.city, context),
+            const SizedBox(height: 24),
+            subTitle("Fields"),
+            const SizedBox(height: 16),
             TextField(
               controller: _tfSearchBar,
               decoration: InputDecoration(
@@ -157,7 +177,157 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
         },
         //elevation: 0.0,
         child: Icon(Icons.add),
-        backgroundColor: Colors.brown,
+        backgroundColor: Colors.black,
+      ),
+    );
+  }
+  Card scCard(String title, String value, BuildContext context) {
+    TextEditingController _tfController = TextEditingController();
+
+    return Card(
+      // color: Colors.black,
+      shape: Border.all(width: 2.0, color: Colors.black),
+      borderOnForeground: true,
+      child: ListTile(
+          title: Text(
+            title,
+            style: const TextStyle(color: Colors.black, fontSize: 20),
+          ),
+          subtitle: Text(
+            value,
+            style: const TextStyle(
+                color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+          ),
+          trailing: Container(width: 0, height: 0)),
+    );
+  }
+
+  Card scCardEditable(String title, String value, BuildContext context) {
+    TextEditingController _tfController = TextEditingController();
+
+    return Card(
+      // color: Colors.black,
+      shape: Border.all(width: 2.0, color: Colors.black),
+      borderOnForeground: true,
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.black, fontSize: 20),
+        ),
+        subtitle: Text(
+          value,
+          style: const TextStyle(
+              color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            BuildContext dialogContext;
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                dialogContext = context;
+                return AlertDialog(
+                  insetPadding: EdgeInsets.all(24.0),
+                  title: Text(
+                    ('Edit ' + title).toUpperCase(),
+                    style: const TextStyle(fontFamily: 'Comfortaa'),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  content: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: MediaQuery.of(context).size.width,
+                        child: Column(
+                          children: [
+                            SizedBox(height: 16.0),
+                            ListTile(
+                              subtitle: TextField(
+                                controller: _tfController,
+                                decoration: InputDecoration(
+                                    labelText: title,
+                                    focusedBorder: outlineInputBorder(),
+                                    enabledBorder: outlineInputBorder()),
+                              ),
+                            ),
+                            SizedBox(height: 16.0),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(4), // <-- Radius
+                                ),
+                                elevation: 0.0,
+                                primary: Colors.black,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Text(
+                                  'SUBMIT',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: () {
+                                widget.dataSC.phoneNumber =
+                                    _tfController.text;
+                                SportCentreFirestoreDatabase.editData(sc: widget.dataSC);
+                                buildSnackBar(
+                                    context, title + ' berhasil di edit');
+                                Navigator.pop(context);
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                primary: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(dialogContext);
+                              },
+                              child: const Text(
+                                'CANCEL',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto', color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    SizedBox(
+                      height: 16.0,
+                    )
+                  ],
+                );
+              },
+            ).then((_) => setState(() {}));
+          },
+          icon: const Icon(Icons.edit),
+          color: Colors.grey,
+        ),
       ),
     );
   }
