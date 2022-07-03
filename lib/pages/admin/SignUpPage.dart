@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:aplikasi_booking_lapangan_online/class/User.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/admin/LoginPage.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/User.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/admin/LoginPage.dart';
+import 'package:project_ambw/services/authService.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
 
 class AdminSignUpPage extends StatefulWidget {

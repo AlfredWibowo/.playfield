@@ -1,7 +1,7 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/functions/widget.dart';
 import 'package:flutter/material.dart';
 
 class AddSportFieldPage extends StatefulWidget {

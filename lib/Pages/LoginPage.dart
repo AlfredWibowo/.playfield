@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
-import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/services/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/BottomNavigation.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/SignUpPage.dart';
+import 'package:project_ambw/pages/BottomNavigation.dart';
+import 'package:project_ambw/pages/SignUpPage.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

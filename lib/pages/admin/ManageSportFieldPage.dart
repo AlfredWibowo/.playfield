@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/admin/AddSportFieldPage.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/TicketPage.dart';
+import 'package:project_ambw/pages/admin/AddSportFieldPage.dart';
 import 'package:flutter/material.dart';
 
 class ManageSportFieldPage extends StatefulWidget {

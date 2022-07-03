@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps, unused_field
 
-import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/Order.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';

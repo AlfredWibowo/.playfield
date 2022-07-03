@@ -1,9 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:aplikasi_booking_lapangan_online/class/City.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
+import 'package:project_ambw/class/City.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/pages/TicketPage.dart';
+import 'package:project_ambw/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
