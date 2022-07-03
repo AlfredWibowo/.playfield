@@ -182,6 +182,8 @@ class _AddSportCentrePageState extends State<AddSportCentrePage> {
                 AdminSession.session.sportCentreId.add(id);
                 AdminFirestoreDatabase.editData(admin: AdminSession.session);
 
+                Navigator.pop(context);
+
               },
               child: Text(
                 'submit'.toUpperCase(),

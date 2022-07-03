@@ -3,6 +3,7 @@
 import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/BottomNavigation.dart';
 import 'package:project_ambw/pages/LoginPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
@@ -134,10 +135,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
                 
-                AuthService.logout();
+                //AuthService.logout();
 
                 if (msg == 'Successful') {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationPage(),));
                 }
               },
               child: Text(

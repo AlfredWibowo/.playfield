@@ -243,6 +243,8 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
                   fieldPicture: fieldPicture,
                 );
                 SportFieldFirestoreDatabase.addData(sf: sf);
+
+                Navigator.pop(context);
               },
               child: Text(
                 'submit'.toUpperCase(),
