@@ -19,7 +19,6 @@ class AuthService {
     String message;
     try {
       await auth.signInWithEmailAndPassword(email: email, password: password);
-      print('Succesful');
       message = 'Successful';
     } on FirebaseAuthException catch (e) {
       print(e.code);

@@ -17,8 +17,6 @@ class SportCentre {
     required this.sportFieldId,
   });
 
-  
-
   factory SportCentre.fromJson(Map<String, dynamic> json) {
     return SportCentre(
       id: json["id"], 

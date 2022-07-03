@@ -6,26 +6,24 @@ import 'package:firebase_storage/firebase_storage.dart';
 
 class StorageService {
   static FirebaseStorage storage = FirebaseStorage.instance;
-  
-  static Future<void> uploadUserProfileImage({required String filePath, required String fileName}) async {
+
+  static Future<String> uploadUserProfileImage({required String filePath, required String fileName}) async {
+    String message;
+    
     File file = File(filePath);
 
     try {
       await storage.ref('images/$fileName').putFile(file);
+      message = 'Successful';
     } on FirebaseException catch (e) {
       print(e);
+      message = '${e.code}';
     }
+
+    return message;
   }
 
-  // static Future<void> uploadUserProfileImageWeb({required Uint8List fileBytes, required String fileName}) async {
-  //   try {
-  //     await storage.ref('user/profile_images/$fileName').putFile(fileBytes);
-  //   } on FirebaseException catch (e) {
-  //     print(e);
-  //   }
-  // }
-
-  Future<String> getDownloadUrl(String imageName) async {
+  static Future<String> getDownloadUrl({required String imageName}) async {
     String downloadUrl = await storage.ref('images/$imageName').getDownloadURL();
 
     return downloadUrl;

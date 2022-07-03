@@ -1,4 +1,4 @@
-import 'package:project_ambw/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
 import 'package:flutter/material.dart';
 
 class FavoritePage extends StatefulWidget {

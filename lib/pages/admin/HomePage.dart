@@ -1,13 +1,13 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/Order.dart';
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
-import 'package:project_ambw/pages/admin/QRCodeScannerPage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/QRCodeScannerPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -24,7 +24,11 @@ class _AdminHomePageState extends State<AdminHomePage> {
       color: Colors.black,
       child: ListTile(
         onTap: () {
-          Navigator.push(context, MaterialPageRoute(builder: (context) => QRCodeScannerPage(),));
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => QRCodeScannerPage(),
+              ));
         },
         title: Text(
           'scan here'.toUpperCase(),
@@ -58,7 +62,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
             borderRadius: BorderRadius.circular(6),
             child: imageNetwork(imagePath, 100, 100),
           ),
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -69,37 +75,43 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   color: Colors.white,
                 ),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               textWithIconRow(Icons.calendar_today, order.date),
               textWithIconRow(Icons.alarm, order.time),
               textWithIconRow(Icons.price_change, "Rp. ${order.amount}"),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               sportCard(sf.fieldType, sportColor(sf.fieldType)),
             ],
           ),
-          SizedBox(width: 20,),
+          SizedBox(
+            width: 20,
+          ),
           Column(
             children: [
               ElevatedButton(
-                onPressed: () {}, 
+                onPressed: () {},
                 child: Icon(Icons.check),
                 style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  shadowColor: Colors.transparent,
-                  primary: Color.fromARGB(255, 116, 227, 19),
-                  shape: roundedRectangleBorder()
-                ),
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 116, 227, 19),
+                    shape: roundedRectangleBorder()),
               ),
-              SizedBox(height: 10,),
+              SizedBox(
+                height: 10,
+              ),
               ElevatedButton(
-                onPressed: () {}, 
+                onPressed: () {},
                 child: Icon(Icons.close),
                 style: ElevatedButton.styleFrom(
-                  elevation: 0.0,
-                  shadowColor: Colors.transparent,
-                  primary: Color.fromARGB(255, 251, 11, 11),
-                  shape: roundedRectangleBorder()
-                ),
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 251, 11, 11),
+                    shape: roundedRectangleBorder()),
               ),
             ],
           )
@@ -133,38 +145,38 @@ class _AdminHomePageState extends State<AdminHomePage> {
             SizedBox(
               height: 10,
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: OrderFirestoreDatabase.getData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                } else if (snapshot.hasData || snapshot.data != null) {
-                  //add to list order by arr order id
-                  
-                  List<Order> listOrder = [];
+            AdminSession.session.orderId.isEmpty
+                ? Container()
+                : StreamBuilder<QuerySnapshot>(
+                    stream: OrderFirestoreDatabase.getDataByAdmin(
+                        AdminSession.session),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        //add to list order by arr order id
 
-                  for (var i = 0; i < snapshot.data!.docs.length; i++) {
-                    DocumentSnapshot dsData = snapshot.data!.docs[i];
+                        List<Order> listOrder = [];
 
-                    Order order = Order.fromDocument(dsData);
+                        for (var i = 0; i < snapshot.data!.docs.length; i++) {
+                          DocumentSnapshot dsData = snapshot.data!.docs[i];
 
-                    if (AdminSession.session.orderId.contains(order.id)) {
-                      //stat = waitting
-                      if (order.status == 0) {
-                        listOrder.add(order);
+                          Order order = Order.fromDocument(dsData);
+
+                          if (order.status == 0) {
+                            listOrder.add(order);
+                          }
+                        }
+
+                        if (listOrder.isEmpty) {
+                          return emptyText();
+                        }
+
+                        return latestAppliantCard(listOrder.last);
                       }
-                    }
-                  }
-
-                  if (listOrder.isEmpty) {
-                    return emptyText();
-                  }
-
-                  return latestAppliantCard(listOrder.last);
-                }
-                return progressIndicator();
-              },
-            ),
+                      return progressIndicator();
+                    },
+                  ),
           ],
         ),
       ),

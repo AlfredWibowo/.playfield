@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/admin/AddSportCentrePage.dart';
-import 'package:project_ambw/pages/admin/ManageSportFieldPage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/AddSportCentrePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/ManageSportFieldPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -24,104 +24,181 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
     List<String> listFieldType = [];
     List<SportField> listSportField = [];
 
-    return StreamBuilder<QuerySnapshot>(
-      stream: SportFieldFirestoreDatabase.getData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        } else if (snapshot.hasData || snapshot.data != null) {
-          //add to list sport field type
-          for (var i = 0; i < snapshot.data!.docs.length; i++) {
-            DocumentSnapshot dsData = snapshot.data!.docs[i];
-            SportField sf = SportField.fromDocument(dsData);
+    if (sc.sportFieldId.isNotEmpty) {
+      return StreamBuilder<QuerySnapshot>(
+        stream: SportFieldFirestoreDatabase.getDataBySportCentre(sc),
+        builder: (context, snapshot) {
+          if (snapshot.hasError) {
+            return Text("${snapshot.error}");
+          } else if (snapshot.hasData || snapshot.data != null) {
+            //add to list sport field
+            for (var i = 0; i < snapshot.data!.docs.length; i++) {
+              DocumentSnapshot dsData = snapshot.data!.docs[i];
+              SportField sf = SportField.fromDocument(dsData);
 
-            if (sc.sportFieldId.contains(sf.id)) {
-              listFieldType.add(sf.fieldType);
               listSportField.add(sf);
+              listFieldType.add(sf.fieldType);
             }
+
+            List<String> disctinct = listFieldType.toSet().toList();
+            disctinct.sort();
+
+            return GestureDetector(
+              onTap: () {
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ManageSportFieldPage(
+                        dataSC: sc,
+                        dataSF: listSportField,
+                      ),
+                    ));
+              },
+              child: Container(
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(12.0),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      sc.name,
+                      style: TextStyle(
+                        fontSize: 18,
+                        color: Colors.white,
+                      ),
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    textWithIconRow(Icons.location_on, sc.address),
+                    SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Row(
+                          children: sportCardList(disctinct),
+                        ),
+                        Expanded(
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            children: [
+                              Icon(
+                                Icons.location_city,
+                                color: Colors.white,
+                                size: 14,
+                              ),
+                              SizedBox(
+                                width: 5,
+                              ),
+                              Text(
+                                sc.city,
+                                style: TextStyle(
+                                  fontFamily: 'Roboto',
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w300,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    )
+                  ],
+                ),
+              ),
+            );
           }
 
-          List<String> disctinct = listFieldType.toSet().toList();
-          disctinct.sort();
-
-          return GestureDetector(
-            onTap: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ManageSportFieldPage(
-                      dataSC: sc,
-                      dataSF: listSportField,
-                    ),
-                  ));
-            },
-            onLongPress: () {
-              //DELETE SC (KLO SC HAPUS SF NYA JUGA)
-            },
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(12.0),
+          return progressIndicator();
+        },
+      );
+    } else {
+      return Container(
+        width: double.infinity,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.circular(12.0),
+        ),
+        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              sc.name,
+              style: TextStyle(
+                fontSize: 18,
+                color: Colors.white,
               ),
-              padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    sc.name,
-                    style: TextStyle(
-                      fontSize: 18,
-                      color: Colors.white,
-                    ),
-                  ),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  textWithIconRow(Icons.location_on, sc.address),
-                  SizedBox(
-                    height: 20,
-                  ),
-                  Row(
+            ),
+            SizedBox(
+              height: 20,
+            ),
+            textWithIconRow(Icons.location_on, sc.address),
+            SizedBox(
+              height: 20,
+            ),
+            Row(
+              children: [
+                Row(
+                  children: sportCardList([]),
+                ),
+                Expanded(
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
-                      Row(
-                        children: sportCardList(disctinct),
+                      Icon(
+                        Icons.location_city,
+                        color: Colors.white,
+                        size: 14,
                       ),
-                      Expanded(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          children: [
-                            Icon(
-                              Icons.location_city,
-                              color: Colors.white,
-                              size: 14,
-                            ),
-                            SizedBox(
-                              width: 5,
-                            ),
-                            Text(
-                              sc.city,
-                              style: TextStyle(
-                                fontFamily: 'Roboto',
-                                fontSize: 14,
-                                fontWeight: FontWeight.w300,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ],
+                      SizedBox(
+                        width: 5,
+                      ),
+                      Text(
+                        sc.city,
+                        style: TextStyle(
+                          fontFamily: 'Roboto',
+                          fontSize: 14,
+                          fontWeight: FontWeight.w300,
+                          color: Colors.white,
                         ),
                       ),
                     ],
-                  )
-                ],
-              ),
-            ),
-          );
-        }
+                  ),
+                ),
+              ],
+            )
+          ],
+        ),
+      );
+    }
+  }
 
-        return progressIndicator();
-      },
-    );
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+
+    _tfSearchBar.addListener(onSearch);
+  }
+
+  Stream<QuerySnapshot<Object?>> onSearch() {
+    setState(() {});
+    return SportCentreFirestoreDatabase.getDataByAdmin(AdminSession.session, _tfSearchBar.text);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+
+    _tfSearchBar.dispose();
   }
 
   @override
@@ -152,44 +229,40 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
             SizedBox(
               height: 20,
             ),
-            StreamBuilder<QuerySnapshot>(
-              stream: SportCentreFirestoreDatabase.getData(),
-              builder: (context, snapshot) {
-                if (snapshot.hasError) {
-                  return Text('${snapshot.error}');
-                } else if (snapshot.hasData || snapshot.data != null) {
-                  //add to list sport centre where id sc in admin
+            AdminSession.session.sportCentreId.isEmpty
+                ? Container()
+                : StreamBuilder<QuerySnapshot>(
+                    stream: onSearch(),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        //add to list sport centre
 
-                  List<SportCentre> listSC = [];
+                        List<SportCentre> listSC = [];
 
-                  for (var i = 0; i < snapshot.data!.docs.length; i++) {
-                    DocumentSnapshot dsData = snapshot.data!.docs[i];
+                        for (var i = 0; i < snapshot.data!.docs.length; i++) {
+                          DocumentSnapshot dsData = snapshot.data!.docs[i];
 
-                    SportCentre sc = SportCentre.fromDocument(dsData);
+                          SportCentre sc = SportCentre.fromDocument(dsData);
 
-                    if (AdminSession.session.sportCentreId.contains(sc.id)) {
-                      listSC.add(sc);
-                    }
-                  }
+                          listSC.add(sc);
+                        }
 
-                  if (listSC.isEmpty) {
-                    return emptyText();
-                  }
+                        return Expanded(
+                          child: ListView.separated(
+                            itemBuilder: (context, index) {
+                              return sportCentreCard(context, listSC[index]);
+                            },
+                            separatorBuilder: (context, index) => Divider(),
+                            itemCount: listSC.length,
+                          ),
+                        );
+                      }
 
-                  return Expanded(
-                    child: ListView.separated(
-                      itemBuilder: (context, index) {
-                        return sportCentreCard(context, listSC[index]);
-                      },
-                      separatorBuilder: (context, index) => Divider(),
-                      itemCount: listSC.length,
-                    ),
-                  );
-                }
-
-                return progressIndicator();
-              },
-            ),
+                      return progressIndicator();
+                    },
+                  ),
           ],
         ),
       ),
@@ -201,7 +274,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                 builder: (context) => AddSportCentrePage(),
               ));
         },
-        elevation: 0.0,
+        //elevation: 0.0,
         child: Icon(Icons.add),
         backgroundColor: Colors.brown,
       ),

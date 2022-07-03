@@ -1,6 +1,6 @@
 import 'dart:convert';
 
-import 'package:project_ambw/class/City.dart';
+import 'package:aplikasi_booking_lapangan_online/class/City.dart';
 import 'package:flutter/services.dart';
 
 class LocalService {

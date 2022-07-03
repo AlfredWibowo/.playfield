@@ -1,8 +1,7 @@
-import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/Order.dart';
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/User.dart';
+import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/class/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ConsumerFirestoreDatabase {
@@ -94,7 +93,12 @@ class SportFieldFirestoreDatabase {
     return tbSportField.snapshots();
   }
 
-  /// Return Snapshot of Sport Field
+  static Stream<QuerySnapshot> getDataBySportCentre(SportCentre sc) {
+    return tbSportField
+        .where(FieldPath.documentId, whereIn: sc.sportFieldId)
+        .snapshots();
+  }
+
   static Stream<DocumentSnapshot> getDataById(String id) {
     return tbSportField.doc(id).snapshots();
   }
@@ -131,26 +135,35 @@ class SportCentreFirestoreDatabase {
   static CollectionReference tbSportCentre =
       FirebaseFirestore.instance.collection('SportCentre');
 
-  static Stream<QuerySnapshot> getData() {
-    return tbSportCentre.snapshots();
+  static Stream<QuerySnapshot> getData(String nameSC) {
+    if (nameSC == "") {
+      return tbSportCentre.snapshots();
+    } else {
+      return tbSportCentre
+          //.where('name', isEqualTo: nameSC)
+          .orderBy('name')
+          .startAt([nameSC]).endAt([nameSC + '\uf8ff']).snapshots();
+    }
   }
 
+  static Stream<QuerySnapshot> getDataByAdmin(Admin admin, String nameSC) {
+    if (nameSC == "") {
+      return tbSportCentre
+          .where(FieldPath.documentId, whereIn: admin.sportCentreId)
+          .snapshots();
+    } else {
+      final ref = tbSportCentre;
+      final query1 =
+          ref.where(FieldPath.documentId, whereIn: admin.sportCentreId);
+      final query2 =
+          ref.orderBy('name').startAt([nameSC]).endAt([nameSC + '\uf8ff']);
 
-  /// Return Snapshot of Sport Centre
+      return query2.snapshots();
+    }
+  }
+
   static Stream<DocumentSnapshot> getDataById(String id) {
     return tbSportCentre.doc(id).snapshots();
-  }
-
-  // TODO: get all owned
-  static Future<List<SportCentre>> getAllSportCentreOwned(Admin input) async {
-    tbSportCentre.getAll()
-
-    late List<SportCentre> _output;
-    for (String i in input.sportCentreId) {
-      var _document = getDataById(i);
-      _document.listen((event) { })
-      _output.add(i);
-    }
   }
 
   static Future<void> addData({required SportCentre sc}) async {
@@ -189,6 +202,18 @@ class OrderFirestoreDatabase {
     return tbOrder.snapshots();
   }
 
+  static Stream<QuerySnapshot> getDataByConsumer(Consumer consumer) {
+    return tbOrder
+        .where(FieldPath.documentId, whereIn: consumer.orderId)
+        .snapshots();
+  }
+
+  static Stream<QuerySnapshot> getDataByAdmin(Admin admin) {
+    return tbOrder
+        .where(FieldPath.documentId, whereIn: admin.orderId)
+        .snapshots();
+  }
+
   static Stream<DocumentSnapshot> getDataById(String id) {
     return tbOrder.doc(id).snapshots();
   }
@@ -219,5 +244,3 @@ class OrderFirestoreDatabase {
         .catchError((e) => print(e));
   }
 }
-
-

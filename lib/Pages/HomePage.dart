@@ -1,13 +1,16 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/Order.dart';
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/User.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'dart:html';
+
+import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/class/User.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -84,7 +87,6 @@ class _HomePageState extends State<HomePage> {
     SportField sf = order.sportField;
 
     return Container(
-      width: 300,
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(8.0),
@@ -192,12 +194,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onPressed: () {
-                        ConsumerSession.session.balance += double.parse(_tfController.text);
-
-                        //buildSnackBar(context, "Top Up Succesfull");
+                        ConsumerSession.session.balance +=
+                            double.parse(_tfController.text);
 
                         ConsumerFirestoreDatabase.editData(
                             consumer: ConsumerSession.session);
+
+                        buildSnackBar(context, "Top Up Succesfull");
 
                         Navigator.pop(context);
                       },
@@ -235,144 +238,137 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return StreamBuilder<QuerySnapshot>(
-      stream: OrderFirestoreDatabase.getData(),
-      builder: (context, snapshot) {
-        if (snapshot.hasError) {
-          return Text("${snapshot.error}");
-        } else if (snapshot.hasData || snapshot.data != null) {
-          //add to list order
-          List<Order> listOrderActive = [];
-          List<Order> listOrderUsed = [];
-
-          for (var i = 0; i < snapshot.data!.docs.length; i++) {
-            DocumentSnapshot dsData = snapshot.data!.docs[i];
-            Order order = Order.fromDocument(dsData);
-
-            if (ConsumerSession.session.orderId.contains(order.id)) {
-              if (order.status == 1) {
-                listOrderActive.add(order);
-              }
-              if (order.status == 3) {
-                listOrderUsed.add(order);
-              }
-            }
-          }
-
-          return Scaffold(
-            body: SingleChildScrollView(
-              child: Container(
-                width: double.infinity,
-                padding: EdgeInsets.symmetric(horizontal: 20),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    title('Hello,', false),
-                    title(ConsumerSession.session.name, true),
-                    SizedBox(
-                      height: 30,
-                    ),
-                    // balanceCard(ConsumerSession.session),
-                    // SizedBox(
-                    //   height: 20,
-                    // ),
-                    Wrap(
-                      direction: Axis.horizontal,
-                      spacing: 32,
-                      runSpacing: 32,
-                      children: [
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            subTitle("Balance"),
-                            SizedBox(
-                              height: 10,
-                            ),
-                            balanceCard(ConsumerSession.session),
-                          ],
-                        ),
-                        //reservation
-                        listOrderActive.isEmpty
-                            ? Container()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 300,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        subTitle('Reservation'),
-                                        GestureDetector(
-                                          onTap: () {
-                                            
-                                          },
-                                          child: Text(
-                                            'See All',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  bookingCard(listOrderActive.last),
-                                ],
-                              ),
-                        //latest visit
-                        listOrderUsed.isEmpty
-                            ? Container()
-                            : Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Container(
-                                    width: 300,
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.spaceBetween,
-                                      children: [
-                                        subTitle('Lastest Visit'),
-                                        GestureDetector(
-                                          onTap: () {},
-                                          child: Text(
-                                            'See All',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.blue,
-                                              fontWeight: FontWeight.w500,
-                                            ),
-                                          ),
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  SizedBox(
-                                    height: 10,
-                                  ),
-                                  bookingCard(listOrderUsed.last),
-                                ],
-                              ),
-                      ],
-                    ),
-                    SizedBox(
-                      height: 30,
-                    ),
-                  ],
-                ),
+    return Scaffold(
+      body: SingleChildScrollView(
+        child: Container(
+          width: double.infinity,
+          padding: EdgeInsets.symmetric(horizontal: 20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title('Hello,', false),
+              title(ConsumerSession.session.name, true),
+              SizedBox(
+                height: 30,
               ),
-            ),
-          );
-        }
+              subTitle("Balance"),
+              SizedBox(
+                height: 10,
+              ),
+              balanceCard(ConsumerSession.session),
+              SizedBox(
+                height: 20,
+              ),
 
-        return progressIndicator();
-      },
+              //cek consumer have order or not
+              ConsumerSession.session.orderId.isEmpty
+                  ? Container()
+                  : StreamBuilder<QuerySnapshot>(
+                      stream: OrderFirestoreDatabase.getDataByConsumer(
+                          ConsumerSession.session),
+                      builder: (context, snapshot) {
+                        if (snapshot.hasError) {
+                          return Text('${snapshot.error}');
+                        } else if (snapshot.hasData || snapshot.data != null) {
+                          //add to list order
+                          List<Order> listOrderActive = [];
+                          List<Order> listOrderUsed = [];
+
+                          for (var i = 0; i < snapshot.data!.docs.length; i++) {
+                            DocumentSnapshot dsData = snapshot.data!.docs[i];
+                            Order order = Order.fromDocument(dsData);
+
+                            if (ConsumerSession.session.orderId
+                                .contains(order.id)) {
+                              if (order.status == 1) {
+                                listOrderActive.add(order);
+                              }
+                              if (order.status == 3) {
+                                listOrderUsed.add(order);
+                              }
+                            }
+                          }
+
+                          return Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              //reservation
+                              listOrderActive.isEmpty
+                                  ? Container()
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            subTitle('Reservation'),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Text(
+                                                'See All',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        bookingCard(listOrderActive.last),
+                                      ],
+                                    ),
+                              SizedBox(
+                                height: 20,
+                              ),
+
+                              //latest visit
+                              listOrderUsed.isEmpty
+                                  ? Container()
+                                  : Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                          mainAxisSize: MainAxisSize.max,
+                                          children: [
+                                            subTitle('Lastest Visit'),
+                                            GestureDetector(
+                                              onTap: () {},
+                                              child: Text(
+                                                'See All',
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.blue,
+                                                  fontWeight: FontWeight.w500,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        bookingCard(listOrderUsed.last),
+                                      ],
+                                    ),
+                            ],
+                          );
+                        }
+                        return progressIndicator();
+                      }),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }

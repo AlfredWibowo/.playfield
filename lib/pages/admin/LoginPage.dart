@@ -1,10 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/functions/functions.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
-import 'package:project_ambw/pages/admin/SignUpPage.dart';
-import 'package:project_ambw/services/authService.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/BottomNavigationPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/SignUpPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -17,8 +17,9 @@ class AdminLoginPage extends StatefulWidget {
 
 class _AdminLoginPageState extends State<AdminLoginPage> {
   bool _isPasswordVisible = false;
-  TextEditingController _tfEmailController = TextEditingController();
-  TextEditingController _tfPasswordController = TextEditingController();
+
+  final TextEditingController _tfEmailController = TextEditingController();
+  final TextEditingController _tfPasswordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {

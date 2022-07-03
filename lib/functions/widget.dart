@@ -1,13 +1,9 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/CLapangan.dart';
-import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/functions/functions.dart';
-import 'package:project_ambw/pages/BookingPage.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
-import 'package:project_ambw/services/authService.dart';
+import 'package:aplikasi_booking_lapangan_online/class/City.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
@@ -16,7 +12,7 @@ IconButton backButton(BuildContext context) {
     onPressed: () => Navigator.pop(context),
     icon: Icon(
       Icons.arrow_back_ios,
-      color: Colors.black,
+      color: Colors.grey,
     ),
   );
 }
@@ -37,7 +33,7 @@ OutlineInputBorder outlineInputBorder() {
 
 RoundedRectangleBorder roundedRectangleBorder() {
   return RoundedRectangleBorder(
-    borderRadius: BorderRadius.circular(6),
+    borderRadius: BorderRadius.circular(8),
     side: BorderSide(color: Colors.black),
   );
 }
@@ -105,121 +101,22 @@ Text title(String text, bool bold) {
   return Text(
     text,
     style: TextStyle(
-      fontFamily: 'Comfortaa',
-      fontSize: 26,
+      fontSize: 24,
       color: Colors.black,
-      fontWeight: bold ? FontWeight.w700 : FontWeight.w300,
+      fontWeight: bold ? FontWeight.bold : FontWeight.normal,
     ),
   );
 }
 
-Card reservationCard(String date, String loc) {
-  return Card(
-    color: Colors.black,
-    child: ListTile(
-      onTap: () {},
-      contentPadding: EdgeInsets.all(12),
-      title: Row(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'Closest Date',
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                date,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontFamily: 'Roboto',
-                  fontWeight: FontWeight.w300,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-          SizedBox(
-            width: 64,
-          ),
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Location",
-                style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(
-                height: 4,
-              ),
-              Text(
-                loc,
-                style: TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
-                ),
-              ),
-            ],
-          ),
-        ],
-      ),
-      trailing: Icon(
-        Icons.arrow_forward_ios,
-        color: Colors.grey,
-      ),
+Widget subTitle(String subtitle) {
+  return Text(
+    subtitle,
+    style: TextStyle(
+      fontSize: 20,
+      color: Colors.black,
+      fontWeight: FontWeight.bold,
     ),
   );
-}
-
-Widget subTitle(String subtitle, bool seeAll, Function func) {
-  if (seeAll) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      crossAxisAlignment: CrossAxisAlignment.baseline,
-      textBaseline: TextBaseline.alphabetic,
-      children: [
-        Text(
-          subtitle,
-          style: TextStyle(
-            fontSize: 22,
-            fontFamily: 'Comfortaa',
-            color: Colors.black,
-            fontWeight: FontWeight.w500,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => func,
-          child: Text(
-            'See All',
-            style: TextStyle(
-              fontSize: 16,
-              color: Colors.blue,
-              fontWeight: FontWeight.w500,
-            ),
-          ),
-        ),
-      ],
-    );
-  } else {
-    return Text(
-      subtitle,
-      style: TextStyle(
-        fontSize: 22,
-        fontFamily: 'Comfortaa',
-        color: Colors.black,
-        fontWeight: FontWeight.w500,
-      ),
-    );
-  }
 }
 
 Image imageNetwork(String url, double width, double height) {
@@ -236,8 +133,8 @@ Row textWithIconRow(IconData icon, String text) {
     children: [
       Icon(
         icon,
-        color: Colors.white,
-        size: 14,
+        color: Colors.grey,
+        size: 12,
       ),
       SizedBox(
         width: 5,
@@ -245,55 +142,11 @@ Row textWithIconRow(IconData icon, String text) {
       Text(
         text,
         style: TextStyle(
-          fontFamily: 'Roboto',
-          fontSize: 14,
-          fontWeight: FontWeight.w300,
-          color: Colors.white,
+          fontSize: 12,
+          color: Colors.grey,
         ),
       ),
     ],
-  );
-}
-
-Widget latestVisitCard() {
-  return Container(
-    decoration: BoxDecoration(
-      color: Colors.black,
-      borderRadius: BorderRadius.circular(6.0),
-    ),
-    child: Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-          child: imageNetwork(imagePath, 0, 128),
-        ),
-        Padding(
-          padding: EdgeInsets.all(16),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                'GOR Sudirman',
-                style: TextStyle(
-                  fontSize: 18,
-                  color: Colors.white,
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              textWithIconRow(Icons.phone, '087853946662'),
-              textWithIconRow(Icons.location_on, 'Jl. Kertajaya Surabaya'),
-              SizedBox(
-                height: 30,
-              ),
-              textWithIconRow(Icons.calendar_today, '16/6/2022'),
-            ],
-          ),
-        ),
-      ],
-    ),
   );
 }
 
@@ -326,104 +179,24 @@ List<Widget> sportCardList(List<String> fieldType) {
   return listCard;
 }
 
-Widget exploreCard(BuildContext context, SportCentre inputSportsCentre, SportField inputSportsField) {
-
-  return GestureDetector(
-    onTap: () {
-      Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => BookingPage(
-                dataSC: inputSportsCentre, dataSF: inputSportsField),
-          ));
-    },
-    child: Container(
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.circular(6.0),
-      ),
-      padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            inputSportsCentre.name,
-            style: TextStyle(
-              fontSize: 18,
-              color: Colors.white,
-            ),
-          ),
-          SizedBox(
-            height: 20,
-          ),
-          textWithIconRow(Icons.phone, inputSportsCentre.phoneNumber),
-          textWithIconRow(Icons.location_on, inputSportsCentre.address),
-          textWithIconRow(Icons.alarm, inputSportsField.opTime),
-          SizedBox(
-            height: 20,
-          ),
-          Row(
-            children: [
-              Row(
-                // children: sportCardList(disctinct),
-              ),
-              Expanded(
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Icon(
-                      Icons.location_city,
-                      color: Colors.white,
-                      size: 14,
-                    ),
-                    SizedBox(
-                      width: 5,
-                    ),
-                    Text(
-                      inputSportsCentre.city,
-                      style: TextStyle(
-                        fontFamily: 'Roboto',
-                        fontSize: 14,
-                        fontWeight: FontWeight.w300,
-                        color: Colors.white,
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ],
-          )
-        ],
-      ),
-    ),
-  );
-}
-
 Icon iconStatus(int stat) {
-  Icon canceled = Icon(
-    Icons.cancel,
-    color: Colors.red,
-  );
-
-  Icon used = Icon(
-    Icons.flag_circle_rounded,
-    color: Colors.grey,
-  );
-  Icon active = Icon(
-    Icons.check_circle,
-    color: Colors.green,
-  );
+  Icon waitting = Icon(Icons.circle, color: Colors.yellow);
+  Icon active = Icon(Icons.circle, color: Colors.green);
+  Icon rejected = Icon(Icons.circle, color: Colors.red);
+  Icon used = Icon(Icons.circle, color: Colors.grey);
 
   switch (stat) {
     case 0:
-      return active;
+      return waitting;
       break;
     case 1:
-      return used;
+      return active;
+      break;
+    case 2:
+      return rejected;
       break;
     default:
-      return canceled;
+      return used;
       break;
   }
 }
@@ -437,64 +210,9 @@ Color sportColor(String sport) {
       return Colors.red;
       break;
     default:
-      return Colors.red;
+      return Colors.green;
       break;
   }
-}
-
-/// TODO : FIX
-/// Unused - Missing dialog Ticket
-Widget ticketCard(BuildContext context, FieldOccupancy ticket) {
-  return ListTile(
-    onTap: () {
-      // dialogTicket(context, ticket.ticketID);
-    },
-    shape: roundedRectangleBorder(),
-    contentPadding: EdgeInsets.all(8),
-    tileColor: Colors.black,
-    leading: imageNetwork(imagePath, 100, 100),
-    title: Text(
-      ticket.ticketID,
-      style: TextStyle(
-        fontSize: 14,
-        color: Colors.white,
-      ),
-    ),
-    // subtitle: Column(
-    //   crossAxisAlignment: CrossAxisAlignment.start,
-    //   children: [
-    //     textWithIconRow(Icons.phone, noTelp),
-    //     textWithIconRow(Icons.location_on, alamat),
-    //     sportCard(jenisLap, sportColor(jenisLap))
-    //   ],
-    // ),
-    trailing: iconStatus(ticket.status),
-  );
-}
-
-Card profileCard(String title, String value) {
-  return Card(
-    color: Colors.black,
-    child: ListTile(
-      title: Text(
-        title,
-        style: TextStyle(color: Colors.white),
-      ),
-      subtitle: Text(
-        value,
-        style: TextStyle(color: Colors.grey),
-      ),
-      trailing: title == "Email"
-          ? Container(
-              width: 0,
-              height: 0,
-            )
-          : Icon(
-              Icons.arrow_forward_ios,
-              color: Colors.grey,
-            ),
-    ),
-  );
 }
 
 Center progressIndicator() {
@@ -522,17 +240,6 @@ Widget addFieldBtn() {
       style: ElevatedButton.styleFrom(
         fixedSize: Size.fromHeight(100),
       ),
-    ),
-  );
-}
-
-Widget ticketQRCode(String uuid, double size) {
-  return Center(
-    child: QrImage(
-      data: uuid,
-      version: QrVersions.auto,
-      size: size,
-      gapless: false,
     ),
   );
 }

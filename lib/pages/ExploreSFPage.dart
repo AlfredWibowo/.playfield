@@ -1,12 +1,10 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/BookingPage.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/BookingPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
 import 'package:flutter/material.dart';
 
 class ExploreSFPage extends StatefulWidget {
@@ -21,8 +19,6 @@ class ExploreSFPage extends StatefulWidget {
 }
 
 class _ExploreSFPageState extends State<ExploreSFPage> {
-  final TextEditingController _tfSearchBar = TextEditingController();
-
   Widget sportFieldCard(BuildContext context, SportCentre sc, SportField sf) {
     return GestureDetector(
       onTap: () {
@@ -39,7 +35,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
         ),
         padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
         child: Row(
-          mainAxisSize: MainAxisSize.max,
+          mainAxisSize: MainAxisSize.min,
           children: [
             imageNetwork(imagePath, 100, 100),
             SizedBox(
@@ -74,58 +70,147 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
 
   @override
   Widget build(BuildContext context) {
+    SportCentre sc = widget.dataSC;
+    List<SportField> listSF = widget.dataSF;
+
+    List<SportField> listSFBadminton =
+        listSF.where((element) => element.fieldType == "Badminton").toList();
+    List<SportField> listSFFutsal =
+        listSF.where((element) => element.fieldType == "Futsal").toList();
+    List<SportField> listSFBasketball =
+        listSF.where((element) => element.fieldType == "Basketball").toList();
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: backButton(context),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            title('Find your', false),
-            title('playfield', true),
-            title('Here', false),
-            SizedBox(
-              height: 30,
-            ),
-            TextField(
-              controller: _tfSearchBar,
-              decoration: InputDecoration(
-                filled: true,
-                prefixIcon: Icon(Icons.search),
-                suffixIcon:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
-                ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title('Find your', false),
+              title('playfield', true),
+              title('Here', false),
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: // return ListView.separated(
-                  //   itemBuilder:(context, index) {
-                  //     return sportFieldCard(context, listSF[index]);
-                  //   },
-                  //   separatorBuilder: (context, index) => Divider(),
-                  //   itemCount: listSF.length
-                  // );
 
-                  Wrap(
-                direction: Axis.horizontal,
-                spacing: 32,
-                runSpacing: 32,
-                children: [
-                  for (var sf in widget.dataSF)
-                    sportFieldCard(context, widget.dataSC, sf)
-                ],
-              ),
-            ),
-          ],
+              //All
+              listSFBadminton.isEmpty
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subTitle('All'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 160,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return sportFieldCard(
+                                  context, sc, listSF[index]);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 10,
+                            ),
+                            itemCount: listSF.length,
+                          ),
+                        ),
+                      ],
+                    ),
+              SizedBox(height: 20,),
+
+              //Badminton
+              listSFBadminton.isEmpty
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subTitle('Badminton'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 160,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return sportFieldCard(
+                                  context, sc, listSFBadminton[index]);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 10,
+                            ),
+                            itemCount: listSFBadminton.length,
+                          ),
+                        ),
+                      ],
+                    ),
+              SizedBox(height: 20,),
+              
+              //Futsal
+              listSFFutsal.isEmpty
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subTitle('Futsal'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 160,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return sportFieldCard(
+                                  context, sc, listSFFutsal[index]);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 10,
+                            ),
+                            itemCount: listSFFutsal.length,
+                          ),
+                        ),
+                      ],
+                    ),
+              SizedBox(height: 20,),
+      
+              //Basketball
+              listSFBasketball.isEmpty
+                  ? Container()
+                  : Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        subTitle('Basketball'),
+                        SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                          height: 160,
+                          child: ListView.separated(
+                            scrollDirection: Axis.horizontal,
+                            itemBuilder: (context, index) {
+                              return sportFieldCard(
+                                  context, sc, listSFBasketball[index]);
+                            },
+                            separatorBuilder: (context, index) => SizedBox(
+                              width: 10,
+                            ),
+                            itemCount: listSFBasketball.length,
+                          ),
+                        ),
+                      ],
+                    ),
+            ],
+          ),
         ),
       ),
     );

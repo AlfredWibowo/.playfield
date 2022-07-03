@@ -43,7 +43,7 @@ class _SCDetailPageState extends State<SCDetailPage> {
             )
           ],
         ),
-       
+      
         body: StreamBuilder<Object>(
           stream: SportCentreFirestoreDatabase.getDataById(owns[i]),
           builder: (context, snapshot) {

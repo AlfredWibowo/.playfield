@@ -1,15 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/class/User.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/main.dart';
-import 'package:project_ambw/pages/admin/ManageSportCentrePage.dart';
-import 'package:project_ambw/pages/admin/HomePage.dart';
-import 'package:project_ambw/pages/admin/MaintenancePage.dart';
-import 'package:project_ambw/pages/admin/NotificationPage.dart';
-import 'package:project_ambw/pages/admin/ProfilePage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/User.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/main.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/ManageSportCentrePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/HomePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/MaintenancePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/NotificationPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/admin/ProfilePage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,7 @@ class AdminBottomNavigationPage extends StatefulWidget {
 }
 
 class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
-  int _currentIndex = 1;
+  int _currentIndex = 0;
 
   final List<String> title = ['Home', 'Manage Field', 'Maintenance'];
 
@@ -42,8 +43,8 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
   Widget build(BuildContext context) {
     return StreamBuilder<DocumentSnapshot>(
       stream: AdminFirestoreDatabase.getDataByEmail(
-        //AuthService.getEmailUser(),
-        "admin1@gmail.com"
+        AuthService.getEmailUser(),
+        //"admin1@gmail.com"
       ),
       builder: (context, snapshot) {
         if (snapshot.hasError) {

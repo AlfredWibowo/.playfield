@@ -1,4 +1,10 @@
-import 'package:project_ambw/functions/widget.dart';
+// ignore_for_file: prefer_const_constructors
+
+import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
 import 'package:flutter/material.dart';
 
 class AdminMaintenancePage extends StatefulWidget {
@@ -9,6 +15,81 @@ class AdminMaintenancePage extends StatefulWidget {
 }
 
 class _AdminMaintenancePageState extends State<AdminMaintenancePage> {
+  Widget appliantCard(Order order) {
+    SportCentre sc = order.sportCentre;
+    SportField sf = order.sportField;
+
+    return Container(
+      padding: EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: imageNetwork(imagePath, 100, 100),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${sc.name} (${sf.name})',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              textWithIconRow(Icons.calendar_today, order.date),
+              textWithIconRow(Icons.alarm, order.time),
+              textWithIconRow(Icons.price_change, "Rp. ${order.amount}"),
+              SizedBox(
+                height: 10,
+              ),
+              sportCard(sf.fieldType, sportColor(sf.fieldType)),
+            ],
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: Icon(Icons.check),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 116, 227, 19),
+                    shape: roundedRectangleBorder()),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Icon(Icons.close),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 251, 11, 11),
+                    shape: roundedRectangleBorder()),
+              ),
+            ],
+          )
+        ],
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -17,7 +98,11 @@ class _AdminMaintenancePageState extends State<AdminMaintenancePage> {
         child: ListView(
           children: [
             title('Manage your', false),
-            title('Sports center', true),
+            title('Order', true),
+            SizedBox(
+              height: 30,
+            ),
+            
           ],
         ),
       ),

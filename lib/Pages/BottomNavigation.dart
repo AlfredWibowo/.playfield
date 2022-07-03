@@ -1,19 +1,19 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/User.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/main.dart';
-import 'package:project_ambw/pages/FavoritePage.dart';
-import 'package:project_ambw/pages/NotificationPage.dart';
-import 'package:project_ambw/pages/ProfilePage.dart';
-import 'package:project_ambw/services/authService.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/User.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/main.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/FavoritePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/NotificationPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/ProfilePage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:project_ambw/pages/ExploreSCPage.dart';
-import 'package:project_ambw/pages/HomePage.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/ExploreSCPage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/HomePage.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
 
 class BottomNavigationPage extends StatefulWidget {
   const BottomNavigationPage({Key? key}) : super(key: key);

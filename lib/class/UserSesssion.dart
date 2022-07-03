@@ -1,4 +1,4 @@
-import 'package:project_ambw/class/User.dart';
+import 'package:aplikasi_booking_lapangan_online/class/User.dart';
 
 class ConsumerSession {
   static Consumer session = Consumer(

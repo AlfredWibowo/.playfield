@@ -1,6 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:project_ambw/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
 import 'package:flutter/material.dart';
 
 //snackbar

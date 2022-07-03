@@ -1,11 +1,11 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables, unnecessary_brace_in_string_interps, unused_field
 
-import 'package:project_ambw/class/Order.dart';
-import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
+import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
@@ -76,9 +76,9 @@ class _TicketPageState extends State<TicketPage> {
   void dialogTicket(BuildContext context, Order order) {
     SportCentre sc = order.sportCentre;
     SportField sf = order.sportField;
-    
+
     showDialog(
-      context: context, 
+      context: context,
       builder: (context) {
         return AlertDialog(
           title: Center(child: title("${sc.name} (${sf.name})", true)),
@@ -86,7 +86,9 @@ class _TicketPageState extends State<TicketPage> {
             mainAxisSize: MainAxisSize.min,
             children: [
               ticketQRCode(order.id, 200),
-              SizedBox(height: 20,),
+              SizedBox(
+                height: 20,
+              ),
               textWithIconRow(Icons.location_on, sc.address),
               textWithIconRow(Icons.phone, sc.phoneNumber),
               textWithIconRow(Icons.price_change, "Rp. ${order.amount}"),
@@ -135,7 +137,7 @@ class _TicketPageState extends State<TicketPage> {
                   ConsumerSession.session.orderId.isEmpty
                       ? emptyText()
                       : StreamBuilder<QuerySnapshot>(
-                          stream: OrderFirestoreDatabase.getData(),
+                          stream: OrderFirestoreDatabase.getDataByConsumer(ConsumerSession.session),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
                               return Text("${snapshot.error}");
@@ -150,13 +152,10 @@ class _TicketPageState extends State<TicketPage> {
                                     snapshot.data!.docs[i];
                                 Order order = Order.fromDocument(dsData);
 
-                                //cek consumer order
-                                if (ConsumerSession.session.orderId
-                                    .contains(order.id)) {
-                                  if (order.status == _currentindexTab) {
+                                //cek status consumer order
+                                if (order.status == _currentindexTab) {
                                     listOrder.add(order);
                                   }
-                                }
                               }
 
                               if (listOrder.isEmpty) {

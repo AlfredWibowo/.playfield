@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:project_ambw/class/UserSesssion.dart';
-import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/TicketPage.dart';
-import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
+import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:aplikasi_booking_lapangan_online/pages/TicketPage.dart';
+import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:aplikasi_booking_lapangan_online/services/storageService.dart';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 
 class ProfilePage extends StatefulWidget {
@@ -186,7 +189,12 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: imageNetwork(imagePath, 100 * 1.5, 110 * 1.5),
+                    child: ConsumerSession.session.profilePicture != ""
+                        ? imageNetwork(imagePath, 100 * 1.5, 110 * 1.5)
+                        : Icon(
+                            Icons.account_box,
+                            size: 100 * 1.5,
+                          ),
                   ),
                   SizedBox(
                     width: 10,
@@ -213,7 +221,44 @@ class _ProfilePageState extends State<ProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles(
+                                  allowMultiple: false,
+                                  type: FileType.custom,
+                                  allowedExtensions: ['png', 'jpg'],
+                                );
+
+                                if (result == null) {
+                                  buildSnackBar(context, "No Image Selected");
+                                } else {
+                                  final filePath = result.files.single.path;
+                                  final fileName = result.files.single.name;
+
+                                  Future<String> responseMsg;
+                                  responseMsg =
+                                      StorageService.uploadUserProfileImage(
+                                    filePath: filePath!,
+                                    fileName: fileName,
+                                  );
+
+                                  String msg = await responseMsg;
+
+                                  if (msg == "Successful") {
+
+                                    ConsumerSession.session.profilePicture =
+                                        fileName;
+
+                                    ConsumerFirestoreDatabase.editData(
+                                        consumer: ConsumerSession.session);
+
+                                    buildSnackBar(
+                                        context, "Change PP Successfull");
+                                  } else {
+                                    buildSnackBar(context, msg);
+                                  }
+                                }
+                              },
                               child: Text(
                                 'Change Profile Picture'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),
