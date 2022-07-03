@@ -119,62 +119,74 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
         },
       );
     } else {
-      return Container(
-        width: double.infinity,
-        decoration: BoxDecoration(
-          color: Colors.black,
-          borderRadius: BorderRadius.circular(12.0),
-        ),
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              sc.name,
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.white,
+      return GestureDetector(
+        onTap: () {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ManageSportFieldPage(
+                  dataSC: sc,
+                  dataSF: listSportField,
+                ),
+              ));
+        },
+        child: Container(
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.circular(12.0),
+          ),
+          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                sc.name,
+                style: TextStyle(
+                  fontSize: 18,
+                  color: Colors.white,
+                ),
               ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            textWithIconRow(Icons.location_on, sc.address),
-            SizedBox(
-              height: 20,
-            ),
-            Row(
-              children: [
-                Row(
-                  children: sportCardList([]),
-                ),
-                Expanded(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      Icon(
-                        Icons.location_city,
-                        color: Colors.white,
-                        size: 14,
-                      ),
-                      SizedBox(
-                        width: 5,
-                      ),
-                      Text(
-                        sc.city,
-                        style: TextStyle(
-                          fontFamily: 'Roboto',
-                          fontSize: 14,
-                          fontWeight: FontWeight.w300,
-                          color: Colors.white,
-                        ),
-                      ),
-                    ],
+              SizedBox(
+                height: 20,
+              ),
+              textWithIconRow(Icons.location_on, sc.address),
+              SizedBox(
+                height: 20,
+              ),
+              Row(
+                children: [
+                  Row(
+                    children: sportCardList([]),
                   ),
-                ),
-              ],
-            )
-          ],
+                  Expanded(
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Icon(
+                          Icons.location_city,
+                          color: Colors.white,
+                          size: 14,
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          sc.city,
+                          style: TextStyle(
+                            fontFamily: 'Roboto',
+                            fontSize: 14,
+                            fontWeight: FontWeight.w300,
+                            color: Colors.white,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              )
+            ],
+          ),
         ),
       );
     }
@@ -190,7 +202,8 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
 
   Stream<QuerySnapshot<Object?>> onSearch() {
     setState(() {});
-    return SportCentreFirestoreDatabase.getDataByAdmin(AdminSession.session, _tfSearchBar.text);
+    return SportCentreFirestoreDatabase.getDataByAdmin(
+        AdminSession.session, _tfSearchBar.text);
   }
 
   @override
@@ -274,7 +287,12 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                 builder: (context) => AddSportCentrePage(),
               ));
         },
-        label: Text('Add New'.toUpperCase(),style: TextStyle(fontFamily: 'Roboto',),),
+        label: Text(
+          'Add New'.toUpperCase(),
+          style: TextStyle(
+            fontFamily: 'Roboto',
+          ),
+        ),
         icon: Icon(Icons.add),
         backgroundColor: Colors.black,
       ),
