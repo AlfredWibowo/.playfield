@@ -47,8 +47,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 'Register',
                 style: TextStyle(
                   fontSize: 30,
+                  fontFamily: 'Comfortaa',
                   color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),
@@ -124,8 +125,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   profilePicture: "",
                 );
 
-                ConsumerFirestoreDatabase.addData(consumer: data);
-
+                await ConsumerFirestoreDatabase.addData(consumer: data);
                 Future<String> responseMsg;
 
                 responseMsg = AuthService.signUp(
@@ -135,10 +135,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
                 
-                //AuthService.logout();
 
                 if (msg == 'Successful') {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationPage(),));
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationPage()));
                 }
               },
               child: Text(

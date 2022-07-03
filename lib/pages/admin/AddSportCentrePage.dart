@@ -2,7 +2,7 @@
 
 import 'package:project_ambw/class/City.dart';
 import 'package:project_ambw/class/SportCentre.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:project_ambw/services/localService.dart';

@@ -42,8 +42,9 @@ class _LoginPageState extends State<LoginPage> {
                 'Login',
                 style: TextStyle(
                   fontSize: 30,
+                  fontFamily: 'Comfortaa',
                   color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w400,
                 ),
               ),
             ),

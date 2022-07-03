@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_constructors
 
 import 'package:project_ambw/class/User.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/main.dart';
 import 'package:project_ambw/pages/admin/ManageSportCentrePage.dart';
 import 'package:project_ambw/pages/admin/HomePage.dart';
-import 'package:project_ambw/pages/admin/MaintenancePage.dart';
 import 'package:project_ambw/pages/admin/NotificationPage.dart';
 import 'package:project_ambw/pages/admin/ProfilePage.dart';
 import 'package:project_ambw/services/authService.dart';
@@ -30,7 +29,6 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
   final List<Widget> _screens = [
     AdminHomePage(),
     ManageSportCentrePage(),
-    AdminMaintenancePage(),
   ];
 
   void onTappedBar(int index) {
@@ -58,11 +56,14 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
               toolbarHeight: 100,
               backgroundColor: Colors.transparent,
               elevation: 0,
-              leading: appBarIconBtn(
-                  context, Icons.account_circle_outlined, AdminProfilePage()),
+              leading: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: appBarIconBtn(
+                    context, Icons.account_circle_outlined, AdminProfilePage()),
+              ),
               actions: [
                 Container(
-                  padding: EdgeInsets.symmetric(horizontal: 8),
+                  padding: EdgeInsets.symmetric(horizontal: 24),
                   child: Row(
                     children: [
                       appBarIconBtn(context, Icons.notifications_outlined,
@@ -79,7 +80,15 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
             body: _screens[_currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                color: Colors.brown,
+                color: Color.fromARGB(255, 223, 181, 156),
+                boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withOpacity(0.25),
+                      spreadRadius: 0,
+                      blurRadius: 20,
+                      offset: Offset(0, -2), // changes position of shadow
+                    )
+                ],
                 borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(8),
                   topRight: Radius.circular(8),
@@ -98,9 +107,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
                 items: [
                   bottomNavigationBarItem(Icon(Icons.home), 'Home'),
                   bottomNavigationBarItem(
-                      Icon(Icons.add_circle), 'Add Field'),
-                  bottomNavigationBarItem(
-                      Icon(Icons.settings), 'Maintenance'),
+                      Icon(Icons.settings), 'Manage'),
                 ],
               ),
             ),

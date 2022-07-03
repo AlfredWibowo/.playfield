@@ -101,9 +101,10 @@ Text title(String text, bool bold) {
   return Text(
     text,
     style: TextStyle(
-      fontSize: 24,
+      fontFamily: 'Comfortaa',
+      fontSize: 26,
       color: Colors.black,
-      fontWeight: bold ? FontWeight.bold : FontWeight.normal,
+      fontWeight: bold ? FontWeight.w700 : FontWeight.w300,
     ),
   );
 }
@@ -328,9 +329,11 @@ Widget emptyText() {
     height: 300,
     child: Center(
       child: Text(
-        'Empty',
+        'Well, There is Nothing Here',
         style: TextStyle(
-          fontSize: 30,
+          color: Colors.grey,
+          fontFamily: 'Comfortaa',
+          fontSize: 16,
         ),
       ),
     ),

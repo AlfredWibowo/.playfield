@@ -3,6 +3,7 @@
 import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
 import 'package:project_ambw/pages/admin/LoginPage.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
@@ -46,7 +47,8 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
               style: TextStyle(
                 fontSize: 30,
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontFamily: 'Comfortaa',
+                fontWeight: FontWeight.w400,
               ),
             ),
             SizedBox(
@@ -135,7 +137,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                   profilePicture: "",
                 );
 
-                AdminFirestoreDatabase.addData(admin: data);
+                await AdminFirestoreDatabase.addData(admin: data);
 
                 Future<String> responseMsg;
 
@@ -146,10 +148,9 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
 
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
-                AuthService.logout();
 
                 if (msg == 'Successful') {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminBottomNavigationPage()));
                 }
               },
               child: Text(

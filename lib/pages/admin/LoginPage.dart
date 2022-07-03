@@ -48,9 +48,10 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
               'AUTHORIZED_ACCESS\n'
               'ONLY',
               style: TextStyle(
+                fontFamily: 'Comfortaa',
                 fontSize: 30,
                 color: Colors.black,
-                fontWeight: FontWeight.bold,
+                fontWeight: FontWeight.w400,
               ),
               textAlign: TextAlign.center,
             ),

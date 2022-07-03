@@ -2,7 +2,7 @@
 
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
-import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/admin/AddSportCentrePage.dart';
 import 'package:project_ambw/pages/admin/ManageSportFieldPage.dart';
@@ -266,7 +266,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
           ],
         ),
       ),
-      floatingActionButton: FloatingActionButton(
+      floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
           Navigator.push(
               context,
@@ -274,10 +274,11 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                 builder: (context) => AddSportCentrePage(),
               ));
         },
-        //elevation: 0.0,
-        child: Icon(Icons.add),
-        backgroundColor: Colors.brown,
+        label: Text('Add New'),
+        icon: Icon(Icons.add),
+        backgroundColor: Colors.black,
       ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }

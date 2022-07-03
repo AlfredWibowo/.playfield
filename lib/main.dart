@@ -67,7 +67,7 @@ class _MyAppState extends State<MyApp> {
         if (snapshot.connectionState == ConnectionState.active) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            title: 'Flutter Demo',
+            title: '.playfield',
             theme: ThemeData(
               colorScheme: ColorScheme.fromSwatch(
                 primarySwatch: Colors.blue,
@@ -138,16 +138,17 @@ class _WelcomePageState extends State<WelcomePage> {
           mainAxisAlignment: MainAxisAlignment.end,
           children: [
             Padding(
-              padding: EdgeInsets.only(bottom: 250),
-              child: Text(
-                '.playfield',
-                style: TextStyle(
-                  fontSize: 30,
-                  color: Colors.black,
-                  fontWeight: FontWeight.bold,
+                padding: EdgeInsets.only(bottom: 250),
+                child: Text(
+                  '.playfield',
+                  style: TextStyle(
+                    fontFamily: 'Comfortaa',
+                    fontSize: 30,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w500,
+                  ),
                 ),
               ),
-            ),
             ElevatedButton(
               onPressed: () {
                 Navigator.push(
