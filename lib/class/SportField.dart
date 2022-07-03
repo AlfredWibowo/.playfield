@@ -6,6 +6,7 @@ class SportField {
   String opTime; //(00:00-23:59)
   String fieldType; //(Badminton, Futsal, Basketball)
   double price;
+  String fieldPicture;
 
   SportField({
     required this.id,
@@ -13,6 +14,7 @@ class SportField {
     required this.opTime,
     required this.fieldType,
     required this.price,
+    required this.fieldPicture,
   });
 
   factory SportField.fromJson(Map<String, dynamic> json) {
@@ -22,6 +24,7 @@ class SportField {
       opTime: json["opTime"], 
       fieldType: json["fieldType"], 
       price: json["price"],
+      fieldPicture: json["fieldPicture"],
     );
   }
 
@@ -32,6 +35,7 @@ class SportField {
       opTime: doc.get("opTime"), 
       fieldType: doc.get("fieldType"), 
       price: doc.get("price"),
+      fieldPicture: doc.get("fieldPicture"),
     );
   }
 
@@ -42,6 +46,7 @@ class SportField {
       "opTime": opTime,
       "fieldType": fieldType,
       "price": price,
+      "fieldPicture": fieldPicture,
     };
   }
 }

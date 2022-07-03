@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:aplikasi_booking_lapangan_online/class/Order.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/class/User.dart';
-import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/Order.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/User.dart';
+import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:uuid/uuid.dart';
@@ -53,6 +53,7 @@ class _DummyCreatePageState extends State<DummyCreatePage> {
                     opTime: "10:00-18:00",
                     fieldType: "Futsal",
                     price: 80000,
+                    fieldPicture: "",
                   );
 
                   SportFieldFirestoreDatabase.addData(sf: sf);
@@ -91,7 +92,8 @@ class _DummyCreatePageState extends State<DummyCreatePage> {
                         name: "B1",
                         opTime: "00:00-23:59",
                         fieldType: "Badminton",
-                        price: 50000),
+                        price: 50000,
+                        fieldPicture: ""),
                   );
                   OrderFirestoreDatabase.addData(order: order);
                 },

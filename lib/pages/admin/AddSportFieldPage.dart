@@ -1,11 +1,16 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/functions/widget.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:uuid/uuid.dart';
 
 class AddSportFieldPage extends StatefulWidget {
-  const AddSportFieldPage({Key? key}) : super(key: key);
+  final SportCentre dataSC;
+
+  const AddSportFieldPage({Key? key, required this.dataSC}) : super(key: key);
 
   @override
   State<AddSportFieldPage> createState() => _AddSportFieldPageState();
@@ -214,7 +219,33 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
             ),
 
             ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                String id = Uuid().v4();
+                String name = _tfName.text;
+                String opTime =
+                    "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                String fieldType = _dropdownSFType;
+                double price = double.parse(_tfPrice.text);
+                String fieldPicture = "";
+
+                //add id to Sport Centre
+                SportCentre sc = widget.dataSC;
+                sc.sportFieldId.add(id);
+                SportCentreFirestoreDatabase.editData(sc: sc);
+
+                //add data sf
+                SportField sf = SportField(
+                  id: id,
+                  name: name,
+                  opTime: opTime,
+                  fieldType: fieldType,
+                  price: price,
+                  fieldPicture: fieldPicture,
+                );
+                SportFieldFirestoreDatabase.addData(sf: sf);
+
+                Navigator.pop(context);
+              },
               child: Text(
                 'submit'.toUpperCase(),
                 style: TextStyle(

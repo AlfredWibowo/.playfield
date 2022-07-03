@@ -1,11 +1,12 @@
 // ignore_for_file: prefer_const_constructors, avoid_unnecessary_containers, prefer_const_literals_to_create_immutables
 
-import 'package:aplikasi_booking_lapangan_online/class/User.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/functions.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/LoginPage.dart';
-import 'package:aplikasi_booking_lapangan_online/services/authService.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/User.dart';
+import 'package:project_ambw/functions/functions.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/BottomNavigation.dart';
+import 'package:project_ambw/pages/LoginPage.dart';
+import 'package:project_ambw/services/authService.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
 
 class SignUpPage extends StatefulWidget {
@@ -134,10 +135,10 @@ class _SignUpPageState extends State<SignUpPage> {
                 String msg = await responseMsg;
                 buildSnackBar(context, msg);
                 
-                AuthService.logout();
+                //AuthService.logout();
 
                 if (msg == 'Successful') {
-                  Navigator.pop(context);
+                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationPage(),));
                 }
               },
               child: Text(

@@ -1,12 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/class/UserSesssion.dart';
-import 'package:aplikasi_booking_lapangan_online/functions/widget.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/admin/AddSportCentrePage.dart';
-import 'package:aplikasi_booking_lapangan_online/pages/admin/ManageSportFieldPage.dart';
-import 'package:aplikasi_booking_lapangan_online/services/dbFirestore.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/UserSesssion.dart';
+import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/admin/AddSportCentrePage.dart';
+import 'package:project_ambw/pages/admin/ManageSportFieldPage.dart';
+import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
