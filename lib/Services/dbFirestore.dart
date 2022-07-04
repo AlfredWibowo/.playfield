@@ -128,6 +128,15 @@ class SportFieldFirestoreDatabase {
         .whenComplete(() => print('Data Sport Field Berhasil di delete'))
         .catchError((e) => print(e));
   }
+
+  static Future<void> deleteDataByDocId({required String docId}) async {
+    DocumentReference doc = tbSportField.doc(docId);
+
+    await doc
+        .delete()
+        .whenComplete(() => print('Data Sport Field Berhasil di delete'))
+        .catchError((e) => print(e));
+  }
 }
 
 class SportCentreFirestoreDatabase {
