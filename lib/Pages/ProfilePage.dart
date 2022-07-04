@@ -191,15 +191,14 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: ConsumerSession.session.profilePicture != ""
-                        ? imageNetwork(imagePath, 100 * 1.5, 100 * 1.5)
-                        : Icon(
+                    child: ConsumerSession.session.profilePicture == ""
+                        ? Icon(
                             Icons.account_box,
                             size: 100 * 1.5,
                           )
                         : FutureBuilder<String>(
                             future: StorageService.getDownloadUrl(
-                              imageName: AdminSession.session.profilePicture,
+                              imageName: ConsumerSession.session.profilePicture,
                               isProfilePicture: true,
                             ),
                             builder: (context, snapshot) {
@@ -283,9 +282,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Change Profile Picture'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
                             ),
                             ElevatedButton(
                               onPressed: () {
