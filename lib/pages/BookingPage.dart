@@ -36,7 +36,7 @@ class _BookingPageState extends State<BookingPage> {
   late int _dropdownEndTime;
   late List<int> _listTime;
 
-  late num _amount;
+  late int _amount;
 
   late SportCentre sc;
   late SportField sf;
@@ -71,7 +71,7 @@ class _BookingPageState extends State<BookingPage> {
 
     int hour = _dropdownEndTime - _dropdownStartTime;
     _amount = hour * sf.price;
-    _tfAmount.text = "Rp. ${_amount}";
+    _tfAmount.text = "Rp. $_amount";
 
     formatDate();
   }
@@ -110,186 +110,191 @@ class _BookingPageState extends State<BookingPage> {
     //print(_listTime);
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            title("Booking Form", true),
-            SizedBox(
-              height: 30,
-            ),
-
-            //Sc Name
-            TextField(
-              controller: _tfScName,
-              readOnly: true,
-              enabled: false,
-              decoration: InputDecoration(
-                border: outlineInputBorder(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title("Booking Form", true),
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-
-            //Sf Name
-            TextField(
-              controller: _tfSfName,
-              readOnly: true,
-              enabled: false,
-              decoration: InputDecoration(
-                border: outlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-
-            //Field type
-            TextField(
-              controller: _tfFieldType,
-              readOnly: true,
-              enabled: false,
-              decoration: InputDecoration(
-                border: outlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-
-            //Date
-            TextField(
-              controller: _tfDate,
-              decoration: InputDecoration(
-                labelText: 'dd/mm/yyyy',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    selectDate(context);
-                  },
-                  icon: Icon(Icons.calendar_today),
+      
+              //Sc Name
+              TextField(
+                controller: _tfScName,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-
-            Column(
-              children: [
-                //dropdown time
-                Row(
-                  children: [
-                    Text('Time'),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 14.0),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                                isDense: true,
-                                style: TextStyle(
-                                    fontFamily: 'Roboto', fontSize: 16),
-                                isExpanded: true,
-                                value: _dropdownStartTime,
-                                items: _listTime.map((int value) {
-                                  return DropdownMenuItem(
-                                    value: value,
-                                    child: Text(
-                                      value.toString(),
-                                      style: TextStyle(fontFamily: 'Roboto'),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (int? newValue) {
-                                  setState(() {
-                                    _dropdownStartTime = newValue!;
-                                    calculateAmount();
-                                  });
-                                }),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Icon(Icons.remove),
-                    SizedBox(
-                      width: 10,
-                    ),
-                    Expanded(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          border: Border.all(color: Colors.black, width: 2.0),
-                          borderRadius: BorderRadius.zero,
-                        ),
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12.0, vertical: 14.0),
-                          child: DropdownButtonHideUnderline(
-                            child: DropdownButton(
-                                isDense: true,
-                                style: TextStyle(
-                                    fontFamily: 'Roboto', fontSize: 16),
-                                isExpanded: true,
-                                value: _dropdownEndTime,
-                                items: _listTime.map((int value) {
-                                  return DropdownMenuItem(
-                                    value: value,
-                                    child: Text(
-                                      value.toString(),
-                                      style: TextStyle(fontFamily: 'Roboto'),
-                                    ),
-                                  );
-                                }).toList(),
-                                onChanged: (int? newValue) {
-                                  setState(() {
-                                    _dropdownEndTime = newValue!;
-                                    calculateAmount();
-                                  });
-                                }),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
+              SizedBox(
+                height: 10,
+              ),
+      
+              //Sf Name
+              TextField(
+                controller: _tfSfName,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
                 ),
-                SizedBox(
-                  height: 10,
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              //Field type
+              TextField(
+                controller: _tfFieldType,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
                 ),
-
-                //Amount
-                TextField(
-                  controller: _tfAmount,
-                  readOnly: true,
-                  enabled: false,
-                  textAlign: TextAlign.end,
-                  decoration: InputDecoration(
-                    border: outlineInputBorder(),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              //Date
+              TextField(
+                controller: _tfDate,
+                decoration: InputDecoration(
+                  labelText: 'dd/mm/yyyy',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      selectDate(context);
+                    },
+                    icon: Icon(Icons.calendar_today),
                   ),
                 ),
-                SizedBox(
-                  height: 10,
-                ),
-
-                //submit btn
-                ElevatedButton(
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              Column(
+                children: [
+                  //dropdown time
+                  Row(
+                    children: [
+                      Text('Time'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 14.0),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isDense: true,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto', fontSize: 16, color: Colors.black),
+                                  isExpanded: true,
+                                  value: _dropdownStartTime,
+                                  items: _listTime.map((int value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontFamily: 'Roboto,', color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? newValue) {
+                                    setState(() {
+                                      _dropdownStartTime = newValue!;
+                                      calculateAmount();
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(Icons.remove),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 14.0),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isDense: true,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto', fontSize: 16, color: Colors.black),
+                                  isExpanded: true,
+                                  value: _dropdownEndTime,
+                                  items: _listTime.map((int value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? newValue) {
+                                    setState(() {
+                                      _dropdownEndTime = newValue!;
+                                      calculateAmount();
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+      
+                  //Amount
+                  TextField(
+                    controller: _tfAmount,
+                    readOnly: true,
+                    enabled: false,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: outlineInputBorder(),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+      
+                  //submit btn
+                  ElevatedButton(
                   onPressed: () async {
                     if (ConsumerSession.session.balance < _amount) {
                       buildSnackBar(context, "Balance is not Enough");
@@ -302,7 +307,7 @@ class _BookingPageState extends State<BookingPage> {
                       String date = _tfDate.text;
                       String time =
                           "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
-                      num amount = _amount;
+                      int amount = _amount;
 
                       Order order = Order(
                         id: orderId,
@@ -366,22 +371,23 @@ class _BookingPageState extends State<BookingPage> {
                       Navigator.pop(context);
                     }
                   },
-                  child: Text(
-                    'book'.toUpperCase(),
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
+                    child: Text(
+                      'book'.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50),
+                      primary: Colors.black,
+                      shape: roundedRectangleBorder(),
                     ),
                   ),
-                  style: ElevatedButton.styleFrom(
-                    minimumSize: Size.fromHeight(50),
-                    primary: Colors.black,
-                    shape: roundedRectangleBorder(),
-                  ),
-                ),
-              ],
-            ),
-          ],
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

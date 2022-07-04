@@ -35,7 +35,7 @@ class User {
 }
 
 class Consumer extends User {
-  double balance;
+  int balance;
 
   Consumer(
       {required this.balance,

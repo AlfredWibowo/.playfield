@@ -5,7 +5,7 @@ class SportField {
   String name; //(A1, B1, C1)
   String opTime; //(00:00-23:59)
   String fieldType; //(Badminton, Futsal, Basketball)
-  num price;
+  int price;
   String fieldPicture;
 
   SportField({
