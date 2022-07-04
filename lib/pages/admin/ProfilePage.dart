@@ -4,6 +4,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
@@ -174,6 +175,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
@@ -182,7 +184,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -297,7 +299,13 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                               height: 5,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ResetPasswordPage(),
+                          ));
+                              },
                               child: Text(
                                 'Change Password'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),

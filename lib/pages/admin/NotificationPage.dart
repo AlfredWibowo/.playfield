@@ -19,12 +19,16 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

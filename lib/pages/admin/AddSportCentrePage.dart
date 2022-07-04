@@ -48,7 +48,7 @@ class _AddSportCentrePageState extends State<AddSportCentrePage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

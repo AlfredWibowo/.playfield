@@ -3,6 +3,7 @@
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:project_ambw/services/storageService.dart';
@@ -162,6 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
@@ -170,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
         ),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -189,8 +191,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: ConsumerSession.session.profilePicture == ""
-                        ? Icon(
+                    child: ConsumerSession.session.profilePicture != ""
+                        ? imageNetwork(imagePath, 100 * 1.5, 100 * 1.5)
+                        : Icon(
                             Icons.account_box,
                             size: 100 * 1.5,
                           )
@@ -285,7 +288,13 @@ class _ProfilePageState extends State<ProfilePage> {
                               height: 5,
                             ),
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            ResetPasswordPage()));
+                              },
                               child: Text(
                                 'Change Password'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),
