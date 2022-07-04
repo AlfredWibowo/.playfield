@@ -206,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               } else if (snapshot.hasData ||
                                   snapshot.data != null) {
                                 print(snapshot.data!);
-                                return Image.network('${snapshot.data}');
+                                return imageNetwork(snapshot.data!, 100, 110);
                               }
                               return progressIndicator();
                             },
@@ -256,7 +256,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                     filePath: filePath!,
                                     //filename pakek username
                                     fileName: "${ConsumerSession.session.name}",
-                                    isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;

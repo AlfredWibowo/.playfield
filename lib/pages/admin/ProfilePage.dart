@@ -258,7 +258,6 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                   responseMsg = StorageService.uploadImage(
                                     filePath: filePath!,
                                     fileName: "${AdminSession.session.name}",
-                                    isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;

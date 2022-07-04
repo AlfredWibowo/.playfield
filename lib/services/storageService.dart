@@ -7,15 +7,14 @@ import 'package:firebase_storage/firebase_storage.dart';
 class StorageService {
   static FirebaseStorage storage = FirebaseStorage.instance;
 
-  static Future<String> uploadImage({required String filePath, required String fileName, required isProfilePicture}) async {
+  static Future<String> uploadImage({required String filePath, required String fileName}) async {
     String message;
     
     File file = File(filePath);
 
     try {
-      if (isProfilePicture) {
-        await storage.ref('images/$fileName').putFile(file);
-      }
+      await storage.ref('images/$fileName').putFile(file);
+
       message = 'Successful';
     } on FirebaseException catch (e) {
       print(e);

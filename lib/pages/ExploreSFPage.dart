@@ -6,6 +6,7 @@ import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/BookingPage.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class ExploreSFPage extends StatefulWidget {
   final SportCentre dataSC;
@@ -38,7 +39,26 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
           mainAxisSize: MainAxisSize.min,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            imageNetwork(imagePath, 100, 100),
+            sf.fieldPicture == ""
+                ? Icon(
+                    Icons.image,
+                    size: 100,
+                    color: Colors.white
+                  )
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
+                  ),
             SizedBox(
               width: 16,
             ),
@@ -87,7 +107,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
         backgroundColor: Colors.transparent,
         elevation: 0,
         leading: Padding(
-          padding: const EdgeInsets.only(left:16.0),
+          padding: const EdgeInsets.only(left: 16.0),
           child: backButton(context),
         ),
       ),
@@ -130,8 +150,10 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                         ),
                       ],
                     ),
-              SizedBox(height: 20,),
-              
+              SizedBox(
+                height: 20,
+              ),
+
               //Futsal
               listSFFutsal.isEmpty
                   ? Container()
@@ -158,8 +180,10 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                         ),
                       ],
                     ),
-              SizedBox(height: 20,),
-      
+              SizedBox(
+                height: 20,
+              ),
+
               //Basketball
               listSFBasketball.isEmpty
                   ? Container()

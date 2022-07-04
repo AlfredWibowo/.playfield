@@ -4,7 +4,6 @@ import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/main.dart';
-import 'package:project_ambw/pages/FavoritePage.dart';
 import 'package:project_ambw/pages/NotificationPage.dart';
 import 'package:project_ambw/pages/ProfilePage.dart';
 import 'package:project_ambw/services/authService.dart';
@@ -99,11 +98,6 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       children: [
-                        // appBarIconBtn(
-                        //     context, Icons.favorite_outline, FavoritePage()),
-                        // SizedBox(
-                        //   width: 20,
-                        // ),
                         appBarIconBtn(context, Icons.notifications_outlined,
                             NotificationPage()),
                         SizedBox(

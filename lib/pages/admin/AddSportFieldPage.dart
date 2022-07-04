@@ -291,9 +291,9 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
                   if (_tfImage.text != "") {
                     //add image to storage
                     Future<String> responseMsg = StorageService.uploadImage(
-                      fileName: resultFile!.files.single.name,
+                      // fileName: resultFile!.files.single.name,
+                      fileName: "${sc.name}_${sf.fieldType}_${sf.name}",
                       filePath: resultFile!.files.single.path!,
-                      isProfilePicture: false,
                     );
                   }
       
