@@ -7,6 +7,8 @@ class User {
   String address;
   String phoneNumber;
   String profilePicture;
+  List<String> orderId;
+  List<String> notifId;
 
   User(
       {required this.email,
@@ -14,7 +16,9 @@ class User {
       required this.name,
       required this.address,
       required this.phoneNumber,
-      required this.profilePicture});
+      required this.profilePicture,
+      required this.orderId,
+      required this.notifId});
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
@@ -24,130 +28,140 @@ class User {
       address: json["address"],
       phoneNumber: json["phoneNumber"],
       profilePicture: json["profilePicture"],
+      orderId: List<String>.from(json["orderId"].map((x) => x)),
+      notifId: List<String>.from(json["orderId"].map((x) => x)),
     );
   }
 }
 
 class Consumer extends User {
   double balance;
-  List<String> orderId;
 
-  Consumer({
-    required this.balance,
-    required this.orderId,
-    required String email,
-    required String password,
-    required String name,
-    required String address,
-    required String phoneNumber,
-    required String profilePicture,
-  }) : super(
-          email: email,
-          password: password,
-          name: name,
-          address: address,
-          phoneNumber: phoneNumber,
-          profilePicture: profilePicture,
-        );
+  Consumer(
+      {required this.balance,
+      required String email,
+      required String password,
+      required String name,
+      required String address,
+      required String phoneNumber,
+      required String profilePicture,
+      required List<String> orderId,
+      required List<String> notifId})
+      : super(
+            email: email,
+            password: password,
+            name: name,
+            address: address,
+            phoneNumber: phoneNumber,
+            profilePicture: profilePicture,
+            orderId: orderId,
+            notifId: notifId);
 
   factory Consumer.fromJson(Map<String, dynamic> json) {
     return Consumer(
       balance: json["balance"],
-      orderId: List<String>.from(json["orderId"].map((x) => x)),
       email: json["email"],
       password: json["password"],
       name: json["name"],
       address: json["address"],
       phoneNumber: json["phoneNumber"],
       profilePicture: json["profilePicture"],
+      orderId: List<String>.from(json["orderId"].map((x) => x)),
+      notifId: List<String>.from(json["notifId"].map((x) => x)),
     );
   }
 
   factory Consumer.fromDocument(DocumentSnapshot doc) {
     return Consumer(
       balance: doc.get("balance"),
-      orderId: List<String>.from(doc.get("orderId")),
       email: doc.get("email"),
       password: doc.get("password"),
       name: doc.get("name"),
       address: doc.get("address"),
       phoneNumber: doc.get("phoneNumber"),
       profilePicture: doc.get("profilePicture"),
+      orderId: List<String>.from(doc.get("orderId")),
+      notifId: List<String>.from(doc.get("notifId")),
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "balance": balance,
-      "orderId": List<String>.from(orderId),
       "email": email,
       "password": password,
       "name": name,
       "address": address,
       "phoneNumber": phoneNumber,
       "profilePicture": profilePicture,
+      "orderId": List<String>.from(orderId),
+      "notifId": List<String>.from(notifId),
     };
   }
 }
 
 class Admin extends User {
   List<String> sportCentreId;
-  List<String> orderId;
 
-  Admin({
-    required this.orderId,
-    required this.sportCentreId,
-    required String email,
-    required String password,
-    required String name,
-    required String address,
-    required String phoneNumber,
-    required String profilePicture,
-  }) : super(
-          email: email,
-          password: password,
-          name: name,
-          address: address,
-          phoneNumber: phoneNumber,
-          profilePicture: profilePicture,
-        );
+  Admin(
+      {required this.sportCentreId,
+      required String email,
+      required String password,
+      required String name,
+      required String address,
+      required String phoneNumber,
+      required String profilePicture,
+      required List<String> orderId,
+      required List<String> notifId})
+      : super(
+            email: email,
+            password: password,
+            name: name,
+            address: address,
+            phoneNumber: phoneNumber,
+            profilePicture: profilePicture,
+            orderId: orderId,
+            notifId: notifId);
 
   factory Admin.fromJson(Map<String, dynamic> json) {
-      return Admin(
-        sportCentreId: List<String>.from(json["sportCentreId"].map((x) => x)),
-        orderId: List<String>.from(json["orderId"].map((x) => x)),
-        email: json["email"],
-        password: json["password"],
-        name: json["name"],
-        address: json["address"],
-        phoneNumber: json["phoneNumber"],
-        profilePicture: json["profilePicture"],
-      );
-    }
+    return Admin(
+      sportCentreId: List<String>.from(json["sportCentreId"].map((x) => x)),
+      email: json["email"],
+      password: json["password"],
+      name: json["name"],
+      address: json["address"],
+      phoneNumber: json["phoneNumber"],
+      profilePicture: json["profilePicture"],
+      orderId: List<String>.from(json["orderId"].map((x) => x)),
+      notifId: List<String>.from(json["notifId"].map((x) => x)),
+    );
+  }
 
   factory Admin.fromDocument(DocumentSnapshot doc) {
     return Admin(
       sportCentreId: List<String>.from(doc.get("sportCentreId")),
-      orderId: List<String>.from(doc.get("orderId")),
       email: doc.get("email"),
       password: doc.get("password"),
       name: doc.get("name"),
       address: doc.get("address"),
       phoneNumber: doc.get("phoneNumber"),
       profilePicture: doc.get("profilePicture"),
+      orderId: List<String>.from(doc.get("orderId")),
+      notifId: List<String>.from(doc.get("notifId")),
     );
   }
-  
+
   Map<String, dynamic> toJson() {
     return {
       "sportCentreId": List<String>.from(sportCentreId),
-      "orderId": List<String>.from(orderId),
       "email": email,
       "password": password,
       "name": name,
       "address": address,
       "phoneNumber": phoneNumber,
       "profilePicture": profilePicture,
+      "orderId": List<String>.from(orderId),
+      "notifId": List<String>.from(notifId),
     };
   }
 }

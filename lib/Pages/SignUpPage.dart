@@ -117,6 +117,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
                 Consumer data = Consumer(
                   balance: 0,
+                  notifId: [],
                   orderId: [],
                   email: email,
                   password: password,

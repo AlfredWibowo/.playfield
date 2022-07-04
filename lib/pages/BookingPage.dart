@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:project_ambw/class/Notification.dart';
 import 'package:project_ambw/class/Order.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
@@ -287,13 +288,14 @@ class _BookingPageState extends State<BookingPage> {
                 //submit btn
                 ElevatedButton(
                   onPressed: () async {
-                    String id = Uuid().v4();
+                    String orderId = Uuid().v4();
                     String date = _tfDate.text;
-                    String time = "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                    String time =
+                        "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
                     double amount = _amount;
 
-                    var order = Order(
-                      id: id,
+                    Order order = Order(
+                      id: orderId,
                       date: date,
                       time: time,
                       amount: amount,
@@ -305,6 +307,7 @@ class _BookingPageState extends State<BookingPage> {
 
                     //add id to admin
                     Admin admin = Admin(
+                      notifId: [],
                       orderId: [],
                       sportCentreId: [],
                       email: "",
@@ -323,6 +326,16 @@ class _BookingPageState extends State<BookingPage> {
                       admin = Admin.fromDocument(dsAdmin);
                     });
                     admin.orderId.add(order.id);
+                    
+                    //add notif to admin
+                    String notifId = Uuid().v4();
+                    String notifMsg =
+                        "${ConsumerSession.session.name} memesan ${sc.name} ${sf.fieldType} (${sf.name})";
+                    var formatter = DateFormat("dd/MM/yyyy");
+                    String formattedDate = formatter.format(DateTime.now());
+                    Notif notif = Notif(id: notifId, date: formattedDate, message: notifMsg);
+                    admin.notifId.add(notif.id);
+                    
                     AdminFirestoreDatabase.editData(admin: admin);
 
                     //add id to consumer
@@ -336,7 +349,6 @@ class _BookingPageState extends State<BookingPage> {
                     buildSnackBar(context, 'Booking Successful');
 
                     Navigator.pop(context);
-
                   },
                   child: Text(
                     'book'.toUpperCase(),

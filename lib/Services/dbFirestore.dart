@@ -1,3 +1,4 @@
+import 'package:project_ambw/class/Notification.dart';
 import 'package:project_ambw/class/Order.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
@@ -203,7 +204,7 @@ class SportCentreFirestoreDatabase {
 }
 
 class OrderFirestoreDatabase {
-  //sport centre
+  //order
   static CollectionReference tbOrder =
       FirebaseFirestore.instance.collection('Order');
 
@@ -250,6 +251,40 @@ class OrderFirestoreDatabase {
     await doc
         .delete()
         .whenComplete(() => print('Data Order Berhasil di delete'))
+        .catchError((e) => print(e));
+  }
+}
+
+class NotifFirestoreDatabase {
+  //notif
+  static CollectionReference tbNotif =
+      FirebaseFirestore.instance.collection('Notif');
+
+  static Stream<QuerySnapshot> getData() {
+    return tbNotif.snapshots();
+  }
+
+  static Stream<QuerySnapshot> getDataByConsumer(Consumer consumer) {
+    return tbNotif
+        .where(FieldPath.documentId, whereIn: consumer.notifId)
+        .snapshots();
+  }
+
+  static Stream<QuerySnapshot> getDataByAdmin(Admin admin) {
+    return tbNotif
+        .where(FieldPath.documentId, whereIn: admin.notifId)
+        .snapshots();
+  }
+
+  static Stream<DocumentSnapshot> getDataById(String id) {
+    return tbNotif.doc(id).snapshots();
+  }
+
+  static Future<void> addData({required Notif notif}) async {
+    DocumentReference doc = tbNotif.doc(notif.id);
+    await doc
+        .set(notif.toJson())
+        .whenComplete(() => print('Data notif Berhasil di add'))
         .catchError((e) => print(e));
   }
 }

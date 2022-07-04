@@ -3,6 +3,7 @@ import 'package:project_ambw/class/User.dart';
 class ConsumerSession {
   static Consumer session = Consumer(
     balance: 0,
+    notifId: [],
     orderId: [],
     email: "",
     password: "",
@@ -19,6 +20,7 @@ class ConsumerSession {
   static void resetSession() {
     session = Consumer(
       balance: 0,
+      notifId: [],
       orderId: [],
       email: "",
       password: "",
@@ -32,6 +34,7 @@ class ConsumerSession {
 
 class AdminSession {
   static Admin session = Admin(
+    notifId: [],
     orderId: [],
     sportCentreId: [],
     email: "",
@@ -48,14 +51,15 @@ class AdminSession {
 
   static void resetSession() {
     session = Admin(
-    orderId: [],
-    sportCentreId: [],
-    email: "",
-    password: "",
-    name: "",
-    address: "",
-    phoneNumber: "",
-    profilePicture: "",
-  );
+      notifId: [],
+      orderId: [],
+      sportCentreId: [],
+      email: "",
+      password: "",
+      name: "",
+      address: "",
+      phoneNumber: "",
+      profilePicture: "",
+    );
   }
 }

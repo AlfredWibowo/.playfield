@@ -111,7 +111,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 140,
+                          height: 148,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -139,7 +139,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 140,
+                          height: 148,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -167,7 +167,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 140,
+                          height: 148,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {

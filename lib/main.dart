@@ -8,7 +8,6 @@ import 'package:project_ambw/pages/ResetPassword.dart';
 import 'package:project_ambw/pages/SignUpPage.dart';
 import 'package:project_ambw/pages/admin/BottomNavigationPage.dart';
 import 'package:project_ambw/pages/admin/LoginPage.dart';
-import 'package:project_ambw/pages/dummyCreate.dart';
 import 'package:project_ambw/services/authService.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -38,7 +37,6 @@ class SplashScreen extends StatelessWidget {
         duration: 500,
         splash: Icons.sports_handball,
         nextScreen: MyApp(),
-        //nextScreen: DummyCreatePage(),
         //nextScreen: BottomNavigationPage(),
         splashTransition: SplashTransition.fadeTransition,
         pageTransitionType: PageTransitionType.fade,

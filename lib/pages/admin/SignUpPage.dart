@@ -127,6 +127,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                 String phoneNumber = _tfPhoneNumberController.text;
 
                 Admin data = Admin(
+                  notifId: [],
                   orderId: [],
                   sportCentreId: [],
                   email: email,
