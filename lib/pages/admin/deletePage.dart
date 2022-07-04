@@ -44,6 +44,7 @@ class _deleteSCPageState extends State<deleteSCPage> {
                   'ARE YOU SURE',
                   style: TextStyle(
                     fontSize: 30,
+                    fontFamily: 'Comfortaa',
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
                   ),
@@ -139,6 +140,7 @@ class _deleteSFPageState extends State<deleteSFPage> {
                 child: Text(
                   'ARE YOU SURE',
                   style: TextStyle(
+                    fontFamily: 'Comfortaa',
                     fontSize: 30,
                     color: Colors.black,
                     fontWeight: FontWeight.bold,
