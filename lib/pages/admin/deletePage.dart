@@ -42,7 +42,7 @@ class _deleteSCPageState extends State<deleteSCPage> {
               const FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  'ARE YOU SURE',
+                  'ARE YOU SURE ?',
                   style: TextStyle(
                     fontSize: 30,
                     fontFamily: 'Comfortaa',
@@ -52,6 +52,7 @@ class _deleteSCPageState extends State<deleteSCPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              Text("DELETE SPORT CENTRE " + widget.deleteCentre.name, style: TextStyle(fontFamily: 'Roboto', fontSize: 20),),
               const SizedBox(
                 height: 64,
               ),
@@ -78,35 +79,28 @@ class _deleteSCPageState extends State<deleteSCPage> {
                       child: Text(
                         'SURE THING'.toUpperCase(),
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
+                          fontFamily: 'Roboto',
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                        primary: Colors.black,
-                        shape: roundedRectangleBorder(),
-                      )),
+                      style: elevatedButtonStyle(Colors.white)),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      'NAH'.toUpperCase(),
+                      'NOPE'.toUpperCase(),
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
+                        fontFamily: 'Roboto',
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      primary: Colors.white,
-                      
-                    ),
-                  )
+                    style: elevatedButtonStyle(Colors.black)),
                 ],
               )
             ])));
@@ -150,7 +144,7 @@ class _deleteSFPageState extends State<deleteSFPage> {
               const FittedBox(
                 fit: BoxFit.scaleDown,
                 child: Text(
-                  'ARE YOU SURE',
+                  'ARE YOU SURE ?',
                   style: TextStyle(
                     fontFamily: 'Comfortaa',
                     fontSize: 30,
@@ -160,6 +154,7 @@ class _deleteSFPageState extends State<deleteSFPage> {
                   textAlign: TextAlign.center,
                 ),
               ),
+              Text("DELETE SPORT FIELD " + widget.deleteSF.name, style: TextStyle(fontFamily: 'Roboto', fontSize: 20),),
               const SizedBox(
                 height: 64,
               ),
@@ -175,34 +170,27 @@ class _deleteSFPageState extends State<deleteSFPage> {
                       child: Text(
                         'SURE THING'.toUpperCase(),
                         style: const TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      style: ElevatedButton.styleFrom(
-                        minimumSize: const Size.fromHeight(50),
-                        primary: Colors.black,
-                        shape: roundedRectangleBorder(),
-                      )),
+                      style: elevatedButtonStyle(Colors.white)
+                      ),
                   const SizedBox(
-                    height: 24,
+                    height: 16,
                   ),
                   ElevatedButton(
                     onPressed: () {
                       Navigator.pop(context);
                     },
                     child: Text(
-                      'NAH'.toUpperCase(),
+                      'NOPE'.toUpperCase(),
                       style: const TextStyle(
-                        color: Colors.black,
+                        color: Colors.white,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
-                    style: ElevatedButton.styleFrom(
-                      minimumSize: const Size.fromHeight(50),
-                      primary: Colors.white,
-                      
-                    ),
+                    style: elevatedButtonStyle(Colors.black),
                   )
                 ],
               )

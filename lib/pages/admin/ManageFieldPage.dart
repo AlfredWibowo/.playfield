@@ -11,7 +11,9 @@ import 'package:project_ambw/services/dbFirestore.dart';
 class ManageSportFieldPage extends StatefulWidget {
   final SportCentre dataSC;
   final SportField dataSF;
-  const ManageSportFieldPage({Key? key,  required this.dataSF, required this.dataSC}) : super(key: key);
+  const ManageSportFieldPage(
+      {Key? key, required this.dataSF, required this.dataSC})
+      : super(key: key);
 
   @override
   State<ManageSportFieldPage> createState() => _ManageSportFieldPageState();
@@ -21,58 +23,69 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        toolbarHeight: 100,
-        backgroundColor: Colors.white,
-        elevation: 0,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 16.0),
-          child: backButton(context),
+        appBar: AppBar(
+          toolbarHeight: 100,
+          backgroundColor: Colors.white,
+          elevation: 0,
+          leading: Padding(
+            padding: const EdgeInsets.only(left: 16.0),
+            child: backButton(context),
+          ),
+          actions: [
+            Container(
+              padding: EdgeInsets.symmetric(horizontal: 24),
+              child: Row(
+                children: [
+                  appBarIconBtn(
+                      context,
+                      Icons.delete,
+                      deleteSFPage(
+                        dataSC: widget.dataSC,
+                        deleteSF: widget.dataSF,
+                      )),
+                ],
+              ),
+            )
+          ],
         ),
-        actions: [
-          Container(
+        body: SingleChildScrollView(
+            child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: Container(
             padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Row(
-              children: [
-                appBarIconBtn(context, Icons.delete,
-                    deleteSFPage(dataSC: widget.dataSC, deleteSF: widget.dataSF,)),
-              ],
-            ),
-          )
-        ],
-      ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.baseline,
-                  textBaseline: TextBaseline.alphabetic,
-                  children: [
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        title('Manage Sport Field', false),
-                        title(widget.dataSF.name, true),
-                      ],
-                    )
-                  ],
-                ),
-                const SizedBox(height: 32),
-                scCard('Name', widget.dataSF.name, context),
-                const SizedBox(height: 8),
-                scCardEditable('ID', widget.dataSF.id, context),
-                const SizedBox(height: 8),
-                scCardEditable('Type', widget.dataSF.fieldType, context),
-                const SizedBox(height: 8),
-                scCard('Operational Time', widget.dataSF.opTime, context),
-                const SizedBox(height: 8),
-                scCard('Price', widget.dataSF.price.toString(), context),
-                const SizedBox(height: 16),
-      ]),
-    ));
+            child:
+                Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.baseline,
+                textBaseline: TextBaseline.alphabetic,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      title('Manage Sport Field', false),
+                      title(widget.dataSF.name, true),
+                    ],
+                  )
+                ],
+              ),
+              const SizedBox(height: 32),
+              scCardEditable('Name', widget.dataSF.name, context),
+              const SizedBox(height: 8),
+              scCard('ID', widget.dataSF.id, context),
+              const SizedBox(height: 8),
+              scCardEditable('Type', widget.dataSF.fieldType, context),
+              const SizedBox(height: 8),
+              scCardEditable('Operational Time', widget.dataSF.opTime, context),
+              const SizedBox(height: 8),
+              scCardEditable('Price', widget.dataSF.price.toString(), context),
+              const SizedBox(height: 16),
+            ]),
+          ),
+        )));
   }
+
   Card scCard(String title, String value, BuildContext context) {
     TextEditingController _tfController = TextEditingController();
 

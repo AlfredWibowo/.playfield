@@ -156,10 +156,10 @@ Card sportCard(String sport, Color color) {
   return Card(
     color: Colors.black,
     shape: StadiumBorder(
-      side: BorderSide(color: color),
+      side: BorderSide(color: color, width: 2.0),
     ),
     child: Padding(
-      padding: const EdgeInsets.all(4.0),
+      padding: const EdgeInsets.symmetric(vertical:8.0, horizontal: 16.0),
       child: Text(
         sport,
         style: TextStyle(
