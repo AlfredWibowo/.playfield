@@ -4,6 +4,7 @@ import 'package:project_ambw/class/Order.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/class/UserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/pages/admin/QRCodeScannerPage.dart';
@@ -93,7 +94,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
           Column(
             children: [
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //acc jd active
+                  order.status = 1;
+                  OrderFirestoreDatabase.editData(order: order);
+                  buildSnackBar(context, "Order Accepted");
+                },
                 child: Icon(Icons.check),
                 style: ElevatedButton.styleFrom(
                     elevation: 0.0,
@@ -105,7 +111,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
                 height: 10,
               ),
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  //rejected
+                  order.status = 2;
+                  OrderFirestoreDatabase.editData(order: order);
+                  buildSnackBar(context, "Order Rejected");
+                },
                 child: Icon(Icons.close),
                 style: ElevatedButton.styleFrom(
                     elevation: 0.0,
