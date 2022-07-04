@@ -152,30 +152,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
             SizedBox(
               height: 30,
             ),
-
-            //cek order id ada atau ga
             AdminSession.session.orderId.isEmpty
                 ? Container()
                 : Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          subTitle('Latest Appliant'),
-                          GestureDetector(
-                            onTap: () {},
-                            child: Text(
-                              'See All',
-                              style: TextStyle(
-                                fontSize: 16,
-                                color: Colors.blue,
-                                fontWeight: FontWeight.w500,
-                              ),
-                            ),
-                          ),
-                        ],
-                      ),
+                      subTitle('Latest Appliant'),
                       SizedBox(
                         height: 10,
                       ),
@@ -206,11 +188,21 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     }
                                   }
 
-                                  if (listOrder.isEmpty) {
-                                    return emptyText();
-                                  }
+                                  // if (listOrder.isEmpty) {
+                                  //   return emptyText();
+                                  // }
 
-                                  return latestAppliantCard(listOrder.last);
+                                  return Container(
+                                    height: 148,
+                                    child: ListView.separated(
+                                      scrollDirection: Axis.horizontal,
+                                      itemBuilder: (context, index) {
+                                        return latestAppliantCard(listOrder[index]);
+                                      },
+                                      separatorBuilder: (context, index) => SizedBox(width: 10,),
+                                      itemCount: listOrder.length,
+                                    ),
+                                  );
                                 }
                                 return progressIndicator();
                               },
