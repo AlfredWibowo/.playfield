@@ -192,7 +192,7 @@ class _HomePageState extends State<HomePage> {
                       ),
                       onPressed: () {
                         ConsumerSession.session.balance +=
-                            double.parse(_tfController.text);
+                            int.parse(_tfController.text);
 
                         ConsumerFirestoreDatabase.editData(
                             consumer: ConsumerSession.session);
@@ -302,17 +302,6 @@ class _HomePageState extends State<HomePage> {
                                           mainAxisSize: MainAxisSize.max,
                                           children: [
                                             subTitle('Reservation'),
-                                            GestureDetector(
-                                              onTap: () {},
-                                              child: Text(
-                                                'See All',
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.blue,
-                                                  fontWeight: FontWeight.w500,
-                                                ),
-                                              ),
-                                            ),
                                           ],
                                         ),
                                         SizedBox(

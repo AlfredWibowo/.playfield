@@ -206,7 +206,7 @@ class _ProfilePageState extends State<ProfilePage> {
                               } else if (snapshot.hasData ||
                                   snapshot.data != null) {
                                 print(snapshot.data!);
-                                return imageNetwork(snapshot.data!, 100, 110);
+                                return imageNetwork(snapshot.data!, 120, 150);
                               }
                               return progressIndicator();
                             },
@@ -277,10 +277,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Change Profile Picture'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),
                               ),
-                            ),
-                            SizedBox(
-                              height: 5,
-                            ),
+                            ),                            
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.push(

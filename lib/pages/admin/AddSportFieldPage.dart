@@ -269,7 +269,7 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
                   String opTime =
                       "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
                   String fieldType = _dropdownSFType;
-                  num price = int.parse(_tfPrice.text);
+                  int price = int.parse(_tfPrice.text);
                   String fieldPicture = _tfImage.text;
       
                   //add id to Sport Centre

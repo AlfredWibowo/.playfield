@@ -7,7 +7,7 @@ class Order {
   String id;
   String date;
   String time;
-  num amount;
+  int amount;
   int status;
   //0: waitting: waitting acc from admin
   //1: Active: after acc by admin

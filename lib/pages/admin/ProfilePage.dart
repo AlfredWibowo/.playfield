@@ -207,8 +207,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                   snapshot.data != null) {
                                 return imageNetwork(
                                   snapshot.data!,
-                                  100 * 1.5,
-                                  110 * 1.5,
+                                  120,
+                                  150,
                                 );
                               }
                               return progressIndicator();
