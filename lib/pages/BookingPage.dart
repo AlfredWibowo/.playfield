@@ -330,7 +330,7 @@ class _BookingPageState extends State<BookingPage> {
                     //add notif to admin
                     String notifId = Uuid().v4();
                     String notifMsg =
-                        "${ConsumerSession.session.name} memesan ${sc.name} ${sf.fieldType} (${sf.name})";
+                        "${ConsumerSession.session.name} booking ${sc.name} ${sf.fieldType} (${sf.name})";
                     var formatter = DateFormat("dd/MM/yyyy");
                     String formattedDate = formatter.format(DateTime.now());
                     Notif notif = Notif(id: notifId, date: formattedDate, message: notifMsg);

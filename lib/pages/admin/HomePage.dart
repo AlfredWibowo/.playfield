@@ -1,8 +1,11 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:intl/intl.dart';
+import 'package:project_ambw/class/Notification.dart';
 import 'package:project_ambw/class/Order.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
@@ -11,6 +14,7 @@ import 'package:project_ambw/pages/admin/QRCodeScannerPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:uuid/uuid.dart';
 
 class AdminHomePage extends StatefulWidget {
   const AdminHomePage({Key? key}) : super(key: key);
@@ -98,6 +102,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   //acc jd active
                   order.status = 1;
                   OrderFirestoreDatabase.editData(order: order);
+
+                  //add notif to consumer
+                  String notifId = Uuid().v4();
+                  String notifMsg =
+                      "Your order with order id ${order.id} Accepted by Admin";
+                  var formatter = DateFormat("dd/MM/yyyy");
+                  String formattedDate = formatter.format(DateTime.now());
+                  Notif notif = Notif(
+                      id: notifId, date: formattedDate, message: notifMsg);
+
+                  Consumer consumer = order.consumer;
+                  consumer.notifId.add(notifId);
+                  ConsumerFirestoreDatabase.editData(consumer: consumer);
+
                   buildSnackBar(context, "Order Accepted");
                 },
                 child: Icon(Icons.check),
@@ -197,9 +215,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     child: ListView.separated(
                                       scrollDirection: Axis.horizontal,
                                       itemBuilder: (context, index) {
-                                        return latestAppliantCard(listOrder[index]);
+                                        return latestAppliantCard(
+                                            listOrder[index]);
                                       },
-                                      separatorBuilder: (context, index) => SizedBox(width: 10,),
+                                      separatorBuilder: (context, index) =>
+                                          SizedBox(
+                                        width: 10,
+                                      ),
                                       itemCount: listOrder.length,
                                     ),
                                   );
