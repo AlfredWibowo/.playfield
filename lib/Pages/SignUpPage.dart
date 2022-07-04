@@ -22,7 +22,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _tfNameController = TextEditingController();
   final TextEditingController _tfEmailController = TextEditingController();
   final TextEditingController _tfPasswordController = TextEditingController();
-  final TextEditingController _tfPhoneNumberController = TextEditingController();
+  final TextEditingController _tfPhoneNumberController =
+      TextEditingController();
   final TextEditingController _tfAddressController = TextEditingController();
 
   @override
@@ -133,11 +134,14 @@ class _SignUpPageState extends State<SignUpPage> {
                     password: _tfPasswordController.text);
 
                 String msg = await responseMsg;
-                buildSnackBar(context, msg);
-                
 
                 if (msg == 'Successful') {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => BottomNavigationPage()));
+                  buildSnackBar(context, "Successfully Registered");
+                  
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => BottomNavigationPage()));
                 }
               },
               child: Text(

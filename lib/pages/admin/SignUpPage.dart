@@ -147,10 +147,14 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                 );
 
                 String msg = await responseMsg;
-                buildSnackBar(context, msg);
 
                 if (msg == 'Successful') {
-                  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => AdminBottomNavigationPage()));
+                  buildSnackBar(context, "Successfully Registered");
+
+                  Navigator.pushReplacement(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AdminBottomNavigationPage()));
                 }
               },
               child: Text(
