@@ -5,6 +5,7 @@ import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/DetailTicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -34,28 +35,100 @@ class _TicketPageState extends State<TicketPage> {
     SportCentre sc = order.sportCentre;
     SportField sf = order.sportField;
 
-    return ListTile(
+    return GestureDetector(
       onTap: () {
-        dialogTicket(context, order);
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return DetailTicketPage(dataOrder: order);
+        },));
       },
-      shape: roundedRectangleBorder(),
-      contentPadding: EdgeInsets.all(8),
-      tileColor: Colors.black,
-      leading: imageNetwork(imagePath, 100, 100),
-      title: Text(
-        "${sc.name} (${sf.name})",
-        style: TextStyle(
-          fontSize: 14,
-          color: Colors.white,
+      child: Container(
+        decoration: BoxDecoration(
+            color: Colors.black, borderRadius: BorderRadius.circular(8)),
+        //padding: EdgeInsets.all(8),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Row(
+              children: [
+                //image
+                order.sportField.fieldPicture == ""
+                    //Icon(Icons.image, size: 100, color: Colors.white,)
+                    ? ClipRRect(
+                        borderRadius:
+                            BorderRadius.horizontal(left: Radius.circular(8)),
+                        child: Image.network(
+                          imagePath,
+                          width: 100,
+                          height: 116,
+                          fit: BoxFit.fill,
+                        ),
+                      )
+                    : Icon(
+                        Icons.image,
+                        size: 100,
+                        color: Colors.white,
+                      ),
+                Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      //title
+                      Text(
+                        "${sc.name} (${sf.name})",
+                        style: TextStyle(
+                          fontSize: 14,
+                          color: Colors.white,
+                        ),
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      //ket
+                      textWithIconRow(Icons.calendar_today, order.date),
+                      textWithIconRow(Icons.alarm, order.time),
+                      SizedBox(
+                        height: 5,
+                      ),
+                      //field type
+                      sportCard(order.sportField.fieldType,
+                          sportColor(order.sportField.fieldType)),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.only(right: 16),
+              child: iconStatus(order.status),
+            ),
+          ],
         ),
       ),
-      subtitle: Row(
-        children: [
-          sportCard(sf.fieldType, sportColor(sf.fieldType)),
-        ],
-      ),
-      trailing: iconStatus(order.status),
     );
+
+    // return ListTile(
+    //   onTap: () {
+    //     dialogTicket(context, order);
+    //   },
+    //   shape: roundedRectangleBorder(),
+    //   contentPadding: EdgeInsets.all(8),
+    //   tileColor: Colors.black,
+    //   leading: imageNetwork(imagePath, 100, 100),
+    //   title: Text(
+    //     "${sc.name} (${sf.name})",
+    //     style: TextStyle(
+    //       fontSize: 14,
+    //       color: Colors.white,
+    //     ),
+    //   ),
+    //   subtitle: Row(
+    //     children: [
+    //       sportCard(sf.fieldType, sportColor(sf.fieldType)),
+    //     ],
+    //   ),
+    //   trailing: iconStatus(order.status),
+    // );
   }
 
   Widget ticketQRCode(String uuid, double size) {
@@ -137,7 +210,8 @@ class _TicketPageState extends State<TicketPage> {
                   ConsumerSession.session.orderId.isEmpty
                       ? emptyText()
                       : StreamBuilder<QuerySnapshot>(
-                          stream: OrderFirestoreDatabase.getDataByConsumer(ConsumerSession.session),
+                          stream: OrderFirestoreDatabase.getDataByConsumer(
+                              ConsumerSession.session),
                           builder: (context, snapshot) {
                             if (snapshot.hasError) {
                               return Text("${snapshot.error}");
@@ -154,8 +228,8 @@ class _TicketPageState extends State<TicketPage> {
 
                                 //cek status consumer order
                                 if (order.status == _currentindexTab) {
-                                    listOrder.add(order);
-                                  }
+                                  listOrder.add(order);
+                                }
                               }
 
                               if (listOrder.isEmpty) {

@@ -33,9 +33,10 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
           color: Colors.black,
           borderRadius: BorderRadius.circular(12.0),
         ),
-        padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+        padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         child: Row(
           mainAxisSize: MainAxisSize.min,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             imageNetwork(imagePath, 100, 100),
             SizedBox(
@@ -57,7 +58,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                 textWithIconRow(Icons.price_change, "Rp. ${sf.price}"),
                 textWithIconRow(Icons.alarm, "Pk. ${sf.opTime}"),
                 SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 sportCard(sf.fieldType, sportColor(sf.fieldType)),
               ],
@@ -99,34 +100,6 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                 height: 30,
               ),
 
-              // //All
-              // listSFBadminton.isEmpty
-              //     ? Container()
-              //     : Column(
-              //         crossAxisAlignment: CrossAxisAlignment.start,
-              //         children: [
-              //           subTitle('All'),
-              //           SizedBox(
-              //             height: 10,
-              //           ),
-              //           Container(
-              //             height: 160,
-              //             child: ListView.separated(
-              //               scrollDirection: Axis.horizontal,
-              //               itemBuilder: (context, index) {
-              //                 return sportFieldCard(
-              //                     context, sc, listSF[index]);
-              //               },
-              //               separatorBuilder: (context, index) => SizedBox(
-              //                 width: 10,
-              //               ),
-              //               itemCount: listSF.length,
-              //             ),
-              //           ),
-              //         ],
-              //       ),
-              // SizedBox(height: 20,),
-
               //Badminton
               listSFBadminton.isEmpty
                   ? Container()
@@ -138,7 +111,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 160,
+                          height: 140,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -166,7 +139,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 160,
+                          height: 140,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
@@ -194,7 +167,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                           height: 10,
                         ),
                         Container(
-                          height: 160,
+                          height: 140,
                           child: ListView.separated(
                             scrollDirection: Axis.horizontal,
                             itemBuilder: (context, index) {
