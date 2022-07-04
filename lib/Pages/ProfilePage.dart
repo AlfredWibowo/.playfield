@@ -159,6 +159,16 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  String imagePath = "";
+
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+
+    imagePath = await StorageService.getDownloadUrl(imageName: ConsumerSession.session.profilePicture, isProfilePicture: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
