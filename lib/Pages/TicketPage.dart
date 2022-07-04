@@ -9,6 +9,7 @@ import 'package:project_ambw/pages/DetailTicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class TicketPage extends StatefulWidget {
@@ -17,9 +18,6 @@ class TicketPage extends StatefulWidget {
   @override
   State<TicketPage> createState() => _TicketPageState();
 }
-
-String imagePath =
-    'https://www.gstatic.com/mobilesdk/180227_mobilesdk/storage_rules_zerostate.png';
 
 class _TicketPageState extends State<TicketPage> {
   int _currentindexTab = 0;
@@ -37,9 +35,11 @@ class _TicketPageState extends State<TicketPage> {
 
     return GestureDetector(
       onTap: () {
-        Navigator.push(context, MaterialPageRoute(builder: (context) {
-          return DetailTicketPage(dataOrder: order);
-        },));
+        Navigator.push(context, MaterialPageRoute(
+          builder: (context) {
+            return DetailTicketPage(dataOrder: order);
+          },
+        ));
       },
       child: Container(
         decoration: BoxDecoration(
@@ -51,22 +51,23 @@ class _TicketPageState extends State<TicketPage> {
             Row(
               children: [
                 //image
-                order.sportField.fieldPicture == ""
-                    //Icon(Icons.image, size: 100, color: Colors.white,)
-                    ? ClipRRect(
-                        borderRadius:
-                            BorderRadius.horizontal(left: Radius.circular(8)),
-                        child: Image.network(
-                          imagePath,
-                          width: 100,
-                          height: 116,
-                          fit: BoxFit.fill,
+                sf.fieldPicture == ""
+                    ? Icon(Icons.image, size: 100, color: Colors.white)
+                    : FutureBuilder<String>(
+                        future: StorageService.getDownloadUrl(
+                          imageName: sf.fieldPicture,
+                          isProfilePicture: false,
                         ),
-                      )
-                    : Icon(
-                        Icons.image,
-                        size: 100,
-                        color: Colors.white,
+                        builder: (context, snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('${snapshot.error}');
+                          } else if (snapshot.hasData ||
+                              snapshot.data != null) {
+                            print(snapshot.data!);
+                            return imageNetwork(snapshot.data!, 100, 110);
+                          }
+                          return progressIndicator();
+                        },
                       ),
                 Padding(
                   padding: const EdgeInsets.all(8),

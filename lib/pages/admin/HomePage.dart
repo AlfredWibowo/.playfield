@@ -14,6 +14,7 @@ import 'package:project_ambw/pages/admin/QRCodeScannerPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 import 'package:uuid/uuid.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -65,7 +66,23 @@ class _AdminHomePageState extends State<AdminHomePage> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
-            child: imageNetwork(imagePath, 100, 100),
+            child: sf.fieldPicture == ""
+                ? Icon(Icons.image, size: 100, color: Colors.white)
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
+                  ),
           ),
           SizedBox(
             width: 20,
@@ -115,6 +132,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   Consumer consumer = order.consumer;
                   consumer.notifId.add(notifId);
                   ConsumerFirestoreDatabase.editData(consumer: consumer);
+
+                  //add notif to db
+                  NotifFirestoreDatabase.addData(notif: notif);
 
                   buildSnackBar(context, "Order Accepted");
                 },

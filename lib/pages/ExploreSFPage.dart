@@ -48,6 +48,7 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
                 : FutureBuilder<String>(
                     future: StorageService.getDownloadUrl(
                       imageName: sf.fieldPicture,
+                      isProfilePicture: false,
                     ),
                     builder: (context, snapshot) {
                       if (snapshot.hasError) {

@@ -123,7 +123,7 @@ Widget subTitle(String subtitle) {
 
 Image imageNetwork(String url, double width, double height) {
   return Image.network(
-    imagePath,
+    url,
     fit: BoxFit.fill,
     height: height,
     width: width == 0 ? double.infinity : width,

@@ -36,7 +36,7 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
             SizedBox(
               height: 30,
             ),
-            ConsumerSession.session.notifId.isEmpty
+            AdminSession.session.notifId.isEmpty
                 ? emptyText()
                 : StreamBuilder<QuerySnapshot>(
                     stream: NotifFirestoreDatabase.getDataByAdmin(

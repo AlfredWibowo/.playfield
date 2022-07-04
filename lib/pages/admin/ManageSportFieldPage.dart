@@ -10,6 +10,7 @@ import 'package:project_ambw/pages/admin/AddSportFieldPage.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/pages/admin/deletePage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class ManageSportFieldPage extends StatefulWidget {
   final SportCentre dataSC;
@@ -40,12 +41,22 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            sf.fieldPicture != ""
-                ? imageNetwork(imagePath, 64, 64)
-                : Icon(
-                    Icons.image,
-                    size: 64,
-                    color: Colors.white,
+            sf.fieldPicture == ""
+                ? Icon(Icons.image, size: 100, color: Colors.white)
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
                   ),
             SizedBox(
               width: 16,

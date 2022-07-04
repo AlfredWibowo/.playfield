@@ -199,6 +199,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                         : FutureBuilder<String>(
                             future: StorageService.getDownloadUrl(
                               imageName: AdminSession.session.profilePicture,
+                              isProfilePicture: true,
                             ),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
@@ -258,6 +259,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                   responseMsg = StorageService.uploadImage(
                                     filePath: filePath!,
                                     fileName: "${AdminSession.session.name}",
+                                    isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;

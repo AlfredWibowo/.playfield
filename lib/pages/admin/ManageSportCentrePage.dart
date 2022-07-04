@@ -44,7 +44,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            imageNetwork(imagePath, 100, 100),
+            // imageNetwork(imagePath, 100, 100),
             SizedBox(
               width: 16,
             ),

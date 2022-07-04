@@ -291,67 +291,80 @@ class _BookingPageState extends State<BookingPage> {
                 //submit btn
                 ElevatedButton(
                   onPressed: () async {
-                    String orderId = Uuid().v4();
-                    String date = _tfDate.text;
-                    String time =
-                        "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
-                    num amount = _amount;
+                    if (ConsumerSession.session.balance < _amount) {
+                      buildSnackBar(context, "Balance is not Enough");
+                    }
+                    else if (_dropdownEndTime < _dropdownStartTime) {
+                      buildSnackBar(context, "Invalid Time");
+                    } 
+                    else {
+                      String orderId = Uuid().v4();
+                      String date = _tfDate.text;
+                      String time =
+                          "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                      num amount = _amount;
 
-                    Order order = Order(
-                      id: orderId,
-                      date: date,
-                      time: time,
-                      amount: amount,
-                      status: 0,
-                      consumer: ConsumerSession.session,
-                      sportCentre: sc,
-                      sportField: sf,
-                    );
+                      Order order = Order(
+                        id: orderId,
+                        date: date,
+                        time: time,
+                        amount: amount,
+                        status: 0,
+                        consumer: ConsumerSession.session,
+                        sportCentre: sc,
+                        sportField: sf,
+                      );
 
-                    //add id to admin
-                    Admin admin = Admin(
-                      notifId: [],
-                      orderId: [],
-                      sportCentreId: [],
-                      email: "",
-                      password: "",
-                      name: "",
-                      address: "",
-                      phoneNumber: "",
-                      profilePicture: "",
-                    );
+                      //add id to admin
+                      Admin admin = Admin(
+                        notifId: [],
+                        orderId: [],
+                        sportCentreId: [],
+                        email: "",
+                        password: "",
+                        name: "",
+                        address: "",
+                        phoneNumber: "",
+                        profilePicture: "",
+                      );
 
-                    await AdminFirestoreDatabase.tbAdmin
-                        .where("sportCentreId", arrayContains: sc.id)
-                        .get()
-                        .then((value) {
-                      DocumentSnapshot dsAdmin = value.docs.first;
-                      admin = Admin.fromDocument(dsAdmin);
-                    });
-                    admin.orderId.add(order.id);
-                    
-                    //add notif to admin
-                    String notifId = Uuid().v4();
-                    String notifMsg =
-                        "${ConsumerSession.session.name} booking ${sc.name} ${sf.fieldType} (${sf.name})";
-                    var formatter = DateFormat("dd/MM/yyyy");
-                    String formattedDate = formatter.format(DateTime.now());
-                    Notif notif = Notif(id: notifId, date: formattedDate, message: notifMsg);
-                    admin.notifId.add(notif.id);
-                    
-                    AdminFirestoreDatabase.editData(admin: admin);
+                      await AdminFirestoreDatabase.tbAdmin
+                          .where("sportCentreId", arrayContains: sc.id)
+                          .get()
+                          .then((value) {
+                        DocumentSnapshot dsAdmin = value.docs.first;
+                        admin = Admin.fromDocument(dsAdmin);
+                      });
+                      admin.orderId.add(order.id);
 
-                    //add id to consumer
-                    ConsumerSession.session.orderId.add(order.id);
-                    ConsumerFirestoreDatabase.editData(
-                        consumer: ConsumerSession.session);
+                      //add notif to admin
+                      String notifId = Uuid().v4();
+                      String notifMsg =
+                          "${ConsumerSession.session.name} booking ${sc.name} ${sf.fieldType} (${sf.name})";
+                      var formatter = DateFormat("dd/MM/yyyy");
+                      String formattedDate = formatter.format(DateTime.now());
+                      Notif notif = Notif(
+                          id: notifId, date: formattedDate, message: notifMsg);
+                      admin.notifId.add(notif.id);
 
-                    //add order to table order
-                    OrderFirestoreDatabase.addData(order: order);
+                      AdminFirestoreDatabase.editData(admin: admin);
 
-                    buildSnackBar(context, 'Booking Successful');
+                      //add notif to db
+                      NotifFirestoreDatabase.addData(notif: notif);
 
-                    Navigator.pop(context);
+                      //add id to consumer
+                      ConsumerSession.session.balance -= _amount; 
+                      ConsumerSession.session.orderId.add(order.id);
+                      ConsumerFirestoreDatabase.editData(
+                          consumer: ConsumerSession.session);
+
+                      //add order to table order
+                      OrderFirestoreDatabase.addData(order: order);
+
+                      buildSnackBar(context, 'Booking Successful');
+
+                      Navigator.pop(context);
+                    }
                   },
                   child: Text(
                     'book'.toUpperCase(),

@@ -6,6 +6,7 @@ import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
+import 'package:project_ambw/services/storageService.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class DetailTicketPage extends StatefulWidget {
@@ -65,6 +66,8 @@ class _DetailTicketPageState extends State<DetailTicketPage> {
   @override
   Widget build(BuildContext context) {
     final order = widget.dataOrder;
+    final SportField sf = widget.dataOrder.sportField;
+    final SportCentre sc = widget.dataOrder.sportCentre;
 
     return Scaffold(
       appBar: AppBar(
@@ -90,11 +93,26 @@ class _DetailTicketPageState extends State<DetailTicketPage> {
               ),
               child: Row(
                 children: [
-                  Image.network(
-                    imagePath,
-                    width: 100,
-                    height: 150,
-                    fit: BoxFit.fill,
+                  sf.fieldPicture == ""
+                ? Icon(
+                    Icons.image,
+                    size: 100,
+                    color: Colors.white
+                  )
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 150);
+                      }
+                      return progressIndicator();
+                    },
                   ),
                   SizedBox(
                     width: 20,

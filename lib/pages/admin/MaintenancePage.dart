@@ -6,6 +6,7 @@ import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class AdminMaintenancePage extends StatefulWidget {
   const AdminMaintenancePage({Key? key}) : super(key: key);
@@ -30,7 +31,27 @@ class _AdminMaintenancePageState extends State<AdminMaintenancePage> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.circular(6),
-            child: imageNetwork(imagePath, 100, 100),
+            child: sf.fieldPicture == ""
+                ? Icon(
+                    Icons.image,
+                    size: 100,
+                    color: Colors.white
+                  )
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
+                  ),
           ),
           SizedBox(
             width: 20,

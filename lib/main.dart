@@ -61,7 +61,7 @@ class _MyAppState extends State<MyApp> {
     return StreamBuilder<User?>(
       stream: AuthService.streamAuthStatus(),
       builder: (context, snapshot) {
-        //print(snapshot);
+        print(snapshot);
         if (snapshot.connectionState == ConnectionState.active) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,

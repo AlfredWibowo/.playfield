@@ -10,6 +10,7 @@ import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -93,7 +94,27 @@ class _HomePageState extends State<HomePage> {
         children: [
           ClipRRect(
             borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-            child: imageNetwork(imagePath, 0, 128),
+            child: sf.fieldPicture == ""
+                ? Icon(
+                    Icons.image,
+                    size: 100,
+                    color: Colors.white
+                  )
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
+                  ),
           ),
           Padding(
             padding: EdgeInsets.all(16),

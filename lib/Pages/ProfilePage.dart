@@ -199,6 +199,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         : FutureBuilder<String>(
                             future: StorageService.getDownloadUrl(
                               imageName: ConsumerSession.session.profilePicture,
+                              isProfilePicture: true,
                             ),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
@@ -256,6 +257,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                     filePath: filePath!,
                                     //filename pakek username
                                     fileName: "${ConsumerSession.session.name}",
+                                    isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;

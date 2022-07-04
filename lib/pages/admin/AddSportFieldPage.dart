@@ -294,6 +294,7 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
                       // fileName: resultFile!.files.single.name,
                       fileName: "${sc.name}_${sf.fieldType}_${sf.name}",
                       filePath: resultFile!.files.single.path!,
+                      isProfilePicture: false,
                     );
                   }
       
