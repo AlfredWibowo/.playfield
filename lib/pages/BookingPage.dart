@@ -53,8 +53,11 @@ class _BookingPageState extends State<BookingPage> {
     String time = sf.opTime;
     List<String> timeSplited = time.split("-");
 
-    _dropdownStartTime = int.parse(timeSplited[0].substring(0, 2));
-    _dropdownEndTime = int.parse(timeSplited[1].substring(0, 2));
+    List<String> startTime = timeSplited[0].split(":");
+    List<String> endTime = timeSplited[1].split(":");
+
+    _dropdownStartTime = int.parse(startTime[0]);
+    _dropdownEndTime = int.parse(endTime[0]);
 
     //generate list time
     _listTime = [
