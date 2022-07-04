@@ -158,6 +158,16 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  String imagePath = "";
+
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+
+    imagePath = await StorageService.getDownloadUrl(imageName: ConsumerSession.session.profilePicture, isProfilePicture: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -190,8 +200,11 @@ class _ProfilePageState extends State<ProfilePage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: ConsumerSession.session.profilePicture != ""
-                        ? imageNetwork(ConsumerSession.session.profilePicture,
-                            100 * 1.5, 110 * 1.5)
+                        ? imageNetwork(
+                            imagePath,
+                            100 * 1.5,
+                            110 * 1.5,
+                          )
                         : Icon(
                             Icons.account_box,
                             size: 100 * 1.5,

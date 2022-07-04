@@ -158,6 +158,18 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
     );
   }
 
+  String imagePath = "";
+
+  @override
+  void initState() async {
+    // TODO: implement initState
+    super.initState();
+
+    imagePath = await StorageService.getDownloadUrl(
+        imageName: ConsumerSession.session.profilePicture,
+        isProfilePicture: true);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -189,8 +201,11 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: imageNetwork(AdminSession.session.profilePicture,
-                        100 * 1.5, 110 * 1.5),
+                    child: imageNetwork(
+                      imagePath,
+                      100 * 1.5,
+                      110 * 1.5,
+                    ),
                   ),
                   SizedBox(
                     width: 10,
