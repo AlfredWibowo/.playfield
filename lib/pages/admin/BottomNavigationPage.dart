@@ -4,7 +4,7 @@ import 'package:project_ambw/class/User.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/main.dart';
-import 'package:project_ambw/pages/admin/ManageSportCentrePage.dart';
+import 'package:project_ambw/pages/admin/SportCentreListPage.dart';
 import 'package:project_ambw/pages/admin/HomePage.dart';
 import 'package:project_ambw/pages/admin/NotificationPage.dart';
 import 'package:project_ambw/pages/admin/ProfilePage.dart';
@@ -28,7 +28,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
 
   final List<Widget> _screens = [
     AdminHomePage(),
-    ManageSportCentrePage(),
+    SportCentreListPage(),
   ];
 
   void onTappedBar(int index) {
