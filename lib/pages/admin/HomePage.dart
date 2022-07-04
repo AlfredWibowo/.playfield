@@ -152,41 +152,70 @@ class _AdminHomePageState extends State<AdminHomePage> {
             SizedBox(
               height: 30,
             ),
-            subTitle('Latest Appliant'),
-            SizedBox(
-              height: 10,
-            ),
+
+            //cek order id ada atau ga
             AdminSession.session.orderId.isEmpty
                 ? Container()
-                : StreamBuilder<QuerySnapshot>(
-                    stream: OrderFirestoreDatabase.getDataByAdmin(
-                        AdminSession.session),
-                    builder: (context, snapshot) {
-                      if (snapshot.hasError) {
-                        return Text('${snapshot.error}');
-                      } else if (snapshot.hasData || snapshot.data != null) {
-                        //add to list order by arr order id
+                : Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          subTitle('Latest Appliant'),
+                          GestureDetector(
+                            onTap: () {},
+                            child: Text(
+                              'See All',
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.blue,
+                                fontWeight: FontWeight.w500,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 10,
+                      ),
+                      AdminSession.session.orderId.isEmpty
+                          ? Container()
+                          : StreamBuilder<QuerySnapshot>(
+                              stream: OrderFirestoreDatabase.getDataByAdmin(
+                                  AdminSession.session),
+                              builder: (context, snapshot) {
+                                if (snapshot.hasError) {
+                                  return Text('${snapshot.error}');
+                                } else if (snapshot.hasData ||
+                                    snapshot.data != null) {
+                                  //add to list order by arr order id
 
-                        List<Order> listOrder = [];
+                                  List<Order> listOrder = [];
 
-                        for (var i = 0; i < snapshot.data!.docs.length; i++) {
-                          DocumentSnapshot dsData = snapshot.data!.docs[i];
+                                  for (var i = 0;
+                                      i < snapshot.data!.docs.length;
+                                      i++) {
+                                    DocumentSnapshot dsData =
+                                        snapshot.data!.docs[i];
 
-                          Order order = Order.fromDocument(dsData);
+                                    Order order = Order.fromDocument(dsData);
 
-                          if (order.status == 0) {
-                            listOrder.add(order);
-                          }
-                        }
+                                    if (order.status == 0) {
+                                      listOrder.add(order);
+                                    }
+                                  }
 
-                        if (listOrder.isEmpty) {
-                          return emptyText();
-                        }
+                                  if (listOrder.isEmpty) {
+                                    return emptyText();
+                                  }
 
-                        return latestAppliantCard(listOrder.last);
-                      }
-                      return progressIndicator();
-                    },
+                                  return latestAppliantCard(listOrder.last);
+                                }
+                                return progressIndicator();
+                              },
+                            ),
+                    ],
                   ),
           ],
         ),
