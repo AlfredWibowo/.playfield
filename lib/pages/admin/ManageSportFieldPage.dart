@@ -84,87 +84,116 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-          toolbarHeight: 100,
-          backgroundColor: Colors.transparent,
-          elevation: 0,
-          leading: Padding(
-            padding: const EdgeInsets.only(left: 16.0),
-            child: backButton(context),
-          ),
-          actions: [
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 24),
-                  child: Row(
-                    children:[
-                      appBarIconBtn(context, Icons.delete, deleteSCPage(deleteCentre: widget.dataSC)),
-                    ],
-                  ),
-                )
-              ],
+        toolbarHeight: 100,
+        backgroundColor: Colors.white,
+        elevation: 0,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 16.0),
+          child: backButton(context),
         ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.baseline,
-              textBaseline: TextBaseline.alphabetic,
+        actions: [
+          Container(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Row(
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    title('Manage Sport Centre', false),
-                    title(widget.dataSC.name, true),
-                  ],
-                )                
+                appBarIconBtn(context, Icons.delete,
+                    deleteSCPage(deleteCentre: widget.dataSC)),
               ],
             ),
-            const SizedBox(height: 32),
-            scCard('Address', widget.dataSC.address, context),
-            const SizedBox(height: 8),
-            scCardEditable(
-                'Phone Number', widget.dataSC.phoneNumber, context),
-            const SizedBox(height: 8),
-            scCard('City', widget.dataSC.city, context),
-            const SizedBox(height: 24),
-            subTitle("Fields"),
-            const SizedBox(height: 16),
-            TextField(
-              controller: _tfSearchBar,
-              decoration: InputDecoration(
-                filled: true,
-                prefixIcon: Icon(Icons.search),
-                suffixIcon:
-                    IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
-                border: OutlineInputBorder(
-                  borderSide: BorderSide.none,
+          )
+        ],
+      ),
+      body: SingleChildScrollView(
+        child: ConstrainedBox(
+          constraints: BoxConstraints(
+            minHeight: MediaQuery.of(context).size.height,
+          ),
+          child: Container(
+            padding: EdgeInsets.symmetric(horizontal: 24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
+                  children: [
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        title('Manage Sport Centre', false),
+                        title(widget.dataSC.name, true),
+                      ],
+                    )
+                  ],
                 ),
-              ),
+                const SizedBox(height: 32),
+                scCard('Address', widget.dataSC.address, context),
+                const SizedBox(height: 8),
+                scCardEditable(
+                    'Phone Number', widget.dataSC.phoneNumber, context),
+                const SizedBox(height: 8),
+                scCard('City', widget.dataSC.city, context),
+                const SizedBox(height: 24),
+                subTitle("Fields"),
+                const SizedBox(height: 16),
+                // TextField(
+                //   controller: _tfSearchBar,
+                //   decoration: InputDecoration(
+                //     filled: true,
+                //     prefixIcon: Icon(Icons.search),
+                //     suffixIcon:
+                //         IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
+                //     border: OutlineInputBorder(
+                //       borderSide: BorderSide.none,
+                //     ),
+                //   ),
+                // ),
+                SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: MediaQuery.of(context).size.height,
+                  child: Expanded(
+                    child: ListView.separated(
+                        shrinkWrap: true,
+                        physics: NeverScrollableScrollPhysics(),
+                        itemCount: widget.dataSF.length,
+                        itemBuilder: ((context, index) {
+                          return ListTile(
+                            contentPadding: EdgeInsets.all(16.0),
+                            tileColor: Colors.black,
+                            title: Text(
+                              widget.dataSF[index].id,
+                              style: TextStyle(
+                                  fontFamily: 'Comfortaa',
+                                  fontSize: 14.0,
+                                  color: Colors.white),
+                            ),
+                            subtitle: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  widget.dataSF[index].fieldType,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto',
+                                      fontSize: 10.0,
+                                      color: Colors.white),
+                                ),
+                                textWithIconRow(
+                                    Icons.monetization_on,
+                                    "Rp. " +
+                                        widget.dataSF[index].price.toString()),
+                              ],
+                            ),
+                          );
+                        }),
+                        separatorBuilder: (BuildContext context, int index) =>
+                            SizedBox(height: 10)),
+                  ),
+                ),
+              ],
             ),
-            SizedBox(
-              height: 20,
-            ),
-            Expanded(
-              child: // return ListView.separated(
-                  //   itemBuilder:(context, index) {
-                  //     return sportFieldCard(context, listSF[index]);
-                  //   },
-                  //   separatorBuilder: (context, index) => Divider(),
-                  //   itemCount: listSF.length
-                  // );
-
-                  Wrap(
-                direction: Axis.horizontal,
-                spacing: 32,
-                runSpacing: 32,
-                children: [
-                  for (var sf in widget.dataSF)
-                    sportFieldCard(context, widget.dataSC, sf)
-                ],
-              ),
-            ),
-          ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
@@ -172,7 +201,9 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => AddSportFieldPage(dataSC: widget.dataSC,),
+                builder: (context) => AddSportFieldPage(
+                  dataSC: widget.dataSC,
+                ),
               ));
         },
         //elevation: 0.0,
@@ -181,6 +212,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
       ),
     );
   }
+
   Card scCard(String title, String value, BuildContext context) {
     TextEditingController _tfController = TextEditingController();
 
@@ -287,9 +319,9 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                 ),
                               ),
                               onPressed: () {
-                                widget.dataSC.phoneNumber =
-                                    _tfController.text;
-                                SportCentreFirestoreDatabase.editData(sc: widget.dataSC);
+                                widget.dataSC.phoneNumber = _tfController.text;
+                                SportCentreFirestoreDatabase.editData(
+                                    sc: widget.dataSC);
                                 buildSnackBar(
                                     context, title + ' berhasil di edit');
                                 Navigator.pop(context);
