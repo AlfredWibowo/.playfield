@@ -159,7 +159,7 @@ Card sportCard(String sport, Color color) {
       side: BorderSide(color: color, width: 2.0),
     ),
     child: Padding(
-      padding: const EdgeInsets.symmetric(vertical:8.0, horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(vertical:8.0, horizontal: 12.0),
       child: Text(
         sport,
         style: TextStyle(

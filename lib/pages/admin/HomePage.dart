@@ -55,7 +55,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     SportField sf = order.sportField;
 
     return Container(
-      padding: EdgeInsets.all(20),
+      padding: EdgeInsets.all(24),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(6),

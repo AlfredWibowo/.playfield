@@ -27,7 +27,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         )
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [

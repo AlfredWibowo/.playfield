@@ -28,7 +28,7 @@ class _deleteSCPageState extends State<deleteSCPage> {
           ),
         ),
         body: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             child: Column(children: [
               const Center(
                 child: Icon(
@@ -130,7 +130,7 @@ class _deleteSFPageState extends State<deleteSFPage> {
           ),
         ),
         body: Container(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.all(24),
             child: Column(children: [
               const Center(
                 child: Icon(

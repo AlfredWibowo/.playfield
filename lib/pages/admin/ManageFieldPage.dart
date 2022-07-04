@@ -226,8 +226,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                 } else if (title == "Operational Time") {
                                   widget.dataSF.opTime = _tfController.text;
                                 } else if (title == "Price") {
-                                  widget.dataSF.price =
-                                      double.parse(_tfController.text);
+                                  widget.dataSF.price = int.parse(_tfController.text);
                                 }
                                 await SportFieldFirestoreDatabase.editData(
                                     sf: widget.dataSF);

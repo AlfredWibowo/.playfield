@@ -39,7 +39,7 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
       ),
       body: SingleChildScrollView(
         child: Container(
-          padding: EdgeInsets.all(20),
+          padding: EdgeInsets.all(24),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [

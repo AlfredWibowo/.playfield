@@ -31,125 +31,127 @@ class _LoginPageState extends State<LoginPage> {
           child: backButton(context),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: EdgeInsets.only(bottom: 30),
-              child: Text(
-                'Login',
-                style: TextStyle(
-                  fontSize: 30,
-                  fontFamily: 'Comfortaa',
-                  color: Colors.black,
-                  fontWeight: FontWeight.w400,
-                ),
-              ),
-            ),
-            TextField(
-              controller: _tfEmailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _tfPasswordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  icon: passwordToggleIcon(_isPasswordVisible),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-              ),
-              obscureText: !_isPasswordVisible,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                String email = _tfEmailController.text;
-                String password = _tfPasswordController.text;
-
-                //cek email exist in consumer
-                final docSnap = await FirebaseFirestore.instance
-                    .collection("Consumer")
-                    .doc(email)
-                    .get();
-
-                if (docSnap.exists) {
-                  Future<String> responseMsg;
-
-                  responseMsg = AuthService.login(
-                    email: email,
-                    password: password,
-                  );
-
-                  String msg = await responseMsg;
-                  
-
-                  if (msg == 'Successful') {
-                    buildSnackBar(context, "Successfully Login");
-
-                    Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => BottomNavigationPage(),
-                      ),
-                    );
-                  }
-                }
-                else {
-                  buildSnackBar(context, "Register Consumer Account First");
-                }
-              },
-              child: Text(
-                'log in'.toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-                primary: Colors.black,
-                shape: roundedRectangleBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => SignUpPage()),
-                );
-              },
-              child: Center(
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Padding(
+                padding: EdgeInsets.only(bottom: 30),
                 child: Text(
-                  'dont have an account ?'.toUpperCase(),
+                  'Login',
                   style: TextStyle(
+                    fontSize: 30,
+                    fontFamily: 'Comfortaa',
                     color: Colors.black,
-                    fontWeight: FontWeight.normal,
+                    fontWeight: FontWeight.w400,
                   ),
                 ),
               ),
-            )
-          ],
+              TextField(
+                controller: _tfEmailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _tfPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: passwordToggleIcon(_isPasswordVisible),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                ),
+                obscureText: !_isPasswordVisible,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  String email = _tfEmailController.text;
+                  String password = _tfPasswordController.text;
+      
+                  //cek email exist in consumer
+                  final docSnap = await FirebaseFirestore.instance
+                      .collection("Consumer")
+                      .doc(email)
+                      .get();
+      
+                  if (docSnap.exists) {
+                    Future<String> responseMsg;
+      
+                    responseMsg = AuthService.login(
+                      email: email,
+                      password: password,
+                    );
+      
+                    String msg = await responseMsg;
+                    
+      
+                    if (msg == 'Successful') {
+                      buildSnackBar(context, "Successfully Login");
+      
+                      Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => BottomNavigationPage(),
+                        ),
+                      );
+                    }
+                  }
+                  else {
+                    buildSnackBar(context, "Register Consumer Account First");
+                  }
+                },
+                child: Text(
+                  'log in'.toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.fromHeight(50),
+                  primary: Colors.black,
+                  shape: roundedRectangleBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    'dont have an account ?'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );

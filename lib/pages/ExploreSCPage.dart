@@ -84,7 +84,7 @@ class _ExploreSCPageState extends State<ExploreSCPage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -96,8 +96,9 @@ class _ExploreSCPageState extends State<ExploreSCPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 6,
                     ),
+                    textWithIconRow(Icons.phone, sc.phoneNumber),
                     textWithIconRow(Icons.location_on, sc.address),
                     SizedBox(
                       height: 20,

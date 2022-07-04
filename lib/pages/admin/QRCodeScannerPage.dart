@@ -38,7 +38,7 @@ class _QRCodeScannerPageState extends State<QRCodeScannerPage> {
         title: Text('QR Code Scanner'),
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(24),
         child: Center(
           child: Column(
             children: <Widget>[

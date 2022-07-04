@@ -59,7 +59,7 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
                   color: Colors.black,
                   borderRadius: BorderRadius.circular(12.0),
                 ),
-                padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+                padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -71,8 +71,9 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
                       ),
                     ),
                     SizedBox(
-                      height: 20,
+                      height: 6,
                     ),
+                    textWithIconRow(Icons.phone, sc.phoneNumber),
                     textWithIconRow(Icons.location_on, sc.address),
                     SizedBox(
                       height: 20,
@@ -134,7 +135,7 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
             color: Colors.black,
             borderRadius: BorderRadius.circular(12.0),
           ),
-          padding: EdgeInsets.symmetric(horizontal: 32, vertical: 16),
+          padding: EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -146,8 +147,9 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
                 ),
               ),
               SizedBox(
-                height: 20,
+                height: 6,
               ),
+              textWithIconRow(Icons.phone, sc.phoneNumber),
               textWithIconRow(Icons.location_on, sc.address),
               SizedBox(
                 height: 20,
@@ -241,7 +243,7 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
               height: 20,
             ),
             AdminSession.session.sportCentreId.isEmpty
-                ? Container()
+                ? emptyText()
                 : StreamBuilder<QuerySnapshot>(
                     stream: onSearch(),
                     builder: (context, snapshot) {
@@ -258,6 +260,10 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
                           SportCentre sc = SportCentre.fromDocument(dsData);
 
                           listSC.add(sc);
+                        }
+
+                        if (listSC.isEmpty) {
+                          return emptyText();
                         }
 
                         return Expanded(

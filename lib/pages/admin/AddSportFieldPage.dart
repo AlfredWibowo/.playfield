@@ -76,244 +76,246 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
           child: backButton(context),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            SizedBox(
-              height: 30,
-            ),
-            title('Add', false),
-            title('New Sport Field', true),
-            SizedBox(
-              height: 30,
-            ),
-
-            //Image
-            TextField(
-              controller: _tfImage,
-              decoration: InputDecoration(
-                labelText: 'Image File Name',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-                suffixIcon: IconButton(
-                  onPressed: () {
-                    selectFile(context);
-                  },
-                  icon: Icon(Icons.file_upload),
-                ),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-
-            //Name SF
-            TextField(
-              controller: _tfName,
-              decoration: InputDecoration(
-                labelText: 'Name',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
+              title('Add', false),
+              title('New Sport Field', true),
+              SizedBox(
+                height: 30,
               ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-
-            //Price SF / hour
-            TextField(
-              controller: _tfPrice,
-              decoration: InputDecoration(
-                labelText: 'Rp. ',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-
-            //Dropdown Field Type
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.zero,
-              ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0, vertical: 14.0),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                    isDense: true,
-                    focusColor: Colors.transparent,
-                    style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
-                    isExpanded: true,
-                    value: _dropdownSFType,
-                    items: _sportFieldType.map((String value) {
-                      return DropdownMenuItem(
-                        value: value,
-                        child: Text(
-                          value,
-                          style: TextStyle(fontFamily: 'Roboto'),
-                        ),
-                      );
-                    }).toList(),
-                    onChanged: (String? newValue) {
-                      setState(() {
-                        _dropdownSFType = newValue!;
-                      });
+      
+              //Image
+              TextField(
+                controller: _tfImage,
+                decoration: InputDecoration(
+                  labelText: 'Image File Name',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      selectFile(context);
                     },
+                    icon: Icon(Icons.file_upload),
                   ),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 5,
-            ),
-
-            //dropdown op time
-            Row(
-              children: [
-                Text('Operational Time'),
-                SizedBox(
-                  width: 10,
+              SizedBox(
+                height: 5,
+              ),
+      
+              //Name SF
+              TextField(
+                controller: _tfName,
+                decoration: InputDecoration(
+                  labelText: 'Name',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
                 ),
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.zero,
+              ),
+              SizedBox(
+                height: 5,
+              ),
+      
+              //Price SF / hour
+              TextField(
+                controller: _tfPrice,
+                decoration: InputDecoration(
+                  labelText: 'Rp. ',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+      
+              //Dropdown Field Type
+              DecoratedBox(
+                decoration: BoxDecoration(
+                  border: Border.all(color: Colors.black, width: 2.0),
+                  borderRadius: BorderRadius.zero,
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 12.0, vertical: 14.0),
+                  child: DropdownButtonHideUnderline(
+                    child: DropdownButton(
+                      isDense: true,
+                      focusColor: Colors.transparent,
+                      style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                      isExpanded: true,
+                      value: _dropdownSFType,
+                      items: _sportFieldType.map((String value) {
+                        return DropdownMenuItem(
+                          value: value,
+                          child: Text(
+                            value,
+                            style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
+                          ),
+                        );
+                      }).toList(),
+                      onChanged: (String? newValue) {
+                        setState(() {
+                          _dropdownSFType = newValue!;
+                        });
+                      },
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 14.0),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 5,
+              ),
+      
+              //dropdown op time
+              Row(
+                children: [
+                  Text('Operational Time'),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 14.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
+                              isDense: true,
+                              style:
+                                  TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                              isExpanded: true,
+                              value: _dropdownStartTime,
+                              items: _listTime.map((int value) {
+                                return DropdownMenuItem(
+                                  value: value,
+                                  child: Text(
+                                    value.toString(),
+                                    style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (int? newValue) {
+                                setState(() {
+                                  _dropdownStartTime = newValue!;
+                                });
+                              }),
+                        ),
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Icon(Icons.remove),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Expanded(
+                    child: DecoratedBox(
+                      decoration: BoxDecoration(
+                        border: Border.all(color: Colors.black, width: 2.0),
+                        borderRadius: BorderRadius.zero,
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 12.0, vertical: 14.0),
+                        child: DropdownButtonHideUnderline(
+                          child: DropdownButton(
                             isDense: true,
-                            style:
-                                TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                            style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
                             isExpanded: true,
-                            value: _dropdownStartTime,
+                            value: _dropdownEndTime,
                             items: _listTime.map((int value) {
                               return DropdownMenuItem(
                                 value: value,
                                 child: Text(
                                   value.toString(),
-                                  style: TextStyle(fontFamily: 'Roboto'),
+                                  style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
                                 ),
                               );
                             }).toList(),
                             onChanged: (int? newValue) {
                               setState(() {
-                                _dropdownStartTime = newValue!;
+                                _dropdownEndTime = newValue!;
                               });
-                            }),
-                      ),
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(Icons.remove),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 14.0),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                          isDense: true,
-                          style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
-                          isExpanded: true,
-                          value: _dropdownEndTime,
-                          items: _listTime.map((int value) {
-                            return DropdownMenuItem(
-                              value: value,
-                              child: Text(
-                                value.toString(),
-                                style: TextStyle(fontFamily: 'Roboto'),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (int? newValue) {
-                            setState(() {
-                              _dropdownEndTime = newValue!;
-                            });
-                          },
+                            },
+                          ),
                         ),
                       ),
                     ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 10,
-            ),
-
-            ElevatedButton(
-              onPressed: () async {
-                String id = Uuid().v4();
-                String name = _tfName.text;
-                String opTime =
-                    "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
-                String fieldType = _dropdownSFType;
-                double price = double.parse(_tfPrice.text);
-                String fieldPicture = _tfImage.text;
-
-                //add id to Sport Centre
-                SportCentre sc = widget.dataSC;
-                sc.sportFieldId.add(id);
-                SportCentreFirestoreDatabase.editData(sc: sc);
-
-                //add data sf
-                SportField sf = SportField(
-                  id: id,
-                  name: name,
-                  opTime: opTime,
-                  fieldType: fieldType,
-                  price: price,
-                  fieldPicture: fieldPicture,
-                );
-                SportFieldFirestoreDatabase.addData(sf: sf);
-
-                if (_tfImage.text != "") {
-                  //add image to storage
-                  Future<String> responseMsg = StorageService.uploadImage(
-                    fileName: resultFile!.files.single.name,
-                    filePath: resultFile!.files.single.path!,
-                    isProfilePicture: false,
+                ],
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              ElevatedButton(
+                onPressed: () async {
+                  String id = Uuid().v4();
+                  String name = _tfName.text;
+                  String opTime =
+                      "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                  String fieldType = _dropdownSFType;
+                  num price = int.parse(_tfPrice.text);
+                  String fieldPicture = _tfImage.text;
+      
+                  //add id to Sport Centre
+                  SportCentre sc = widget.dataSC;
+                  sc.sportFieldId.add(id);
+                  SportCentreFirestoreDatabase.editData(sc: sc);
+      
+                  //add data sf
+                  SportField sf = SportField(
+                    id: id,
+                    name: name,
+                    opTime: opTime,
+                    fieldType: fieldType,
+                    price: price,
+                    fieldPicture: fieldPicture,
                   );
-                }
-
-                buildSnackBar(context, "New Sport Field Added to ${sc.name}");
-
-                Navigator.pop(context);
-              },
-              child: Text(
-                'submit'.toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  SportFieldFirestoreDatabase.addData(sf: sf);
+      
+                  if (_tfImage.text != "") {
+                    //add image to storage
+                    Future<String> responseMsg = StorageService.uploadImage(
+                      fileName: resultFile!.files.single.name,
+                      filePath: resultFile!.files.single.path!,
+                      isProfilePicture: false,
+                    );
+                  }
+      
+                  buildSnackBar(context, "New Sport Field Added to ${sc.name}");
+      
+                  Navigator.pop(context);
+                },
+                child: Text(
+                  'submit'.toUpperCase(),
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  minimumSize: Size.fromHeight(50),
+                  primary: Colors.black,
+                  shape: roundedRectangleBorder(),
                 ),
               ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-                primary: Colors.black,
-                shape: roundedRectangleBorder(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

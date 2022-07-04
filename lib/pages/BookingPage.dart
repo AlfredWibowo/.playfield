@@ -36,7 +36,7 @@ class _BookingPageState extends State<BookingPage> {
   late int _dropdownEndTime;
   late List<int> _listTime;
 
-  late double _amount;
+  late num _amount;
 
   late SportCentre sc;
   late SportField sf;
@@ -292,7 +292,7 @@ class _BookingPageState extends State<BookingPage> {
                     String date = _tfDate.text;
                     String time =
                         "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
-                    double amount = _amount;
+                    num amount = _amount;
 
                     Order order = Order(
                       id: orderId,

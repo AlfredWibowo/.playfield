@@ -83,9 +83,13 @@ class _ExploreSFPageState extends State<ExploreSFPage> {
 
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
       body: SingleChildScrollView(
         child: Container(

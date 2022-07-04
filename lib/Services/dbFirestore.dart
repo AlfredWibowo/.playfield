@@ -95,9 +95,7 @@ class SportFieldFirestoreDatabase {
   }
 
   static Stream<QuerySnapshot> getDataBySportCentre(SportCentre sc) {
-    return tbSportField
-        .where(FieldPath.documentId, whereIn: sc.sportFieldId)
-        .snapshots();
+    return tbSportField.where(FieldPath.documentId, whereIn: sc.sportFieldId).snapshots();
   }
 
   static Stream<DocumentSnapshot> getDataById(String id) {

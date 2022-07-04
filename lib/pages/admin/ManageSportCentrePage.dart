@@ -136,6 +136,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                 const SizedBox(height: 32),
                 subTitle("Fields"),
                 const SizedBox(height: 16),
+                widget.dataSC.sportFieldId.isEmpty ? emptyText() :
                 Container(
                   child: StreamBuilder<QuerySnapshot>(
                     stream: SportFieldFirestoreDatabase.getDataBySportCentre(widget.dataSC),
@@ -200,6 +201,7 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                           separatorBuilder: (BuildContext context, int index) =>
                               SizedBox(height: 10));
                       }
+                      
                       return progressIndicator();
                     }
                   ),
