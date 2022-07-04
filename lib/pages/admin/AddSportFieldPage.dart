@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:file_picker/file_picker.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:flutter/material.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:project_ambw/services/storageService.dart';
 import 'package:uuid/uuid.dart';
 
 class AddSportFieldPage extends StatefulWidget {
@@ -19,6 +22,7 @@ class AddSportFieldPage extends StatefulWidget {
 class _AddSportFieldPageState extends State<AddSportFieldPage> {
   final TextEditingController _tfName = TextEditingController();
   final TextEditingController _tfPrice = TextEditingController();
+  final TextEditingController _tfImage = TextEditingController();
 
   final List<String> _sportFieldType = ["Badminton", "Futsal", "Basketball"];
 
@@ -27,6 +31,8 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
   late int _dropdownStartTime;
   late int _dropdownEndTime;
   late List<int> _listTime;
+
+  late FilePickerResult? resultFile;
 
   @override
   void initState() {
@@ -39,6 +45,24 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
       _dropdownStartTime = _listTime.first;
       _dropdownEndTime = _listTime.last;
     });
+  }
+
+  Future<void> selectFile(BuildContext context) async {
+    resultFile = await FilePicker.platform.pickFiles(
+      allowMultiple: false,
+      type: FileType.custom,
+      allowedExtensions: ['png', 'jpg'],
+    );
+
+    if (resultFile == null) {
+      buildSnackBar(context, "No Image Selected");
+    } else {
+      final filePath = resultFile!.files.single.path;
+      final fileName = resultFile!.files.single.name;
+      setState(() {
+        _tfImage.text = fileName;
+      });
+    }
   }
 
   @override
@@ -66,7 +90,26 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
               height: 30,
             ),
 
-            //Name SC
+            //Image
+            TextField(
+              controller: _tfImage,
+              decoration: InputDecoration(
+                labelText: 'Image File Name',
+                focusedBorder: outlineInputBorder(),
+                enabledBorder: outlineInputBorder(),
+                suffixIcon: IconButton(
+                  onPressed: () {
+                    selectFile(context);
+                  },
+                  icon: Icon(Icons.file_upload),
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 5,
+            ),
+
+            //Name SF
             TextField(
               controller: _tfName,
               decoration: InputDecoration(
@@ -79,11 +122,11 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
               height: 5,
             ),
 
-            //Address SC
+            //Price SF / hour
             TextField(
               controller: _tfPrice,
               decoration: InputDecoration(
-                labelText: 'Address',
+                labelText: 'Rp. ',
                 focusedBorder: outlineInputBorder(),
                 enabledBorder: outlineInputBorder(),
               ),
@@ -219,14 +262,14 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
             ),
 
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 String id = Uuid().v4();
                 String name = _tfName.text;
                 String opTime =
                     "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
                 String fieldType = _dropdownSFType;
                 double price = double.parse(_tfPrice.text);
-                String fieldPicture = "";
+                String fieldPicture = _tfImage.text;
 
                 //add id to Sport Centre
                 SportCentre sc = widget.dataSC;
@@ -243,6 +286,17 @@ class _AddSportFieldPageState extends State<AddSportFieldPage> {
                   fieldPicture: fieldPicture,
                 );
                 SportFieldFirestoreDatabase.addData(sf: sf);
+
+                if (_tfImage.text != "") {
+                  //add image to storage
+                  Future<String> responseMsg = StorageService.uploadImage(
+                    fileName: resultFile!.files.single.name,
+                    filePath: resultFile!.files.single.path!,
+                    isProfilePicture: false,
+                  );
+                }
+
+                buildSnackBar(context, "New Sport Field Added to ${sc.name}");
 
                 Navigator.pop(context);
               },

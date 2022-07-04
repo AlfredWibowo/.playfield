@@ -237,9 +237,10 @@ class _ProfilePageState extends State<ProfilePage> {
 
                                   Future<String> responseMsg;
                                   responseMsg =
-                                      StorageService.uploadUserProfileImage(
+                                      StorageService.uploadImage(
                                     filePath: filePath!,
                                     fileName: fileName,
+                                    isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;
