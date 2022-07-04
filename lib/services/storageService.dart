@@ -14,10 +14,7 @@ class StorageService {
 
     try {
       if (isProfilePicture) {
-        await storage.ref('profile_picture/$fileName').putFile(file);
-      }
-      else {
-        await storage.ref('field_picture/$fileName').putFile(file);
+        await storage.ref('images/$fileName').putFile(file);
       }
       message = 'Successful';
     } on FirebaseException catch (e) {
@@ -28,15 +25,10 @@ class StorageService {
     return message;
   }
 
-  static Future<String> getDownloadUrl({required String imageName, required bool isProfilePicture}) async {
+  static Future<String> getDownloadUrl({required String imageName}) async {
     String downloadUrl;
     
-    if (isProfilePicture) {
-      downloadUrl =  await storage.ref('profile_picture/$imageName').getDownloadURL();
-    }
-    else {
-      downloadUrl =  await storage.ref('field_picture/$imageName').getDownloadURL();
-    }
+    downloadUrl =  await storage.ref('images/$imageName').getDownloadURL();
 
     return downloadUrl;
   }

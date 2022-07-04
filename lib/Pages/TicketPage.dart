@@ -19,7 +19,7 @@ class TicketPage extends StatefulWidget {
 }
 
 String imagePath =
-    'https://docs.flutter.dev/assets/images/dash/dash-fainting.gif';
+    'https://www.gstatic.com/mobilesdk/180227_mobilesdk/storage_rules_zerostate.png';
 
 class _TicketPageState extends State<TicketPage> {
   int _currentindexTab = 0;
