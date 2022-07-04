@@ -3,6 +3,7 @@
 import 'package:project_ambw/class/City.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/UserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:project_ambw/services/localService.dart';
@@ -181,6 +182,8 @@ class _AddSportCentrePageState extends State<AddSportCentrePage> {
                 //input id into admin list id sc
                 AdminSession.session.sportCentreId.add(id);
                 AdminFirestoreDatabase.editData(admin: AdminSession.session);
+
+                buildSnackBar(context, "New Sport Centre Added");
 
                 Navigator.pop(context);
 
