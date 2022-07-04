@@ -4,6 +4,7 @@ import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
+import 'package:project_ambw/pages/admin/ManageSportCentrePage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 
 class deleteSCPage extends StatefulWidget {
@@ -165,7 +166,7 @@ class _deleteSFPageState extends State<deleteSFPage> {
                         SportFieldFirestoreDatabase.deleteData(sf: widget.deleteSF);
                         widget.dataSC.sportFieldId.remove(widget.deleteSF.id);
                         SportCentreFirestoreDatabase.editData(sc: widget.dataSC);
-                        Navigator.pop(context);
+                        Navigator.push(context, MaterialPageRoute(builder: (context) => ManageSportCentrePage(dataSC: widget.dataSC)));
                       },
                       child: Text(
                         'SURE THING'.toUpperCase(),

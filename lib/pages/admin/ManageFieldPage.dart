@@ -20,6 +20,26 @@ class ManageSportFieldPage extends StatefulWidget {
 }
 
 class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
+  final List<String> _sportFieldType = ["Badminton", "Futsal", "Basketball"];
+
+  late String _dropdownSFType;
+
+  late int _dropdownStartTime;
+  late int _dropdownEndTime;
+  late List<int> _listTime;
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    setState(() {
+      _dropdownSFType = widget.dataSF.fieldType;
+      _listTime = [for (var i = 0; i <= 23; i += 1) i];
+      _dropdownStartTime = _listTime.first;
+      _dropdownEndTime = _listTime.last;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,11 +49,17 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
           elevation: 0,
           leading: Padding(
             padding: const EdgeInsets.only(left: 16.0),
-            child: backButton(context),
+            child: IconButton(
+              onPressed: () => Navigator.pop(context),
+              icon: const Icon(
+                Icons.arrow_back_ios,
+                color: Colors.grey,
+              ),
+            ),
           ),
           actions: [
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 24),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
               child: Row(
                 children: [
                   appBarIconBtn(
@@ -54,7 +80,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
             minHeight: MediaQuery.of(context).size.height,
           ),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24),
             child:
                 Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
               Row(
@@ -75,9 +101,10 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
               const SizedBox(height: 8),
               scCard('ID', widget.dataSF.id, context),
               const SizedBox(height: 8),
-              scCardEditable('Type', widget.dataSF.fieldType, context),
+              sfCardEditableType('Type', widget.dataSF.fieldType, context),
               const SizedBox(height: 8),
-              scCardEditable('Operational Time', widget.dataSF.opTime, context),
+              sfCardEditableOpTime(
+                  'Operational Time', widget.dataSF.opTime, context),
               const SizedBox(height: 8),
               scCardEditable('Price', widget.dataSF.price.toString(), context),
               const SizedBox(height: 16),
@@ -133,7 +160,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
               builder: (BuildContext context) {
                 dialogContext = context;
                 return AlertDialog(
-                  insetPadding: EdgeInsets.all(24.0),
+                  insetPadding: const EdgeInsets.all(24.0),
                   title: Text(
                     ('Edit ' + title).toUpperCase(),
                     style: const TextStyle(fontFamily: 'Comfortaa'),
@@ -147,7 +174,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                         width: MediaQuery.of(context).size.width,
                         child: Column(
                           children: [
-                            SizedBox(height: 16.0),
+                            const SizedBox(height: 16.0),
                             ListTile(
                               subtitle: TextField(
                                 controller: _tfController,
@@ -157,7 +184,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                     enabledBorder: outlineInputBorder()),
                               ),
                             ),
-                            SizedBox(height: 16.0),
+                            const SizedBox(height: 16.0),
                           ],
                         ),
                       ),
@@ -191,13 +218,22 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                       color: Colors.white),
                                 ),
                               ),
-                              onPressed: () {
-                                widget.dataSC.phoneNumber = _tfController.text;
-                                SportCentreFirestoreDatabase.editData(
-                                    sc: widget.dataSC);
+                              onPressed: () async {
+                                if (title == "Name") {
+                                  widget.dataSF.name = _tfController.text;
+                                } else if (title == "Type") {
+                                  widget.dataSF.fieldType = _tfController.text;
+                                } else if (title == "Operational Time") {
+                                  widget.dataSF.opTime = _tfController.text;
+                                } else if (title == "Price") {
+                                  widget.dataSF.price =
+                                      double.parse(_tfController.text);
+                                }
+                                await SportFieldFirestoreDatabase.editData(
+                                    sf: widget.dataSF);
                                 buildSnackBar(
                                     context, title + ' berhasil di edit');
-                                Navigator.pop(context);
+                                Navigator.pop(dialogContext);
                               },
                             ),
                           ),
@@ -222,7 +258,373 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                         ],
                       ),
                     ),
-                    SizedBox(
+                    const SizedBox(
+                      height: 16.0,
+                    )
+                  ],
+                );
+              },
+            ).then((_) => setState(() {}));
+          },
+          icon: const Icon(Icons.edit),
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  Card sfCardEditableOpTime(String title, String value, BuildContext context) {
+    return Card(
+      // color: Colors.black,
+      shape: Border.all(width: 2.0, color: Colors.black),
+      borderOnForeground: true,
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.black, fontSize: 20),
+        ),
+        subtitle: Text(
+          value,
+          style: const TextStyle(
+              color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            BuildContext dialogContext;
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                dialogContext = context;
+                return AlertDialog(
+                  insetPadding: const EdgeInsets.all(24.0),
+                  title: Text(
+                    ('Edit ' + title).toUpperCase(),
+                    style: const TextStyle(fontFamily: 'Comfortaa'),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 32.0),
+                  actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  content: StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const SizedBox(height: 16.0),
+                        SizedBox(
+                          width: MediaQuery.of(context).size.width,
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black, width: 2.0),
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 14.0),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton(
+                                          isDense: true,
+                                          style: const TextStyle(
+                                              fontFamily: 'Roboto',
+                                              fontSize: 16),
+                                          isExpanded: true,
+                                          value: _dropdownStartTime,
+                                          items: _listTime.map((int value) {
+                                            return DropdownMenuItem(
+                                              value: value,
+                                              child: Text(
+                                                value.toString(),
+                                                style: const TextStyle(
+                                                    fontFamily: 'Roboto'),
+                                              ),
+                                            );
+                                          }).toList(),
+                                          onChanged: (int? newValue) {
+                                            setState(() {
+                                              _dropdownStartTime = newValue!;
+                                            });
+                                          }),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Icon(Icons.remove),
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              Expanded(
+                                child: DecoratedBox(
+                                  decoration: BoxDecoration(
+                                    border: Border.all(
+                                        color: Colors.black, width: 2.0),
+                                    borderRadius: BorderRadius.zero,
+                                  ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 12.0, vertical: 14.0),
+                                    child: DropdownButtonHideUnderline(
+                                      child: DropdownButton(
+                                        isDense: true,
+                                        style: const TextStyle(
+                                            fontFamily: 'Roboto', fontSize: 16),
+                                        isExpanded: true,
+                                        value: _dropdownEndTime,
+                                        items: _listTime.map((int value) {
+                                          return DropdownMenuItem(
+                                            value: value,
+                                            child: Text(
+                                              value.toString(),
+                                              style: const TextStyle(
+                                                  fontFamily: 'Roboto'),
+                                            ),
+                                          );
+                                        }).toList(),
+                                        onChanged: (int? newValue) {
+                                          setState(() {
+                                            _dropdownEndTime = newValue!;
+                                          });
+                                        },
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16.0),
+                      ],
+                    );
+                  }),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(4), // <-- Radius
+                                ),
+                                elevation: 0.0,
+                                primary: Colors.black,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Text(
+                                  'SUBMIT',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: () async {
+                                String opTime =
+                                    "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                                widget.dataSF.opTime = opTime;
+                                await SportFieldFirestoreDatabase.editData(
+                                    sf: widget.dataSF);
+                                buildSnackBar(
+                                    context, title + ' berhasil di edit');
+                                Navigator.pop(dialogContext);
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                primary: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(dialogContext);
+                              },
+                              child: const Text(
+                                'CANCEL',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto', color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
+                      height: 16.0,
+                    )
+                  ],
+                );
+              },
+            ).then((_) => setState(() {}));
+          },
+          icon: const Icon(Icons.edit),
+          color: Colors.grey,
+        ),
+      ),
+    );
+  }
+
+  Card sfCardEditableType(String title, String value, BuildContext context) {
+    return Card(
+      // color: Colors.black,
+      shape: Border.all(width: 2.0, color: Colors.black),
+      borderOnForeground: true,
+      child: ListTile(
+        title: Text(
+          title,
+          style: const TextStyle(color: Colors.black, fontSize: 20),
+        ),
+        subtitle: Text(
+          value,
+          style: const TextStyle(
+              color: Color.fromRGBO(50, 50, 50, 100), fontSize: 16),
+        ),
+        trailing: IconButton(
+          onPressed: () {
+            BuildContext dialogContext;
+            showDialog(
+              context: context,
+              barrierDismissible: true,
+              builder: (BuildContext context) {
+                dialogContext = context;
+                return AlertDialog(
+                  insetPadding: const EdgeInsets.all(24.0),
+                  title: Text(
+                    ('Edit ' + title).toUpperCase(),
+                    style: const TextStyle(fontFamily: 'Comfortaa'),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  actionsPadding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  content: StatefulBuilder(
+                      builder: (BuildContext context, setState) {
+                    return Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Container(
+                          width: MediaQuery.of(context).size.width,
+                          padding: EdgeInsets.symmetric(horizontal: 16.0),
+                          child: Column(
+                            children: [
+                              const SizedBox(height: 16.0),
+                              DecoratedBox(
+                                decoration: BoxDecoration(
+                                  border: Border.all(color: Colors.black, width: 2.0),
+                                  borderRadius: BorderRadius.zero,
+                                ),
+                                child: Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 12.0, vertical: 14.0),
+                                  child: DropdownButtonHideUnderline(
+                                    child: DropdownButton(
+                                      isDense: true,
+                                      focusColor: Colors.transparent,
+                                      style:
+                                          const TextStyle(fontFamily: 'Roboto', fontSize: 16),
+                                      isExpanded: true,
+                                      value: _dropdownSFType,
+                                      items: _sportFieldType.map((String value) {
+                                        return DropdownMenuItem(
+                                          value: value,
+                                          child: Text(
+                                            value,
+                                            style: const TextStyle(fontFamily: 'Roboto'),
+                                          ),
+                                        );
+                                      }).toList(),
+                                      onChanged: (String? newValue) {
+                                        setState(() {
+                                          _dropdownSFType = newValue!;
+                                        });
+                                      },
+                                    ),
+                                  ),
+                                ),
+                              ),
+                              const SizedBox(height: 16.0),
+                            ],
+                          ),
+                        ),
+                      ],
+                    );
+                  }),
+                  actions: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Expanded(
+                            flex: 3,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                shape: RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.circular(4), // <-- Radius
+                                ),
+                                elevation: 0.0,
+                                primary: Colors.black,
+                                shadowColor: Colors.transparent,
+                              ),
+                              child: const Padding(
+                                padding: EdgeInsets.symmetric(vertical: 10.0),
+                                child: Text(
+                                  'SUBMIT',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontFamily: 'Roboto',
+                                      color: Colors.white),
+                                ),
+                              ),
+                              onPressed: () async {
+                                String fieldType = _dropdownSFType;
+                                widget.dataSF.fieldType = fieldType;
+                                await SportFieldFirestoreDatabase.editData(
+                                    sf: widget.dataSF);
+                                buildSnackBar(
+                                    context, title + ' berhasil di edit');
+                                Navigator.pop(dialogContext);
+                              },
+                            ),
+                          ),
+                          Expanded(
+                            flex: 2,
+                            child: ElevatedButton(
+                              style: ElevatedButton.styleFrom(
+                                elevation: 0.0,
+                                primary: Colors.transparent,
+                                shadowColor: Colors.transparent,
+                              ),
+                              onPressed: () {
+                                Navigator.pop(dialogContext);
+                              },
+                              child: const Text(
+                                'CANCEL',
+                                style: TextStyle(
+                                    fontFamily: 'Roboto', color: Colors.black),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(
                       height: 16.0,
                     )
                   ],

@@ -80,7 +80,7 @@ class _AdminBottomNavigationPageState extends State<AdminBottomNavigationPage> {
             body: _screens[_currentIndex],
             bottomNavigationBar: Container(
               decoration: BoxDecoration(
-                color: Color.fromARGB(255, 223, 181, 156),
+                color: Color.fromARGB(255, 152, 173, 166),
                 boxShadow: [
                     BoxShadow(
                       color: Colors.black.withOpacity(0.25),

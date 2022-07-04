@@ -1,5 +1,6 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/class/UserSession.dart';
@@ -14,10 +15,9 @@ import 'package:project_ambw/services/dbFirestore.dart';
 
 class ManageSportCentrePage extends StatefulWidget {
   final SportCentre dataSC;
-  final List<SportField> dataSF;
 
   const ManageSportCentrePage(
-      {Key? key, required this.dataSC, required this.dataSF})
+      {Key? key, required this.dataSC})
       : super(key: key);
 
   @override
@@ -77,7 +77,6 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
   }
 
@@ -134,87 +133,98 @@ class _ManageSportCentrePageState extends State<ManageSportCentrePage> {
                     'Phone Number', widget.dataSC.phoneNumber, context),
                 const SizedBox(height: 8),
                 scCard('City', widget.dataSC.city, context),
-                const SizedBox(height: 24),
+                const SizedBox(height: 32),
                 subTitle("Fields"),
                 const SizedBox(height: 16),
-                // TextField(
-                //   controller: _tfSearchBar,
-                //   decoration: InputDecoration(
-                //     filled: true,
-                //     prefixIcon: Icon(Icons.search),
-                //     suffixIcon:
-                //         IconButton(onPressed: () {}, icon: Icon(Icons.filter_list)),
-                //     border: OutlineInputBorder(
-                //       borderSide: BorderSide.none,
-                //     ),
-                //   ),
-                // ),
-                SizedBox(
-                  height: 20,
-                ),
                 Container(
-                  height: MediaQuery.of(context).size.height,
-                  child: ListView.separated(
-                      shrinkWrap: true,
-                      physics: NeverScrollableScrollPhysics(),
-                      itemCount: widget.dataSF.length,
-                      itemBuilder: ((context, index) {
-                        return ListTile(
-                          onTap: () {
-                            Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ManageSportFieldPage(dataSF: widget.dataSF[index], dataSC: widget.dataSC,),
-                          ));
-                          },
-                          contentPadding: EdgeInsets.all(16.0),
-                          tileColor: Colors.black,
-                          title: Text(
-                            widget.dataSF[index].id,
-                            style: TextStyle(
-                                fontFamily: 'Comfortaa',
-                                fontSize: 14.0,
-                                color: Colors.white),
-                          ),
-                          subtitle: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                widget.dataSF[index].fieldType,
+                  child: StreamBuilder<QuerySnapshot>(
+                    stream: SportFieldFirestoreDatabase.getDataBySportCentre(widget.dataSC),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        List<SportField> listSF = [];
+
+                        for (var i = 0; i < snapshot.data!.docs.length; i++) {
+                          DocumentSnapshot dsData = snapshot.data!.docs[i];
+                          SportField sf = SportField.fromDocument(dsData);
+                          listSF.add(sf);
+                        }
+                      
+                      return ListView.separated(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: listSF.length,
+                          itemBuilder: ((context, index) {
+                            return ListTile(
+                              key: Key(listSF[index].id),
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (_) => ManageSportFieldPage(
+                                        dataSF: listSF[index],
+                                        dataSC: widget.dataSC,
+                                      ),
+                                    )).then((_) => setState(
+                                      () {},
+                                    ));
+                              },
+                              contentPadding: EdgeInsets.all(16.0),
+                              tileColor: Colors.black,
+                              title: Text(
+                                listSF[index].name,
                                 style: TextStyle(
-                                    fontFamily: 'Roboto',
-                                    fontSize: 10.0,
+                                    fontFamily: 'Comfortaa',
+                                    fontSize: 14.0,
                                     color: Colors.white),
                               ),
-                              textWithIconRow(
-                                  Icons.monetization_on,
-                                  "Rp. " +
-                                      widget.dataSF[index].price.toString()),
-                            ],
-                          ),
-                        );
-                      }),
-                      separatorBuilder: (BuildContext context, int index) =>
-                          SizedBox(height: 10)),
+                              subtitle: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    listSF[index].fieldType,
+                                    style: TextStyle(
+                                        fontFamily: 'Roboto',
+                                        fontSize: 10.0,
+                                        color: Colors.white),
+                                  ),
+                                  textWithIconRow(
+                                      Icons.monetization_on,
+                                      "Rp. " +
+                                          listSF[index].price.toString()),
+                                ],
+                              ),
+                            );
+                          }),
+                          separatorBuilder: (BuildContext context, int index) =>
+                              SizedBox(height: 10));
+                      }
+                      return progressIndicator();
+                    }
+                  ),
                 ),
               ],
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => AddSportFieldPage(
-                  dataSC: widget.dataSC,
-                ),
-              ));
-        },
-        //elevation: 0.0,
-        child: Icon(Icons.add),
-        backgroundColor: Color.fromARGB(255, 223, 181, 156),
+      floatingActionButton: Padding(
+        padding: const EdgeInsets.only(right: 16.0),
+        child: FloatingActionButton(
+          onPressed: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => AddSportFieldPage(
+                    dataSC: widget.dataSC,
+                  ),
+                )).then((_) => {setState(() {})});
+          },
+          //elevation: 0.0,
+          child: Icon(Icons.add),
+          backgroundColor: Color.fromARGB(255, 152, 173, 166),
+        ),
       ),
     );
   }

@@ -49,8 +49,7 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ManageSportCentrePage(
-                        dataSC: sc,
-                        dataSF: listSportField,
+                        dataSC: sc, 
                       ),
                     ));
               },
@@ -126,7 +125,6 @@ class _SportCentreListPageState extends State<SportCentreListPage> {
               MaterialPageRoute(
                 builder: (context) => ManageSportCentrePage(
                   dataSC: sc,
-                  dataSF: listSportField,
                 ),
               ));
         },
