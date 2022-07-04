@@ -99,11 +99,11 @@ class _BottomNavigationPageState extends State<BottomNavigationPage> {
                     padding: EdgeInsets.symmetric(horizontal: 24),
                     child: Row(
                       children: [
-                        appBarIconBtn(
-                            context, Icons.favorite_outline, FavoritePage()),
-                        SizedBox(
-                          width: 20,
-                        ),
+                        // appBarIconBtn(
+                        //     context, Icons.favorite_outline, FavoritePage()),
+                        // SizedBox(
+                        //   width: 20,
+                        // ),
                         appBarIconBtn(context, Icons.notifications_outlined,
                             NotificationPage()),
                         SizedBox(
