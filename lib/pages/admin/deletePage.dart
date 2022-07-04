@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:project_ambw/class/SportCentre.dart';
 import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/class/UserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 
@@ -58,9 +59,20 @@ class _deleteSCPageState extends State<deleteSCPage> {
                 children: [
                   ElevatedButton(
                       onPressed: () { 
+                        //detele SF in SC
+                        for (var id in widget.deleteCentre.sportFieldId) {
+                          SportFieldFirestoreDatabase.deleteDataByDocId(docId: id);
+                        }
+
+                        //delete SC
                         SportCentreFirestoreDatabase.deleteData(sc: widget.deleteCentre);
+                        
+                        //remove SC from admin
                         AdminSession.session.sportCentreId.remove(widget.deleteCentre.id);
                         AdminFirestoreDatabase.editData(admin: AdminSession.session);
+
+                        buildSnackBar(context, "Sport Centre Deleted");
+                        
                         Navigator.pop(context);
                       },
                       child: Text(
