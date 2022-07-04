@@ -199,7 +199,6 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                         : FutureBuilder<String>(
                             future: StorageService.getDownloadUrl(
                               imageName: AdminSession.session.profilePicture,
-                              isProfilePicture: true,
                             ),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
@@ -258,7 +257,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                                   Future<String> responseMsg;
                                   responseMsg = StorageService.uploadImage(
                                     filePath: filePath!,
-                                    fileName: fileName,
+                                    fileName: "${AdminSession.session.name}",
                                     isProfilePicture: true,
                                   );
 
@@ -266,7 +265,7 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
 
                                   if (msg == "Successful") {
                                     AdminSession.session.profilePicture =
-                                        fileName;
+                                        "${AdminSession.session.name}";
 
                                     AdminFirestoreDatabase.editData(
                                         admin: AdminSession.session);
@@ -289,10 +288,10 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                             ElevatedButton(
                               onPressed: () {
                                 Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ResetPasswordPage(),
-                          ));
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) => ResetPasswordPage(),
+                                    ));
                               },
                               child: Text(
                                 'Change Password'.toUpperCase(),

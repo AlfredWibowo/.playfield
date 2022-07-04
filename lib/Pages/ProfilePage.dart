@@ -199,18 +199,14 @@ class _ProfilePageState extends State<ProfilePage> {
                         : FutureBuilder<String>(
                             future: StorageService.getDownloadUrl(
                               imageName: ConsumerSession.session.profilePicture,
-                              isProfilePicture: true,
                             ),
                             builder: (context, snapshot) {
                               if (snapshot.hasError) {
                                 return Text('${snapshot.error}');
                               } else if (snapshot.hasData ||
                                   snapshot.data != null) {
-                                return imageNetwork(
-                                  snapshot.data!,
-                                  100 * 1.5,
-                                  110 * 1.5,
-                                );
+                                print(snapshot.data!);
+                                return Image.network('${snapshot.data}');
                               }
                               return progressIndicator();
                             },
@@ -258,15 +254,15 @@ class _ProfilePageState extends State<ProfilePage> {
                                   Future<String> responseMsg;
                                   responseMsg = StorageService.uploadImage(
                                     filePath: filePath!,
-                                    fileName: fileName,
+                                    //filename pakek username
+                                    fileName: "${ConsumerSession.session.name}",
                                     isProfilePicture: true,
                                   );
 
                                   String msg = await responseMsg;
 
                                   if (msg == "Successful") {
-                                    ConsumerSession.session.profilePicture =
-                                        fileName;
+                                    ConsumerSession.session.profilePicture = "${ConsumerSession.session.name}";
 
                                     ConsumerFirestoreDatabase.editData(
                                         consumer: ConsumerSession.session);
@@ -282,6 +278,9 @@ class _ProfilePageState extends State<ProfilePage> {
                                 'Change Profile Picture'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),
                               ),
+                            ),
+                            SizedBox(
+                              height: 5,
                             ),
                             ElevatedButton(
                               onPressed: () {
