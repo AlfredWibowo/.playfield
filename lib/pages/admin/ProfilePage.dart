@@ -1,10 +1,13 @@
 // ignore_for_file: prefer_const_constructors
 
+import 'package:file_picker/file_picker.dart';
 import 'package:project_ambw/class/UserSession.dart';
+import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/pages/TicketPage.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
 import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class AdminProfilePage extends StatefulWidget {
   const AdminProfilePage({Key? key}) : super(key: key);
@@ -186,7 +189,8 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: imageNetwork(imagePath, 100 * 1.5, 110 * 1.5),
+                    child: imageNetwork(AdminSession.session.profilePicture,
+                        100 * 1.5, 110 * 1.5),
                   ),
                   SizedBox(
                     width: 10,
@@ -213,7 +217,43 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             ElevatedButton(
-                              onPressed: () {},
+                              onPressed: () async {
+                                final result =
+                                    await FilePicker.platform.pickFiles(
+                                  allowMultiple: false,
+                                  type: FileType.custom,
+                                  allowedExtensions: ['png', 'jpg'],
+                                );
+
+                                if (result == null) {
+                                  buildSnackBar(context, "No Image Selected");
+                                } else {
+                                  final filePath = result.files.single.path;
+                                  final fileName = result.files.single.name;
+
+                                  Future<String> responseMsg;
+                                  responseMsg = StorageService.uploadImage(
+                                    filePath: filePath!,
+                                    fileName: fileName,
+                                    isProfilePicture: true,
+                                  );
+
+                                  String msg = await responseMsg;
+
+                                  if (msg == "Successful") {
+                                    AdminSession.session.profilePicture =
+                                        fileName;
+
+                                    AdminFirestoreDatabase.editData(
+                                        admin: AdminSession.session);
+
+                                    buildSnackBar(
+                                        context, "Change PP Successfull");
+                                  } else {
+                                    buildSnackBar(context, msg);
+                                  }
+                                }
+                              },
                               child: Text(
                                 'Change Profile Picture'.toUpperCase(),
                                 style: TextStyle(fontSize: 10),

@@ -190,7 +190,8 @@ class _ProfilePageState extends State<ProfilePage> {
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
                     child: ConsumerSession.session.profilePicture != ""
-                        ? imageNetwork(imagePath, 100 * 1.5, 110 * 1.5)
+                        ? imageNetwork(ConsumerSession.session.profilePicture,
+                            100 * 1.5, 110 * 1.5)
                         : Icon(
                             Icons.account_box,
                             size: 100 * 1.5,
@@ -236,8 +237,7 @@ class _ProfilePageState extends State<ProfilePage> {
                                   final fileName = result.files.single.name;
 
                                   Future<String> responseMsg;
-                                  responseMsg =
-                                      StorageService.uploadImage(
+                                  responseMsg = StorageService.uploadImage(
                                     filePath: filePath!,
                                     fileName: fileName,
                                     isProfilePicture: true,
@@ -246,7 +246,6 @@ class _ProfilePageState extends State<ProfilePage> {
                                   String msg = await responseMsg;
 
                                   if (msg == "Successful") {
-
                                     ConsumerSession.session.profilePicture =
                                         fileName;
 

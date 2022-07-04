@@ -37,157 +37,159 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
           child: backButton(context),
         ),
       ),
-      body: Container(
-        padding: EdgeInsets.all(20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              'Register',
-              style: TextStyle(
-                fontSize: 30,
-                color: Colors.black,
-                fontFamily: 'Comfortaa',
-                fontWeight: FontWeight.w400,
-              ),
-            ),
-            SizedBox(
-              height: 30,
-            ),
-            TextField(
-              controller: _tfNameController,
-              decoration: InputDecoration(
-                labelText: 'Full Name',
-                focusedBorder: underlineInputBorder(),
-                enabledBorder: underlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _tfEmailController,
-              decoration: InputDecoration(
-                labelText: 'Email',
-                focusedBorder: underlineInputBorder(),
-                enabledBorder: underlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _tfPasswordController,
-              decoration: InputDecoration(
-                labelText: 'Password',
-                suffixIcon: IconButton(
-                  icon: passwordToggleIcon(_isPasswordVisible),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
-                ),
-                focusedBorder: underlineInputBorder(),
-                enabledBorder: underlineInputBorder(),
-              ),
-              obscureText: !_isPasswordVisible,
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _tfPhoneNumberController,
-              decoration: InputDecoration(
-                labelText: 'Phone Number',
-                focusedBorder: underlineInputBorder(),
-                enabledBorder: underlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            TextField(
-              controller: _tfAddressController,
-              decoration: InputDecoration(
-                labelText: 'Address',
-                focusedBorder: underlineInputBorder(),
-                enabledBorder: underlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                String email = _tfEmailController.text;
-                String password = _tfPasswordController.text;
-                String name = _tfNameController.text;
-                String address = _tfAddressController.text;
-                String phoneNumber = _tfPhoneNumberController.text;
-
-                Admin data = Admin(
-                  notifId: [],
-                  orderId: [],
-                  sportCentreId: [],
-                  email: email,
-                  password: password,
-                  name: name,
-                  address: address,
-                  phoneNumber: phoneNumber,
-                  profilePicture: "",
-                );
-
-                await AdminFirestoreDatabase.addData(admin: data);
-
-                Future<String> responseMsg;
-
-                responseMsg = AuthService.signUp(
-                  email: _tfEmailController.text,
-                  password: _tfPasswordController.text,
-                );
-
-                String msg = await responseMsg;
-
-                if (msg == 'Successful') {
-                  buildSnackBar(context, "Successfully Registered");
-
-                  Navigator.pushReplacement(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => AdminBottomNavigationPage()));
-                }
-              },
-              child: Text(
-                'sign up'.toUpperCase(),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.all(20),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                'Register',
                 style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 30,
+                  color: Colors.black,
+                  fontFamily: 'Comfortaa',
+                  fontWeight: FontWeight.w400,
                 ),
               ),
-              style: elevatedButtonStyle(Colors.black),
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => AdminLoginPage()),
-                );
-              },
-              child: Center(
+              SizedBox(
+                height: 30,
+              ),
+              TextField(
+                controller: _tfNameController,
+                decoration: InputDecoration(
+                  labelText: 'Full Name',
+                  focusedBorder: underlineInputBorder(),
+                  enabledBorder: underlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _tfEmailController,
+                decoration: InputDecoration(
+                  labelText: 'Email',
+                  focusedBorder: underlineInputBorder(),
+                  enabledBorder: underlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _tfPasswordController,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: passwordToggleIcon(_isPasswordVisible),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
+                  ),
+                  focusedBorder: underlineInputBorder(),
+                  enabledBorder: underlineInputBorder(),
+                ),
+                obscureText: !_isPasswordVisible,
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _tfPhoneNumberController,
+                decoration: InputDecoration(
+                  labelText: 'Phone Number',
+                  focusedBorder: underlineInputBorder(),
+                  enabledBorder: underlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              TextField(
+                controller: _tfAddressController,
+                decoration: InputDecoration(
+                  labelText: 'Address',
+                  focusedBorder: underlineInputBorder(),
+                  enabledBorder: underlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 20,
+              ),
+              ElevatedButton(
+                onPressed: () async {
+                  String email = _tfEmailController.text;
+                  String password = _tfPasswordController.text;
+                  String name = _tfNameController.text;
+                  String address = _tfAddressController.text;
+                  String phoneNumber = _tfPhoneNumberController.text;
+      
+                  Admin data = Admin(
+                    notifId: [],
+                    orderId: [],
+                    sportCentreId: [],
+                    email: email,
+                    password: password,
+                    name: name,
+                    address: address,
+                    phoneNumber: phoneNumber,
+                    profilePicture: "",
+                  );
+      
+                  await AdminFirestoreDatabase.addData(admin: data);
+      
+                  Future<String> responseMsg;
+      
+                  responseMsg = AuthService.signUp(
+                    email: _tfEmailController.text,
+                    password: _tfPasswordController.text,
+                  );
+      
+                  String msg = await responseMsg;
+      
+                  if (msg == 'Successful') {
+                    buildSnackBar(context, "Successfully Registered");
+      
+                    Navigator.pushReplacement(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => AdminBottomNavigationPage()));
+                  }
+                },
                 child: Text(
-                  'already have an account ?'.toUpperCase(),
+                  'sign up'.toUpperCase(),
                   style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.normal,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
+                style: elevatedButtonStyle(Colors.black),
               ),
-            )
-          ],
+              SizedBox(
+                height: 20,
+              ),
+              GestureDetector(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => AdminLoginPage()),
+                  );
+                },
+                child: Center(
+                  child: Text(
+                    'already have an account ?'.toUpperCase(),
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
