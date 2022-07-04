@@ -166,7 +166,8 @@ class _deleteSFPageState extends State<deleteSFPage> {
                         SportFieldFirestoreDatabase.deleteData(sf: widget.deleteSF);
                         widget.dataSC.sportFieldId.remove(widget.deleteSF.id);
                         SportCentreFirestoreDatabase.editData(sc: widget.dataSC);
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => ManageSportCentrePage(dataSC: widget.dataSC)));
+                        // Navigator.push(context, MaterialPageRoute(builder: (context) => ManageSportCentrePage(dataSC: widget.dataSC)));
+                        Navigator.of(context).popUntil((route) => route.isFirst);
                       },
                       child: Text(
                         'SURE THING'.toUpperCase(),

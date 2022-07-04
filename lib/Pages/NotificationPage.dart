@@ -24,7 +24,7 @@ class _NotificationPageState extends State<NotificationPage> {
         leading: backButton(context),
       ),
       body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
+        padding: EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
