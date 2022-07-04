@@ -158,16 +158,6 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
-  String imagePath = "";
-
-  @override
-  void initState() async {
-    // TODO: implement initState
-    super.initState();
-
-    imagePath = await StorageService.getDownloadUrl(imageName: ConsumerSession.session.profilePicture, isProfilePicture: true);
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -199,15 +189,29 @@ class _ProfilePageState extends State<ProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: ConsumerSession.session.profilePicture != ""
-                        ? imageNetwork(
-                            imagePath,
-                            100 * 1.5,
-                            110 * 1.5,
-                          )
-                        : Icon(
+                    child: ConsumerSession.session.profilePicture == ""
+                        ? Icon(
                             Icons.account_box,
                             size: 100 * 1.5,
+                          )
+                        : FutureBuilder<String>(
+                            future: StorageService.getDownloadUrl(
+                              imageName: AdminSession.session.profilePicture,
+                              isProfilePicture: true,
+                            ),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              } else if (snapshot.hasData ||
+                                  snapshot.data != null) {
+                                return imageNetwork(
+                                  snapshot.data!,
+                                  100 * 1.5,
+                                  110 * 1.5,
+                                );
+                              }
+                              return progressIndicator();
+                            },
                           ),
                   ),
                   SizedBox(

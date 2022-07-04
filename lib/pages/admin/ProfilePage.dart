@@ -201,11 +201,30 @@ class _AdminProfilePageState extends State<AdminProfilePage> {
                 children: [
                   ClipRRect(
                     borderRadius: BorderRadius.circular(8),
-                    child: imageNetwork(
-                      imagePath,
-                      100 * 1.5,
-                      110 * 1.5,
-                    ),
+                    child: AdminSession.session.profilePicture == ""
+                        ? Icon(
+                            Icons.account_box,
+                            size: 100 * 1.5,
+                          )
+                        : FutureBuilder<String>(
+                            future: StorageService.getDownloadUrl(
+                              imageName: AdminSession.session.profilePicture,
+                              isProfilePicture: true,
+                            ),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Text('${snapshot.error}');
+                              } else if (snapshot.hasData ||
+                                  snapshot.data != null) {
+                                return imageNetwork(
+                                  snapshot.data!,
+                                  100 * 1.5,
+                                  110 * 1.5,
+                                );
+                              }
+                              return progressIndicator();
+                            },
+                          ),
                   ),
                   SizedBox(
                     width: 10,
