@@ -145,6 +145,9 @@ class _SignUpPageState extends State<SignUpPage> {
                         MaterialPageRoute(
                             builder: (context) => BottomNavigationPage()));
                   }
+                  else {
+                    buildSnackBar(context, msg);
+                  }
                 },
                 child: Text(
                   'sign up'.toUpperCase(),

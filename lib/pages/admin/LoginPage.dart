@@ -127,6 +127,9 @@ class _AdminLoginPageState extends State<AdminLoginPage> {
                         ),
                       );
                     }
+                    else {
+                    buildSnackBar(context, "Register Consumer Account First");
+                  }
                   }
                   else {
                     buildSnackBar(context, "Register Admin Account First");

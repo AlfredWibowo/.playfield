@@ -212,13 +212,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       onPressed: () {
+                        buildSnackBar(context, "Top Up Succesfull");
+
                         ConsumerSession.session.balance +=
                             int.parse(_tfController.text);
 
                         ConsumerFirestoreDatabase.editData(
                             consumer: ConsumerSession.session);
-
-                        buildSnackBar(context, "Top Up Succesfull");
 
                         Navigator.pop(context);
                       },

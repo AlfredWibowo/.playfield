@@ -158,6 +158,9 @@ class _AdminSignUpPageState extends State<AdminSignUpPage> {
                         MaterialPageRoute(
                             builder: (context) => AdminBottomNavigationPage()));
                   }
+                  else {
+                    buildSnackBar(context, msg);
+                  }
                 },
                 child: Text(
                   'sign up'.toUpperCase(),

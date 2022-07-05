@@ -84,36 +84,36 @@ class _LoginPageState extends State<LoginPage> {
                 onPressed: () async {
                   String email = _tfEmailController.text;
                   String password = _tfPasswordController.text;
-      
+
                   //cek email exist in consumer
                   final docSnap = await FirebaseFirestore.instance
                       .collection("Consumer")
                       .doc(email)
                       .get();
-      
+
                   if (docSnap.exists) {
                     Future<String> responseMsg;
-      
+
                     responseMsg = AuthService.login(
                       email: email,
                       password: password,
                     );
-      
+
                     String msg = await responseMsg;
-                    
-      
+
                     if (msg == 'Successful') {
                       buildSnackBar(context, "Successfully Login");
-      
+
                       Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(
                           builder: (context) => BottomNavigationPage(),
                         ),
                       );
+                    } else {
+                      buildSnackBar(context, msg);
                     }
-                  }
-                  else {
+                  } else {
                     buildSnackBar(context, "Register Consumer Account First");
                   }
                 },
