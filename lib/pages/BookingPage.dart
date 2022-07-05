@@ -326,7 +326,6 @@ class _BookingPageState extends State<BookingPage> {
                         orderId: [],
                         sportCentreId: [],
                         email: "",
-                        password: "",
                         name: "",
                         address: "",
                         phoneNumber: "",

@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class User {
   String email;
-  String password;
   String name;
   String address;
   String phoneNumber;
@@ -12,7 +11,6 @@ class User {
 
   User(
       {required this.email,
-      required this.password,
       required this.name,
       required this.address,
       required this.phoneNumber,
@@ -23,7 +21,6 @@ class User {
   factory User.fromJson(Map<String, dynamic> json) {
     return User(
       email: json["email"],
-      password: json["password"],
       name: json["name"],
       address: json["address"],
       phoneNumber: json["phoneNumber"],
@@ -40,7 +37,6 @@ class Consumer extends User {
   Consumer(
       {required this.balance,
       required String email,
-      required String password,
       required String name,
       required String address,
       required String phoneNumber,
@@ -49,7 +45,6 @@ class Consumer extends User {
       required List<String> notifId})
       : super(
             email: email,
-            password: password,
             name: name,
             address: address,
             phoneNumber: phoneNumber,
@@ -61,7 +56,6 @@ class Consumer extends User {
     return Consumer(
       balance: json["balance"],
       email: json["email"],
-      password: json["password"],
       name: json["name"],
       address: json["address"],
       phoneNumber: json["phoneNumber"],
@@ -75,7 +69,6 @@ class Consumer extends User {
     return Consumer(
       balance: doc.get("balance"),
       email: doc.get("email"),
-      password: doc.get("password"),
       name: doc.get("name"),
       address: doc.get("address"),
       phoneNumber: doc.get("phoneNumber"),
@@ -89,7 +82,6 @@ class Consumer extends User {
     return {
       "balance": balance,
       "email": email,
-      "password": password,
       "name": name,
       "address": address,
       "phoneNumber": phoneNumber,
@@ -106,7 +98,6 @@ class Admin extends User {
   Admin(
       {required this.sportCentreId,
       required String email,
-      required String password,
       required String name,
       required String address,
       required String phoneNumber,
@@ -115,7 +106,6 @@ class Admin extends User {
       required List<String> notifId})
       : super(
             email: email,
-            password: password,
             name: name,
             address: address,
             phoneNumber: phoneNumber,
@@ -127,7 +117,6 @@ class Admin extends User {
     return Admin(
       sportCentreId: List<String>.from(json["sportCentreId"].map((x) => x)),
       email: json["email"],
-      password: json["password"],
       name: json["name"],
       address: json["address"],
       phoneNumber: json["phoneNumber"],
@@ -141,7 +130,6 @@ class Admin extends User {
     return Admin(
       sportCentreId: List<String>.from(doc.get("sportCentreId")),
       email: doc.get("email"),
-      password: doc.get("password"),
       name: doc.get("name"),
       address: doc.get("address"),
       phoneNumber: doc.get("phoneNumber"),
@@ -155,7 +143,6 @@ class Admin extends User {
     return {
       "sportCentreId": List<String>.from(sportCentreId),
       "email": email,
-      "password": password,
       "name": name,
       "address": address,
       "phoneNumber": phoneNumber,

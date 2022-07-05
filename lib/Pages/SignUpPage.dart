@@ -111,7 +111,6 @@ class _SignUpPageState extends State<SignUpPage> {
               ElevatedButton(
                 onPressed: () async {
                   String email = _tfEmailController.text;
-                  String password = _tfPasswordController.text;
                   String name = _tfNameController.text;
                   String address = _tfAddressController.text;
                   String phoneNumber = _tfPhoneNumberController.text;
@@ -121,7 +120,6 @@ class _SignUpPageState extends State<SignUpPage> {
                     notifId: [],
                     orderId: [],
                     email: email,
-                    password: password,
                     name: name,
                     address: address,
                     phoneNumber: phoneNumber,
