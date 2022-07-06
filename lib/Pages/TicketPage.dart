@@ -238,7 +238,7 @@ class _TicketPageState extends State<TicketPage> {
                               }
 
                               return Expanded(
-                                child: ListView.separated(
+                                  child: ListView.separated(
                                   itemCount: listOrder.length,
                                   itemBuilder: (context, index) {
                                     return ticketCard(listOrder[index]);
