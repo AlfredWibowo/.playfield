@@ -1,23 +1,24 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_constructors
 
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/material.dart';
-import 'package:project_ambw/class/CLapangan.dart';
-import 'package:project_ambw/class/CTransaksi.dart';
-import 'package:project_ambw/class/CUser.dart';
-import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/class/Notification.dart';
+import 'package:project_ambw/class/Order.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/User.dart';
+import 'package:project_ambw/class/UserSession.dart';
 import 'package:project_ambw/functions/functions.dart';
 import 'package:project_ambw/functions/widget.dart';
 import 'package:project_ambw/services/dbFirestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:uuid/uuid.dart';
 
 class BookingPage extends StatefulWidget {
-  final int idxGedung;
-  final List<String> dataListType;
-  final Admin admin;
+  final SportCentre dataSC;
+  final SportField dataSF;
 
-  const BookingPage(
-      {Key? key, required this.idxGedung, required this.dataListType, required this.admin})
+  const BookingPage({Key? key, required this.dataSC, required this.dataSF})
       : super(key: key);
 
   @override
@@ -25,227 +26,367 @@ class BookingPage extends StatefulWidget {
 }
 
 class _BookingPageState extends State<BookingPage> {
-  TextEditingController _tfDate = TextEditingController();
-
-  late String _dropdownFieldType;
-  late List<String> _listFieldType;
+  final TextEditingController _tfDate = TextEditingController();
+  final TextEditingController _tfScName = TextEditingController();
+  final TextEditingController _tfSfName = TextEditingController();
+  final TextEditingController _tfAmount = TextEditingController();
+  final TextEditingController _tfFieldType = TextEditingController();
 
   late int _dropdownStartTime;
   late int _dropdownEndTime;
   late List<int> _listTime;
-  late Gedung _gedung;
+
+  late int _amount;
+
+  late SportCentre sc;
+  late SportField sf;
+
+  DateTime selectedDate = DateTime.now();
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
 
-    _listFieldType = widget.dataListType;
-    _dropdownFieldType = _listFieldType[0];
+    sc = widget.dataSC;
+    sf = widget.dataSF;
+    String time = sf.opTime;
+    List<String> timeSplited = time.split("-");
 
-    _gedung = widget.admin.owns[widget.idxGedung];
-    String start = _gedung.opTime.startTime;
-    String end = _gedung.opTime.endTime;
-    _dropdownStartTime = int.parse(start.substring(0, 2));
-    _dropdownEndTime = int.parse(end.substring(0, 2));
+    List<String> startTime = timeSplited[0].split(":");
+    List<String> endTime = timeSplited[1].split(":");
 
+    _dropdownStartTime = int.parse(startTime[0]);
+    _dropdownEndTime = int.parse(endTime[0]);
+
+    //generate list time
     _listTime = [
       for (var i = _dropdownStartTime; i <= _dropdownEndTime; i += 1) i
     ];
+
+    //form
+    _tfScName.text = sc.name;
+    _tfSfName.text = sf.name;
+    _tfFieldType.text = sf.fieldType;
+
+    int hour = _dropdownEndTime - _dropdownStartTime;
+    _amount = hour * sf.price;
+    _tfAmount.text = "Rp. $_amount";
+
+    formatDate();
+  }
+
+  void formatDate() {
+    //date
+    var formatter = DateFormat("dd/MM/yyyy");
+    String formattedDate = formatter.format(selectedDate);
+    _tfDate.text = formattedDate;
+  }
+
+  void calculateAmount() {
+    int hour = _dropdownEndTime - _dropdownStartTime;
+    _amount = hour * sf.price;
+    _tfAmount.text = "Rp. ${_amount}";
+  }
+
+  Future<void> selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: selectedDate,
+      firstDate: DateTime.now(),
+      lastDate: DateTime(2023),
+    );
+
+    if (picked != null && picked != selectedDate) {
+      setState(() {
+        selectedDate = picked;
+        formatDate();
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    //print(_listTime);
     return Scaffold(
       appBar: AppBar(
+        toolbarHeight: 100,
         backgroundColor: Colors.transparent,
         elevation: 0,
-        leading: backButton(context),
+        leading: Padding(
+          padding: const EdgeInsets.only(left:16.0),
+          child: backButton(context),
+        ),
       ),
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            title("Booking Form", true),
-            SizedBox(
-              height: 32,
-            ),
-            TextField(
-              controller: _tfDate,
-              decoration: InputDecoration(
-                labelText: 'dd/mm/yyyy',
-                focusedBorder: outlineInputBorder(),
-                enabledBorder: outlineInputBorder(),
-                suffixIcon: IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.calendar_today),
+      body: SingleChildScrollView(
+        child: Container(
+          padding: EdgeInsets.symmetric(horizontal: 24),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              title("Booking Form", true),
+              SizedBox(
+                height: 30,
+              ),
+      
+              //Sc Name
+              TextField(
+                controller: _tfScName,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
                 ),
               ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            DecoratedBox(
-              decoration: BoxDecoration(
-                border: Border.all(color: Colors.black, width: 2.0),
-                borderRadius: BorderRadius.zero,
+              SizedBox(
+                height: 10,
               ),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 12.0, vertical: 14.0),
-                child: DropdownButtonHideUnderline(
-                  child: DropdownButton(
-                      isDense: true,
-                      style: TextStyle(fontFamily: 'Roboto', fontSize: 16),
-                      isExpanded: true,
-                      value: _dropdownFieldType,
-                      items: _listFieldType.map((String value) {
-                        return DropdownMenuItem(
-                          value: value,
-                          child: Text(
-                            value,
-                            style: TextStyle(fontFamily: 'Roboto'),
+      
+              //Sf Name
+              TextField(
+                controller: _tfSfName,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              //Field type
+              TextField(
+                controller: _tfFieldType,
+                readOnly: true,
+                enabled: false,
+                decoration: InputDecoration(
+                  border: outlineInputBorder(),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              //Date
+              TextField(
+                controller: _tfDate,
+                decoration: InputDecoration(
+                  labelText: 'dd/mm/yyyy',
+                  focusedBorder: outlineInputBorder(),
+                  enabledBorder: outlineInputBorder(),
+                  suffixIcon: IconButton(
+                    onPressed: () {
+                      selectDate(context);
+                    },
+                    icon: Icon(Icons.calendar_today),
+                  ),
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+      
+              Column(
+                children: [
+                  //dropdown time
+                  Row(
+                    children: [
+                      Text('Time'),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
                           ),
-                        );
-                      }).toList(),
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          _dropdownFieldType = newValue!;
-                        });
-                      }),
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Row(
-              children: [
-                Text('Time'),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 14.0),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            isDense: true,
-                            style:
-                                TextStyle(fontFamily: 'Roboto', fontSize: 16),
-                            isExpanded: true,
-                            value: _dropdownStartTime,
-                            items: _listTime.map((int value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(
-                                  value.toString(),
-                                  style: TextStyle(fontFamily: 'Roboto'),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                _dropdownStartTime = newValue!;
-                              });
-                            }),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 14.0),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isDense: true,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto', fontSize: 16, color: Colors.black),
+                                  isExpanded: true,
+                                  value: _dropdownStartTime,
+                                  items: _listTime.map((int value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontFamily: 'Roboto,', color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? newValue) {
+                                    setState(() {
+                                      _dropdownStartTime = newValue!;
+                                      calculateAmount();
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ),
                       ),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Icon(Icons.remove),
+                      SizedBox(
+                        width: 10,
+                      ),
+                      Expanded(
+                        child: DecoratedBox(
+                          decoration: BoxDecoration(
+                            border: Border.all(color: Colors.black, width: 2.0),
+                            borderRadius: BorderRadius.zero,
+                          ),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 12.0, vertical: 14.0),
+                            child: DropdownButtonHideUnderline(
+                              child: DropdownButton(
+                                  isDense: true,
+                                  style: TextStyle(
+                                      fontFamily: 'Roboto', fontSize: 16, color: Colors.black),
+                                  isExpanded: true,
+                                  value: _dropdownEndTime,
+                                  items: _listTime.map((int value) {
+                                    return DropdownMenuItem(
+                                      value: value,
+                                      child: Text(
+                                        value.toString(),
+                                        style: TextStyle(fontFamily: 'Roboto', color: Colors.black),
+                                      ),
+                                    );
+                                  }).toList(),
+                                  onChanged: (int? newValue) {
+                                    setState(() {
+                                      _dropdownEndTime = newValue!;
+                                      calculateAmount();
+                                    });
+                                  }),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+      
+                  //Amount
+                  TextField(
+                    controller: _tfAmount,
+                    readOnly: true,
+                    enabled: false,
+                    textAlign: TextAlign.end,
+                    decoration: InputDecoration(
+                      border: outlineInputBorder(),
                     ),
                   ),
-                ),
-                SizedBox(
-                  width: 10,
-                ),
-                Icon(Icons.remove),
-                SizedBox(
-                  width: 10,
-                ),
-                Expanded(
-                  child: DecoratedBox(
-                    decoration: BoxDecoration(
-                      border: Border.all(color: Colors.black, width: 2.0),
-                      borderRadius: BorderRadius.zero,
-                    ),
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12.0, vertical: 14.0),
-                      child: DropdownButtonHideUnderline(
-                        child: DropdownButton(
-                            isDense: true,
-                            style:
-                                TextStyle(fontFamily: 'Roboto', fontSize: 16),
-                            isExpanded: true,
-                            value: _dropdownEndTime,
-                            items: _listTime.map((int value) {
-                              return DropdownMenuItem(
-                                value: value,
-                                child: Text(
-                                  value.toString(),
-                                  style: TextStyle(fontFamily: 'Roboto'),
-                                ),
-                              );
-                            }).toList(),
-                            onChanged: (int? newValue) {
-                              setState(() {
-                                _dropdownEndTime = newValue!;
-                              });
-                            }),
+                  SizedBox(
+                    height: 10,
+                  ),
+      
+                  //submit btn
+                  ElevatedButton(
+                  onPressed: () async {
+                    if (ConsumerSession.session.balance < _amount) {
+                      buildSnackBar(context, "Balance is not Enough");
+                    }
+                    else if (_dropdownEndTime < _dropdownStartTime) {
+                      buildSnackBar(context, "Invalid Time");
+                    } 
+                    else {
+                      String orderId = Uuid().v4();
+                      String date = _tfDate.text;
+                      String time =
+                          "${_dropdownStartTime}:00-${_dropdownEndTime}:00";
+                      int amount = _amount;
+
+                      Order order = Order(
+                        id: orderId,
+                        date: date,
+                        time: time,
+                        amount: amount,
+                        status: 0,
+                        consumer: ConsumerSession.session,
+                        sportCentre: sc,
+                        sportField: sf,
+                      );
+
+                      //add id to admin
+                      Admin admin = Admin(
+                        notifId: [],
+                        orderId: [],
+                        sportCentreId: [],
+                        email: "",
+                        name: "",
+                        address: "",
+                        phoneNumber: "",
+                        profilePicture: "",
+                      );
+
+                      await AdminFirestoreDatabase.tbAdmin
+                          .where("sportCentreId", arrayContains: sc.id)
+                          .get()
+                          .then((value) {
+                        DocumentSnapshot dsAdmin = value.docs.first;
+                        admin = Admin.fromDocument(dsAdmin);
+                      });
+                      admin.orderId.add(order.id);
+
+                      //add notif to admin
+                      String notifId = Uuid().v4();
+                      String notifMsg =
+                          "${ConsumerSession.session.name} booking ${sc.name} ${sf.fieldType} (${sf.name})";
+                      var formatter = DateFormat("dd/MM/yyyy");
+                      String formattedDate = formatter.format(DateTime.now());
+                      Notif notif = Notif(
+                          id: notifId, date: formattedDate, message: notifMsg, isRead: false);
+                      admin.notifId.add(notif.id);
+
+                      AdminFirestoreDatabase.editData(admin: admin);
+
+                      //add notif to db
+                      NotifFirestoreDatabase.addData(notif: notif);
+
+                      //add id to consumer
+                      ConsumerSession.session.balance -= _amount; 
+                      ConsumerSession.session.orderId.add(order.id);
+                      ConsumerFirestoreDatabase.editData(
+                          consumer: ConsumerSession.session);
+
+                      //add order to table order
+                      OrderFirestoreDatabase.addData(order: order);
+
+                      buildSnackBar(context, 'Booking Successful');
+
+                      Navigator.pop(context);
+                    }
+                  },
+                    child: Text(
+                      'book'.toUpperCase(),
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
+                    style: ElevatedButton.styleFrom(
+                      minimumSize: Size.fromHeight(50),
+                      primary: Colors.black,
+                      shape: roundedRectangleBorder(),
+                    ),
                   ),
-                ),
-              ],
-            ),
-            SizedBox(
-              height: 20,
-            ),
-            ElevatedButton(
-              onPressed: () async {
-                String date = _tfDate.text;
-                String hour = "$_dropdownStartTime-$_dropdownEndTime";
-
-                // Add Ticket
-                FieldOccupancy fieldOccupancy =
-                    FieldOccupancy(hour: hour, isOccupied: true); 
-
-
-                Admin adminInput = widget.admin;
-                List<Field> lofAdmin = adminInput.owns[widget.idxGedung].fields;
-                for(int i = 0; i < lofAdmin.length; i++) {
-                  // Check if type equal
-                  if (lofAdmin[i].type == _dropdownFieldType) {
-                    adminInput.owns[widget.idxGedung].fields[i].occupancies.add(fieldOccupancy);
-                    AdminFirestoreDatabase.editData(admin: adminInput);
-                    
-                    ConsumerSession.session.tickets.add(fieldOccupancy.ticketID);
-                  }
-                  
-                  ConsumerFirestoreDatabase.editData(consumer: ConsumerSession.session);
-                }
-                buildSnackBar(context, "Tickets Reserved");
-                Navigator.pop(context);
-              },
-              child: Text(
-                'submit'.toUpperCase(),
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                ),
+                ],
               ),
-              style: ElevatedButton.styleFrom(
-                minimumSize: Size.fromHeight(50),
-                primary: Colors.black,
-                shape: roundedRectangleBorder(),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

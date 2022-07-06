@@ -13,7 +13,7 @@ class ResetPasswordPage extends StatefulWidget {
 }
 
 class _ResetPasswordPageState extends State<ResetPasswordPage> {
-  TextEditingController _tfEmailController = TextEditingController();
+  final TextEditingController _tfEmailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +27,7 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
         )
       ),
       body: Container(
-        padding: EdgeInsets.all(20),
+        padding: EdgeInsets.all(24),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -70,9 +70,10 @@ class _ResetPasswordPageState extends State<ResetPasswordPage> {
                     AuthService.forgotPassword(email: _tfEmailController.text);
 
                 String msg = await responseMsg;
-                buildSnackBar(context, msg);
+                print(msg);
+                if (msg == 'Successful') {
+                  buildSnackBar(context, "Email verification sended");
 
-                if (msg == 'Successfull') {
                   Navigator.pop(context);
                 }
               },

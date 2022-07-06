@@ -1,9 +1,12 @@
 // ignore_for_file: prefer_const_constructors
 
-import 'package:flutter/material.dart';
-import 'package:project_ambw/class/CUserSession.dart';
+import 'package:project_ambw/class/Order.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
 import 'package:project_ambw/functions/widget.dart';
-import 'package:project_ambw/pages/admin/manage/sportCenterPage.dart';
+import 'package:project_ambw/pages/TicketPage.dart';
+import 'package:flutter/material.dart';
+import 'package:project_ambw/services/storageService.dart';
 
 class AdminMaintenancePage extends StatefulWidget {
   const AdminMaintenancePage({Key? key}) : super(key: key);
@@ -13,71 +16,114 @@ class AdminMaintenancePage extends StatefulWidget {
 }
 
 class _AdminMaintenancePageState extends State<AdminMaintenancePage> {
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.symmetric(horizontal: 20),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            title('Manage your', false),
-            title('Sports center', true),
-            SizedBox(height: 32.0),
-            Expanded(
-                child: ListView.builder(
-              itemCount: AdminSession.session.owns.length,
-              itemBuilder: (context, index) {
-                return sportCenterCard(
-                    AdminSession.session.owns[index].nama,
-                    AdminSession.session.owns[index].alamat,
-                    AdminSession.session.owns[index].kota,
-                    context, index);
-              },
-            ))
-          ],
-        ),
+  Widget appliantCard(Order order) {
+    SportCentre sc = order.sportCentre;
+    SportField sf = order.sportField;
+
+    return Container(
+      padding: EdgeInsets.all(24),
+      decoration: BoxDecoration(
+        color: Colors.black,
+        borderRadius: BorderRadius.circular(6),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          ClipRRect(
+            borderRadius: BorderRadius.circular(6),
+            child: sf.fieldPicture == ""
+                ? Icon(
+                    Icons.image,
+                    size: 100,
+                    color: Colors.white
+                  )
+                : FutureBuilder<String>(
+                    future: StorageService.getDownloadUrl(
+                      imageName: sf.fieldPicture,
+                      isProfilePicture: false,
+                    ),
+                    builder: (context, snapshot) {
+                      if (snapshot.hasError) {
+                        return Text('${snapshot.error}');
+                      } else if (snapshot.hasData || snapshot.data != null) {
+                        print(snapshot.data!);
+                        return imageNetwork(snapshot.data!, 100, 110);
+                      }
+                      return progressIndicator();
+                    },
+                  ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                '${sc.name} (${sf.name})',
+                style: TextStyle(
+                  fontSize: 16,
+                  color: Colors.white,
+                ),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              textWithIconRow(Icons.calendar_today, order.date),
+              textWithIconRow(Icons.alarm, order.time),
+              textWithIconRow(Icons.price_change, "Rp. ${order.amount}"),
+              SizedBox(
+                height: 10,
+              ),
+              sportCard(sf.fieldType, sportColor(sf.fieldType)),
+            ],
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          Column(
+            children: [
+              ElevatedButton(
+                onPressed: () {},
+                child: Icon(Icons.check),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 116, 227, 19),
+                    shape: roundedRectangleBorder()),
+              ),
+              SizedBox(
+                height: 10,
+              ),
+              ElevatedButton(
+                onPressed: () {},
+                child: Icon(Icons.close),
+                style: ElevatedButton.styleFrom(
+                    elevation: 0.0,
+                    shadowColor: Colors.transparent,
+                    primary: Color.fromARGB(255, 251, 11, 11),
+                    shape: roundedRectangleBorder()),
+              ),
+            ],
+          )
+        ],
       ),
     );
   }
 
-  Widget sportCenterCard(
-      String scName, String scAddress, String scCity, BuildContext context, int index) {
-    return Card(
-      color: Colors.black,
-      child: InkWell(
-        onTap: () {
-          // Tp to Page
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SCDetailPage(index: index),
-              )
-          );
-        },
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      body: Container(
+        padding: EdgeInsets.symmetric(horizontal: 24),
+        child: ListView(
           children: [
-            Padding(
-              padding: EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    scName,
-                    style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.white,
-                        fontFamily: 'Comfortaa'),
-                  ),
-                  SizedBox(
-                    height: 10,
-                  ),
-                  textWithIconRow(Icons.location_on, scAddress),
-                  textWithIconRow(Icons.location_city, scCity),
-                ],
-              ),
+            title('Manage your', false),
+            title('Order', true),
+            SizedBox(
+              height: 30,
             ),
+            
           ],
         ),
       ),

@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
 
 enum AuthStatus {
   successful,
@@ -106,3 +107,18 @@ class AuthService {
     return status;
   }
 }
+
+// StreamBuilder<DocumentSnapshot>(
+//                 stream: FirestoreDatabase.getUserByEmail(
+//                     AuthService.getEmailUser()),
+//                 builder: (context, snapshot2) {
+//                   print(snapshot2);
+//                   if (snapshot2.hasData || snapshot.data != null) {
+//                     DocumentSnapshot doc = snapshot2.data!;
+//                     UserCls newSession = UserCls(
+//                         email: doc['email'],
+//                         nama: doc['nama'],
+//                         alamat: doc['alamat'],
+//                         noTelp: doc['noTelp']);
+//                     UserSession.updateSession(newSession);
+//                     print('new session: ${newSession}');

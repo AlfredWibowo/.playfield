@@ -1,13 +1,13 @@
-import 'package:aplikasi_booking_lapangan_online/class/SportCentre.dart';
-import 'package:aplikasi_booking_lapangan_online/class/SportField.dart';
-import 'package:aplikasi_booking_lapangan_online/class/User.dart';
+import 'package:project_ambw/class/SportCentre.dart';
+import 'package:project_ambw/class/SportField.dart';
+import 'package:project_ambw/class/User.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class Order {
   String id;
   String date;
   String time;
-  double amount;
+  int amount;
   int status;
   //0: waitting: waitting acc from admin
   //1: Active: after acc by admin
