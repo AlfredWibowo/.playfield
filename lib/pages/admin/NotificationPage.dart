@@ -59,8 +59,13 @@ class _AdminNotificationPageState extends State<AdminNotificationPage> {
                           child: ListView.separated(
                             itemBuilder: (context, index) {
                               return ListTile(
+                                onTap: () {
+                                  listNotif[index].isRead = true;
+                                  NotifFirestoreDatabase.editData(notif: listNotif[index]);
+                                },
                                 title: Text(listNotif[index].message),
                                 subtitle: Text(listNotif[index].date),
+                                trailing: listNotif[index].isRead ? Icon(Icons.check) : Icon(Icons.close),
                               );
                             },
                             separatorBuilder: (context, index) => Divider(),

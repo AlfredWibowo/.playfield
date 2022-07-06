@@ -285,4 +285,14 @@ class NotifFirestoreDatabase {
         .whenComplete(() => print('Data notif Berhasil di add'))
         .catchError((e) => print(e));
   }
+
+  static Future<void> editData({required Notif notif}) async {
+    DocumentReference doc = tbNotif.doc(notif.id);
+
+    await doc
+        .update(notif.toJson())
+        .whenComplete(() => print('Data Order Berhasil di update'))
+        .catchError((e) => print(e));
+  }
+
 }

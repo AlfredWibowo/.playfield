@@ -78,15 +78,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         return Text('${snapshot.error}');
                       } else if (snapshot.hasData || snapshot.data != null) {
                         print(snapshot.data!);
-                        return imageNetwork(snapshot.data!, 100, 110);
+                        return imageNetwork(snapshot.data!, 100, 100);
                       }
                       return progressIndicator();
                     },
                   ),
           ),
-          SizedBox(
-            width: 20,
-          ),
+          // SizedBox(
+          //   width: 20,
+          // ),
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -109,9 +109,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
               sportCard(sf.fieldType, sportColor(sf.fieldType)),
             ],
           ),
-          SizedBox(
-            width: 20,
-          ),
+          // SizedBox(
+          //   width: 20,
+          // ),
           Column(
             children: [
               ElevatedButton(
@@ -127,7 +127,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   var formatter = DateFormat("dd/MM/yyyy");
                   String formattedDate = formatter.format(DateTime.now());
                   Notif notif = Notif(
-                      id: notifId, date: formattedDate, message: notifMsg);
+                      id: notifId, date: formattedDate, message: notifMsg, isRead: false);
 
                   Consumer consumer = order.consumer;
                   consumer.notifId.add(notifId);

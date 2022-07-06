@@ -331,7 +331,8 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                           isDense: true,
                                           style: const TextStyle(
                                               fontFamily: 'Roboto',
-                                              fontSize: 16),
+                                              fontSize: 16,
+                                              color: Colors.black),
                                           isExpanded: true,
                                           value: _dropdownStartTime,
                                           items: _listTime.map((int value) {
@@ -340,7 +341,8 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                               child: Text(
                                                 value.toString(),
                                                 style: const TextStyle(
-                                                    fontFamily: 'Roboto'),
+                                                    fontFamily: 'Roboto',
+                                                    color: Colors.black),
                                               ),
                                             );
                                           }).toList(),
@@ -374,7 +376,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                       child: DropdownButton(
                                         isDense: true,
                                         style: const TextStyle(
-                                            fontFamily: 'Roboto', fontSize: 16),
+                                            fontFamily: 'Roboto', fontSize: 16, color: Colors.black),
                                         isExpanded: true,
                                         value: _dropdownEndTime,
                                         items: _listTime.map((int value) {
@@ -383,7 +385,8 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                             child: Text(
                                               value.toString(),
                                               style: const TextStyle(
-                                                  fontFamily: 'Roboto'),
+                                                  fontFamily: 'Roboto',
+                                                  color: Colors.black),
                                             ),
                                           );
                                         }).toList(),
@@ -543,7 +546,7 @@ class _ManageSportFieldPageState extends State<ManageSportFieldPage> {
                                           value: value,
                                           child: Text(
                                             value,
-                                            style: const TextStyle(fontFamily: 'Roboto'),
+                                            style: const TextStyle(fontFamily: 'Roboto', color: Colors.black),
                                           ),
                                         );
                                       }).toList(),

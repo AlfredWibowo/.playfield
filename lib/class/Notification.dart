@@ -4,11 +4,13 @@ class Notif {
   String id;
   String date;
   String message;
+  bool isRead;
 
   Notif({
     required this.id,
     required this.date,
     required this.message,
+    required this.isRead
   });
 
   factory Notif.fromJson(Map<String, dynamic> json) {
@@ -16,6 +18,7 @@ class Notif {
       id: json["id"],
       date: json["date"],
       message: json["message"],
+      isRead: json["isRead"]
     );
   }
 
@@ -24,6 +27,7 @@ class Notif {
       id: doc.get("id"),
       date: doc.get("date"),
       message: doc.get("message"),
+      isRead: doc.get("isRead")
     );
   }
 
@@ -32,6 +36,7 @@ class Notif {
       "id": id,
       "date": date,
       "message": message,
+      "isRead": isRead
     };
   }
 }

@@ -348,7 +348,7 @@ class _BookingPageState extends State<BookingPage> {
                       var formatter = DateFormat("dd/MM/yyyy");
                       String formattedDate = formatter.format(DateTime.now());
                       Notif notif = Notif(
-                          id: notifId, date: formattedDate, message: notifMsg);
+                          id: notifId, date: formattedDate, message: notifMsg, isRead: false);
                       admin.notifId.add(notif.id);
 
                       AdminFirestoreDatabase.editData(admin: admin);
